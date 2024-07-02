@@ -1,15 +1,28 @@
-# Artsgoz Frontend – 6/29 First Released
+---
+description: >-
+  This documentation is the resource for the developers who is contributing in
+  the Artsgoz Website Project (https://artsgoz.vercel.app)
+---
 
-<img src="https://www.arts.chula.ac.th/goz/asset/icons/aw-nav.png" height='50px'/>
-This project is contributed by Artsgoz (ก.อศ.) in 2023 and planned to be completed within the end of June, 2024 and will be transfered to GOZ67 members.
-if you want to be contributor in this project, feel free to contact us via <a href="https://www.instagram.com/arts_goz" target="_blank">@arts_goz</a> and don't forget to refer <strong>เทรุ goz #PR66</strong> but the prerequisites.
+# Getting Started
 
-## Prerequisites
-- An Arts Student
-- Experienced in basic himl and ReactJS for frontend role.
-- Experienced in db management, Mongodb, and AWS S3 for backend role.
+## Repositories <a href="#repositories" id="repositories"></a>
 
+You can see the repositories of this projects here >> [https://github.com/artsgoz](https://github.com/artsgoz)​The production website is now on >>[https://artsgoz.vercel.app](https://artsgoz.vercel.app/) and [https://www.arts.chula.ac.th/goz/](https://www.arts.chula.ac.th/goz/wordpress/)​
 
-## Remarks
-If you find any errors, please contact @arts_goz instagram or it.artsgoz@gmail.com.
-and this repository is only visible for related users ***not for public release***.
+## Reminder <a href="#reminder" id="reminder"></a>
+
+All documents, repositories, and resources related to this project are contributed for related personnel/contributors only and always reminding that <mark style="color:red;">**all disclosure-related actions are prohibited**</mark> due to the sensitivity of information.
+
+## Prerequisites <a href="#prerequisites" id="prerequisites"></a>
+
+Those who wants to be a collaborator or a contributor should
+
+* be a current arts student authorized by the arts students committee
+* have an experience in basic HTML, CSS and, Javascript (actually newbies are welcomed)
+* know about Web Technologies (if not, please go see [https://developer.mozilla.org/](https://developer.mozilla.org/))
+* know about Javascript Framework like React or Next.js
+* know about CSS Framework (In this project we will use Tailwindcss Framework, see the reference here [https://tailwindcss.com/](https://tailwindcss.com/))
+* know about RestAPIs, Database, Web Service for backend role {In this project we will use ExpressJS, MongoDB and, AWS S3 and iAM}
+
+Please don't forget to join our discord [https://discord.gg/tNbrNwaNYF](https://discord.gg/tNbrNwaNYF) and become a member in [https://github.com/artsgoz](https://github.com/artsgoz)

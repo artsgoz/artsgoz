@@ -1,4 +1,9 @@
 # Table of contents
 
-* [Artsgoz Frontend – 6/29 First Released](README.md)
-* [Getting Started](https://app.gitbook.com/o/Kgqdl5faK37ydJVNnr44/s/ufmfIE18wkrjSzlOIGmZ/\~/changes/4/)
+* [Getting Started](README.md)
+* [Setting up your workflow](setting-up-your-workflow/README.md)
+  * [Root User Access](setting-up-your-workflow/root-user-access.md)
+  * [AWS and MongoDB Access](setting-up-your-workflow/aws-and-mongodb-access.md)
+  * [Access to the repositories](setting-up-your-workflow/access-to-the-repositories.md)
+* [Database Configuring](database-configuring.md)
+* [Endpoint](endpoint.md)
