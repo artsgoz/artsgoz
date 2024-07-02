@@ -8,7 +8,7 @@ description: >-
 
 ## Repositories <a href="#repositories" id="repositories"></a>
 
-You can see the repositories of this projects here >> [https://github.com/artsgoz](https://github.com/artsgoz)​The production website is now on >>[https://artsgoz.vercel.app](https://artsgoz.vercel.app/) and [https://www.arts.chula.ac.th/goz/](https://www.arts.chula.ac.th/goz/wordpress/)​
+You can see the repositories of this projects here >> [https://github.com/artsgoz](https://github.com/artsgoz)​The production website is now on >>[https://artsgoz.vercel.app](https://artsgoz.vercel.app/) and [https://www.arts.chula.ac.th/goz/](https://www.arts.chula.ac.th/goz/)​
 
 ## Reminder <a href="#reminder" id="reminder"></a>
 
