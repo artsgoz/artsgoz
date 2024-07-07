@@ -14,12 +14,16 @@ You can see the repositories of this projects here >> [https://github.com/artsgo
 
 All documents, repositories, and resources related to this project are contributed for related personnel/contributors only and always reminding that <mark style="color:red;">**all disclosure-related actions are prohibited**</mark> due to the sensitivity of information.
 
+This project still has some issues needed to be fixed and code in the project is not yet to be cleaned. So, if you have any inquiries, please see this docs or contact us. Any fundamental knowledges that you can access by yourself like asking how the function in React works are not available to be resolved.
+
+This documentation may contain Thai/English words in some pages.
+
 ## Prerequisites <a href="#prerequisites" id="prerequisites"></a>
 
 Those who wants to be a collaborator or a contributor should
 
 * be a current arts student authorized by the arts students committee
-* have an experience in basic HTML, CSS and, Javascript (actually newbies are welcomed)
+* have an experience in basic HTML, CSS and, Javascript, React (actually newbies are welcomed)
 * know about Web Technologies (if not, please go see [https://developer.mozilla.org/](https://developer.mozilla.org/))
 * know about Javascript Framework like React or Next.js
 * know about CSS Framework (In this project we will use Tailwindcss Framework, see the reference here [https://tailwindcss.com/](https://tailwindcss.com/))

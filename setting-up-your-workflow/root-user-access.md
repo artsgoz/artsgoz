@@ -8,7 +8,7 @@ description: >-
 
 ## Root User
 
-All the services used in this project are performed by the Artsgoz IT root user, which means it.artsgoz@gmail.com performs all the action in services. Now it will be called as Root User.
+All the services used in this project are performed by the Artsgoz IT root user, which means `it.artsgoz@gmail.com` performs all the action in services. Now it will be called as Root User.
 
 ## Usage
 

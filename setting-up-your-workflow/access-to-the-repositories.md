@@ -35,3 +35,19 @@ Please contact us first to make sure that you are eligible to contribute to repo
 {% hint style="warning" %}
 Any action done in the related repositories should be informed via Discord before commit the action.
 {% endhint %}
+
+## Clone Repo
+
+you can clone frontend repo ([https://github.com/artsgoz/artsgoz](https://github.com/artsgoz/artsgoz)) by HTTPS or GitHub CLI
+
+HTTPS
+
+```
+https://github.com/artsgoz/artsgoz.git
+```
+
+GitHubCLI
+
+```
+gh repo clone artsgoz/artsgoz
+```
