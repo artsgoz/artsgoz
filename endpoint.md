@@ -25,9 +25,9 @@ const formatDatatoSendAjarn = (ajarn) => {
 
 When the <mark style="color:orange;">`POST`</mark> action performed, you will get the JSON format of the ajarn value back as a return value. And this is the result showing that the array is stored in the database completely. The example shown above is just to show how the <mark style="color:orange;">`POST`</mark> action and endpoint works in the flow.
 
-### <mark style="color:red;">WARNING</mark> About the `/add-staff` Endpoint and `ajarns` Object
+### <mark style="color:red;">WARNING</mark> About the `/add-staff` Endpoint and `ajarns` Collection
 
-Due to the security reasons of `/add-staff` endpoint, we recommends you better not <mark style="color:orange;">`POST`</mark> the data to that endpoint by sending the array object directly to the endpoint. Also, the `ajarns` object in the collections is the object contains the faculty staff lists and strictly prohibited from conducting any actions.
+Due to the security reasons of `/add-staff` endpoint, we recommends you better not <mark style="color:orange;">`POST`</mark> the data to that endpoint by sending the array object directly to the endpoint. Also, the `ajarns` object in the collection contains the faculty staff lists and is strictly prohibited from conducting any actions.
 
 {% hint style="danger" %}
 DO NOT PERFORM ANY ACTION IN THE `ajarns` OBJECT WITHOUT PERMISSIONS

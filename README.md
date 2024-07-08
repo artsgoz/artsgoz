@@ -12,11 +12,12 @@ You can see the repositories of this projects here >> [https://github.com/artsgo
 
 ## Reminder <a href="#reminder" id="reminder"></a>
 
-All documents, repositories, and resources related to this project are contributed for related personnel/contributors only and always reminding that <mark style="color:red;">**all disclosure-related actions are prohibited**</mark> due to the sensitivity of information.
+Please read the reminders below clearly before we get started
 
-This project still has some issues needed to be fixed and code in the project is not yet to be cleaned. So, if you have any inquiries, please see this docs or contact us. Any fundamental knowledges that you can access by yourself like asking how the function in React works are not available to be resolved.
-
-This documentation may contain Thai/English words in some pages.
+* All documents, repositories, and resources related to this project are contributed for related personnel/contributors only and always reminding that <mark style="color:red;">**all disclosure-related actions are prohibited**</mark> due to the sensitivity of information.
+* This project still has some issues needed to be fixed and code in the project is not yet to be cleaned. So, if you have any inquiries, please see this docs or contact us. Any fundamental knowledges that you can access by yourself like asking how the function in React works are not available to be resolved.
+* This documentation may contain Thai/English words in some pages.
+* Contributors' Role should be completely arranged before start committing the project.
 
 ## Prerequisites <a href="#prerequisites" id="prerequisites"></a>
 
