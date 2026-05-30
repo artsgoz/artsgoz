@@ -18,7 +18,8 @@
     "affected:test": "nx affected -t test",
     "affected:lint": "nx affected -t lint",
     "graph": "nx graph",
-    "prepare": "husky"
+    "prepare": "husky",
+    "build:tokens": "node ./scripts/build-tokens.js"
   },
   "private": true,
   "engines": {
@@ -84,5 +85,15 @@
     "react": "^19.2.6",
     "react-dom": "^19.2.6",
     "react-router": "^7.15.0"
+  },
+  "pnpm": {
+    "onlyBuiltDependencies": [
+      "@parcel/watcher",
+      "@swc/core",
+      "esbuild",
+      "less",
+      "nx",
+      "unrs-resolver"
+    ]
   }
 }

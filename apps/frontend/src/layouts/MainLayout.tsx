@@ -1,14 +1,18 @@
-import { Link, Outlet } from 'react-router';
-import { PATHS } from '../routes/paths';
+// apps/frontend/src/layouts/MainLayout.tsx
+import { Outlet } from 'react-router';
+// ✅ นำเข้าคอมโพเนนต์ Navbar ตัวใหม่มาใช้งาน พร้อมระบุนามสกุลไฟล์เป็น .js ตามกฎ nodenext
+import { Navbar } from '../components/Navbar/index.js';
 
 export default function MainLayout() {
   return (
-    <div>
-      <nav style={{ padding: '1rem', display: 'flex', gap: '1rem' }}>
-        <Link to={PATHS.ROOT}>Home</Link>
-        <Link to={PATHS.ABOUT}>About</Link>
-      </nav>
-      <Outlet />
+    <div className="min-h-screen bg-background-subtle flex flex-col">
+      {/* ✅ วาง Navbar ชิ้นใหม่ไว้ด้านบนสุดเพื่อให้แสดงผลคงที่ในทุกๆ หน้าจอ */}
+      <Navbar />
+
+      {/* ส่วนพื้นที่ตรงกลางสำหรับแสดงเนื้อหาที่จะเปลี่ยนไปตามหน้าที่กดลิงก์สลับ */}
+      <main className="flex-1">
+        <Outlet />
+      </main>
     </div>
   );
 }
