@@ -1,6 +1,6 @@
 // packages/design-system/src/lib/components/SearchInput/index.tsx
 import React, { useState } from 'react';
-import { Search } from 'lucide-react'; // 👈 นำเข้าไอคอนจาก Lucide
+import { Search } from 'lucide-react';
 
 interface SearchInputProps extends React.InputHTMLAttributes<HTMLInputElement> {
   inputClassName?: string;
@@ -34,7 +34,6 @@ export function SearchInput({
         {...props}
       />
 
-      {/* ✅ เปลี่ยนมาใช้ไอคอน Search จาก Lucide โค้ดสะอาดขึ้น 10 เท่า! */}
       <Search size={20} color="#33363F" strokeWidth={2} className="shrink-0" />
     </div>
   );

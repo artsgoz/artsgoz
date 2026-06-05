@@ -9,4 +9,11 @@ export default [
     // Override or add rules here
     rules: {},
   },
+  {
+    settings: {
+      react: {
+        version: '19.0',
+      },
+    },
+  },
 ];

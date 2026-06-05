@@ -13,6 +13,13 @@ export default [
     ],
   },
   {
+    settings: {
+      react: {
+        version: '19.0',
+      },
+    },
+  },
+  {
     files: ['**/*.ts', '**/*.tsx', '**/*.js', '**/*.jsx'],
     rules: {
       '@nx/enforce-module-boundaries': [
