@@ -86,7 +86,7 @@ export function MobileSidebar({
                     onLogout();
                     onClose();
                   }}
-                  className="flex items-center justify-center bg-white border border-[#E5E7EB] cursor-pointer hover:bg-gray-50 active:scale-95 transition-all shadow-sm text-gray-800 text-[16px] font-bold w-full"
+                  className="flex items-center justify-center bg-white border border-[#E5E7EB] cursor-pointer hover:bg-gray-50 active:scale-95 transition-all shadow-sm text-gray-800 text-[16px] font-bold w-full shrink-0 whitespace-nowrap"
                   style={{
                     height: '42px',
                     borderRadius: '8px',

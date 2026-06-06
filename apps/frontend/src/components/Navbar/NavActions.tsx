@@ -23,7 +23,7 @@ export function NavActions({ isLoggedIn, onLogin, onLogout }: NavActionsProps) {
         {isLoggedIn ? (
           <button
             onClick={onLogout}
-            className="flex flex-row items-center justify-center bg-white border border-[#E5E7EB] cursor-pointer hover:bg-gray-50 active:scale-95 transition-all shadow-sm text-gray-800 text-[14px] font-bold"
+            className="flex flex-row items-center justify-center bg-white border border-[#E5E7EB] cursor-pointer hover:bg-gray-50 active:scale-95 transition-all shadow-sm text-gray-800 text-[14px] font-bold shrink-0 whitespace-nowrap"
             style={{
               height: '35px',
               padding: '0 16px',
