@@ -48,3 +48,8 @@ Thumbs.db
 out
 test-output
 vite.config.*.timestamp*
+
+# Environment variables (contains secrets like Figma API token)
+.env
+.env.local
+.env.*.local

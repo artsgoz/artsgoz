@@ -4,11 +4,11 @@
   "license": "MIT",
   "scripts": {
     "dev": "nx run-many -t dev",
-    "dev:frontend": "nx dev artsgoz-frontend",
-    "dev:backoffice": "nx dev artsgoz-backoffice",
+    "dev:frontend": "nx dev @org/frontend",
+    "dev:backoffice": "nx dev @org/backoffice",
     "build": "nx run-many -t build",
-    "build:frontend": "nx build artsgoz-frontend",
-    "build:backoffice": "nx build artsgoz-backoffice",
+    "build:frontend": "nx build @org/frontend",
+    "build:backoffice": "nx build @org/backoffice",
     "test": "nx run-many -t test",
     "lint": "nx run-many -t lint",
     "lint:fix": "nx run-many -t lint -- --fix",
@@ -19,7 +19,10 @@
     "affected:lint": "nx affected -t lint",
     "graph": "nx graph",
     "prepare": "husky",
-    "build:tokens": "node ./scripts/build-tokens.js"
+    "build:tokens": "node ./scripts/build-tokens.js",
+    "sync:figma": "node ./scripts/sync-figma.js",
+    "sync:figma:json": "node ./scripts/sync-figma.js --json",
+    "sync:figma:export": "node ./scripts/sync-figma.js --export-tokens"
   },
   "private": true,
   "engines": {
