@@ -1,7 +1,7 @@
-import { Link } from 'react-router';
-import { Menu, X } from 'lucide-react';
-import { CULoginButton, SearchInput, Button } from '@org/design-system';
-import { NAV_ITEMS, DROPDOWN_ITEMS } from './navConfig.js';
+import { useNavigate, useLocation } from 'react-router';
+import { Menu, X, Folder, Hand, Briefcase, Building2, User } from 'lucide-react';
+import { Button, MobileSidebar } from '@org/design-system';
+import { NAV_ITEMS } from './navConfig.js';
 
 interface MobileMenuToggleProps {
   isOpen: boolean;
@@ -22,56 +22,65 @@ export function MobileMenuToggle({ isOpen, onClick }: MobileMenuToggleProps) {
 
 interface MobileMenuPanelProps {
   isOpen: boolean;
+  onClose: () => void;
+  isLoggedIn: boolean;
+  onLogin: () => void;
+  onLogout: () => void;
 }
 
-export function MobileMenuPanel({ isOpen }: MobileMenuPanelProps) {
+export function MobileMenuPanel({
+  isOpen,
+  onClose,
+  isLoggedIn,
+  onLogin,
+  onLogout,
+}: MobileMenuPanelProps) {
+  const navigate = useNavigate();
+  const location = useLocation();
+  const isActive = (path: string) => location.pathname === path;
+
+  // Map icons based on NavItem label/path
+  const getIcon = (label: string) => {
+    switch (label) {
+      case 'หน้าหลัก':
+        return <Folder size={20} className="text-gray-400 shrink-0" />;
+      case 'บริการนิสิต':
+        return <Hand size={20} className="text-gray-400 shrink-0" />;
+      case 'ช่วยเหลือ':
+        return <Briefcase size={20} className="text-gray-400 shrink-0" />;
+      case 'ฝึกงาน':
+        return <Building2 size={20} className="text-gray-400 shrink-0" />;
+      case 'บัญชี':
+        return <User size={20} className="text-gray-400 shrink-0" />;
+      default:
+        return <Folder size={20} className="text-gray-400 shrink-0" />;
+    }
+  };
+
+  // Generate dynamic items based on login status
+  const currentMenuItems = [...NAV_ITEMS];
+  if (isLoggedIn) {
+    currentMenuItems.push({ label: 'บัญชี', path: '#' });
+  }
+
+  const mappedMenuItems = currentMenuItems.map((item) => ({
+    label: item.label,
+    active: isActive(item.path),
+    icon: getIcon(item.label),
+    onClick: () => {
+      navigate(item.path);
+      onClose();
+    },
+  }));
+
   return (
-    <div
-      className={`lg:hidden w-full bg-white border-t border-gray-100 flex flex-col transition-all duration-300 overflow-hidden ${
-        isOpen ? 'max-h-[500px] opacity-100' : 'max-h-0 opacity-0'
-      }`}
-    >
-      <div className="flex flex-col p-4 gap-4">
-        {NAV_ITEMS.map((item) => {
-          if (item.hasDropdown) {
-            return (
-              <div key={item.label} className="flex flex-col gap-2">
-                <span className="text-gray-800 font-serif text-[18px] font-bold">
-                  {item.label}
-                </span>
-                {DROPDOWN_ITEMS.map((dropdownItem) => (
-                  <Link
-                    key={dropdownItem.label}
-                    to={dropdownItem.path}
-                    className="pl-4 text-gray-600 font-serif text-[16px] hover:text-[#DE5D8F]"
-                  >
-                    - {dropdownItem.label}
-                  </Link>
-                ))}
-              </div>
-            );
-          }
-
-          return (
-            <Link
-              key={item.label}
-              to={item.path}
-              className="text-gray-800 font-serif text-[18px] hover:text-[#DE5D8F]"
-            >
-              {item.label}
-            </Link>
-          );
-        })}
-
-        <div className="mt-2 pt-4 border-t border-gray-100 flex flex-col gap-4">
-          <div className="md:hidden flex justify-center">
-            <SearchInput placeholder="ค้นหา" />
-          </div>
-          <div className="sm:hidden flex justify-center">
-            <CULoginButton onClick={() => console.log('ล็อกอิน')} />
-          </div>
-        </div>
-      </div>
-    </div>
+    <MobileSidebar
+      isOpen={isOpen}
+      onClose={onClose}
+      isLoggedIn={isLoggedIn}
+      onLogin={onLogin}
+      onLogout={onLogout}
+      menuItems={mappedMenuItems}
+    />
   );
 }

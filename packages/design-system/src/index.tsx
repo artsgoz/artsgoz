@@ -9,5 +9,9 @@ export { IconButton } from './lib/components/IconButton/index.js';
 export { Chip } from './lib/components/Chip/index.js';
 
 import logoImg from './lib/assets/logo_goz_horizontal.ico';
+import cuLogoImg from './lib/assets/CU_logo.ico';
 
-export { logoImg };
+export { logoImg, cuLogoImg };
+export { LoginDropdown } from './lib/components/LoginDropdown/index.js';
+export { MobileSidebar } from './lib/components/MobileSidebar/index.js';
+
