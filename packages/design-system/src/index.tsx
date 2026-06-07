@@ -18,4 +18,8 @@ export { SavedArticleHeader } from './lib/components/SavedArticleHeader/index.js
 export { FilterSavedArticlePopover } from './lib/components/FilterSavedArticlePopover/index.js';
 export { BlogBanner } from './lib/components/BlogBanner/index.js';
 export { GoToArticlesButton } from './lib/components/GoToArticlesButton/index.js';
+export { StudentProfileCard } from './lib/components/StudentProfileCard/index.js';
+export { ManageAccountCard } from './lib/components/ManageAccountCard/index.js';
+export { MobileStudentProfileCard } from './lib/components/MobileStudentProfileCard/index.js';
+export { MobileManageAccountCard } from './lib/components/MobileManageAccountCard/index.js';
 
