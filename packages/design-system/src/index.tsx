@@ -14,4 +14,8 @@ import cuLogoImg from './lib/assets/CU_logo.ico';
 export { logoImg, cuLogoImg };
 export { LoginDropdown } from './lib/components/LoginDropdown/index.js';
 export { MobileSidebar } from './lib/components/MobileSidebar/index.js';
+export { SavedArticleHeader } from './lib/components/SavedArticleHeader/index.js';
+export { FilterSavedArticlePopover } from './lib/components/FilterSavedArticlePopover/index.js';
+export { BlogBanner } from './lib/components/BlogBanner/index.js';
+export { GoToArticlesButton } from './lib/components/GoToArticlesButton/index.js';
 
