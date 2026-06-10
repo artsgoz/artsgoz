@@ -1,38 +1,101 @@
-import { HTMLAttributes, ReactNode } from 'react';
+import { ButtonHTMLAttributes, ReactNode } from 'react';
+import { Check } from 'lucide-react';
 
-export interface ChipProps extends HTMLAttributes<HTMLDivElement> {
-  variant?: 'primary' | 'secondary' | 'success' | 'warning' | 'error' | 'info';
+export interface ChipProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   children: ReactNode;
+  /** Visual size of the chip. Matches Figma sizes. Default: 'large' */
+  size?: 'small' | 'medium' | 'large';
+  /** Whether the chip is in the selected/click state (pink bg + checkmark). */
+  selected?: boolean;
 }
 
+// Size tokens straight from Figma layout specs
+const sizeMap = {
+  small: {
+    height: '24px',
+    padding: '0 8px',
+    fontSize: '12px',
+    lineHeight: '18px',
+    checkSize: 12,
+  },
+  medium: {
+    height: '32px',
+    padding: '0 12px',
+    fontSize: '14px',
+    lineHeight: '20px',
+    checkSize: 16,
+  },
+  large: {
+    height: '40px',
+    padding: '0 16px',
+    fontSize: '16px',
+    lineHeight: '24px',
+    checkSize: 16,
+  },
+};
+
 export function Chip({
-  variant = 'primary',
   children,
+  size = 'large',
+  selected = false,
   className = '',
+  disabled,
   ...props
 }: ChipProps) {
-  // Base style utilizing spacing/radius/typography design tokens
-  const baseStyle =
-    'flex gap-[12px] items-center overflow-hidden px-[24px] py-[12px] rounded-[11px] shrink-0 text-[16px] font-normal leading-none whitespace-nowrap font-serif';
+  const s = sizeMap[size];
 
-  const variants = {
-    primary:
-      'bg-[var(--color-pink-50,#FCEFF4)] text-[var(--color-text-primary,#DE5D8F)]',
-    secondary:
-      'bg-[var(--color-yellow-50,#FEF9EB)] text-[var(--color-background-secondary-dark,#B08926)]',
-    success:
-      'bg-[var(--color-green-50,#ECF4E7)] text-[var(--color-text-success,#64A93C)]',
-    warning:
-      'bg-[var(--color-orange-50,#FDF0E9)] text-[var(--color-text-warning,#EA6D24)]',
-    error:
-      'bg-[var(--color-red-50,#FDE9ED)] text-[var(--color-text-error,#D52048)]',
-    info:
-      'bg-[var(--color-blue-50,#E6F0FE)] text-[var(--color-text-information,#0165F8)]',
-  };
+  // State → bg + text colours (from Figma fills)
+  const bg = selected
+    ? '#E992B4'            // Click state
+    : disabled
+    ? '#ECECEC'            // Disabled state
+    : '#F7F8F9';           // Default state
 
+  const color = selected || disabled ? '#FFFFFF' : '#6D6D6D';
+
+  // Hover: #ECECEC bg (CSS handles it via onMouseEnter/Leave or pure CSS below)
   return (
-    <div className={`${baseStyle} ${variants[variant]} ${className}`} {...props}>
+    <button
+      type="button"
+      disabled={disabled}
+      className={`group inline-flex flex-row items-center justify-center gap-[4px] shrink-0 whitespace-nowrap
+        transition-all duration-150 cursor-pointer select-none
+        disabled:cursor-not-allowed active:scale-95 disabled:active:scale-100
+        ${className}`}
+      style={{
+        height: s.height,
+        padding: s.padding,
+        borderRadius: '9999px',
+        border: 'none',
+        backgroundColor: bg,
+        color,
+        fontFamily: 'ChulaCharasNew, serif',
+        fontSize: s.fontSize,
+        fontWeight: 700,
+        lineHeight: s.lineHeight,
+      }}
+      onMouseEnter={(e) => {
+        if (!selected && !disabled) {
+          (e.currentTarget as HTMLButtonElement).style.backgroundColor = '#ECECEC';
+        }
+        props.onMouseEnter?.(e);
+      }}
+      onMouseLeave={(e) => {
+        if (!selected && !disabled) {
+          (e.currentTarget as HTMLButtonElement).style.backgroundColor = bg;
+        }
+        props.onMouseLeave?.(e);
+      }}
+      {...props}
+    >
       {children}
-    </div>
+      {selected && (
+        <Check
+          size={s.checkSize}
+          strokeWidth={2.5}
+          style={{ color: '#FFFFFF', flexShrink: 0 }}
+        />
+      )}
+    </button>
   );
 }
