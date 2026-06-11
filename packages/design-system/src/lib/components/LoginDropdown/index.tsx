@@ -1,4 +1,4 @@
-import React from 'react';
+
 import logoImg from '../../assets/logo_goz_horizontal.ico';
 import cuLogoImg from '../../assets/CU_logo.ico';
 

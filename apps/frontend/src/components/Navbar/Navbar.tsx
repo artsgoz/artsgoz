@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Link } from 'react-router';
-import { logoImg } from '@org/design-system';
+import { logoImg, MobileStudentProfileCard, MobileManageAccountCard } from '@org/design-system';
 import { PATHS } from '../../routes/paths.js';
 import { DesktopMenu } from './DesktopMenu.js';
 import { NavActions } from './NavActions.js';
@@ -10,6 +10,8 @@ export function Navbar() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   // TODO: ในอนาคตเมื่อเชื่อมต่อฐานข้อมูล ให้เปลี่ยนไปดึงและเก็บข้อมูลโปรไฟล์ผู้ใช้จริงผ่าน API/AuthContext
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [isMobileProfileOpen, setIsMobileProfileOpen] = useState(false);
+  const [mobileProfileView, setMobileProfileView] = useState<'profile' | 'manage'>('profile');
 
   const handleLogin = () => {
     // TODO: เชื่อมต่อ API ล็อกอินจริง (เช่น นำ Token ที่ได้รับหลังการตรวจสอบผ่าน SSO ไปเช็คกับระบบฐานข้อมูล)
@@ -19,6 +21,7 @@ export function Navbar() {
   const handleLogout = () => {
     // TODO: เชื่อมต่อ API ออกจากระบบจริงเพื่อล้างเซสชันฝั่งหลังบ้าน (และเคลียร์ Token ฝั่งผู้ใช้)
     setIsLoggedIn(false);
+    setIsMobileProfileOpen(false);
   };
 
   return (
@@ -55,7 +58,34 @@ export function Navbar() {
         isLoggedIn={isLoggedIn}
         onLogin={handleLogin}
         onLogout={handleLogout}
+        onAccountClick={() => {
+          setIsMobileProfileOpen(true);
+          setMobileProfileView('profile');
+        }}
       />
+
+      {isMobileProfileOpen && (
+        <div
+          className="fixed inset-0 z-50 bg-black/40"
+          onClick={() => setIsMobileProfileOpen(false)}
+        >
+          <div onClick={(e) => e.stopPropagation()}>
+            {mobileProfileView === 'profile' ? (
+              <MobileStudentProfileCard
+                onClose={() => setIsMobileProfileOpen(false)}
+                onManageClick={() => setMobileProfileView('manage')}
+                onLogout={handleLogout}
+              />
+            ) : (
+              <MobileManageAccountCard
+                onBack={() => setMobileProfileView('profile')}
+                onEditClick={() => console.log('Mobile: Edit profile clicked')}
+                onAvatarUpload={() => console.log('Mobile: Avatar upload clicked')}
+              />
+            )}
+          </div>
+        </div>
+      )}
     </nav>
   );
 }

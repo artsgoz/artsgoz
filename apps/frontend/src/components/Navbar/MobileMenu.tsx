@@ -26,6 +26,7 @@ interface MobileMenuPanelProps {
   isLoggedIn: boolean;
   onLogin: () => void;
   onLogout: () => void;
+  onAccountClick?: () => void;
 }
 
 export function MobileMenuPanel({
@@ -34,6 +35,7 @@ export function MobileMenuPanel({
   isLoggedIn,
   onLogin,
   onLogout,
+  onAccountClick,
 }: MobileMenuPanelProps) {
   const navigate = useNavigate();
   const location = useLocation();
@@ -68,7 +70,11 @@ export function MobileMenuPanel({
     active: isActive(item.path),
     icon: getIcon(item.label),
     onClick: () => {
-      navigate(item.path);
+      if (item.label === 'บัญชี' && onAccountClick) {
+        onAccountClick();
+      } else {
+        navigate(item.path);
+      }
       onClose();
     },
   }));
