@@ -125,11 +125,24 @@ export function YellowCardSection() {
           group = catConfig.groups[0];
         }
 
+        // Convert tracker semester number (1-8) to academic year/term format (e.g., "1/67", "2/67")
+        let semesterString = '';
+        if (ts.semester !== undefined && ts.semester !== null) {
+          const semNum = parseInt(ts.semester) || 1;
+          const studentIdStr = String(profile.studentId || '67');
+          const entryYearShort = parseInt(studentIdStr.substring(0, 2)) || 67;
+          
+          const term = ((semNum - 1) % 2) + 1;
+          const yearOffset = Math.floor((semNum - 1) / 2);
+          const semesterYear = entryYearShort + yearOffset;
+          semesterString = `${term}/${semesterYear}`;
+        }
+
         return {
           id: `tracker-${ts.id}`,
           code: ts.code || '0000000',
           name: ts.nameTh || ts.nameEn || 'ชื่อวิชา',
-          semester: ts.semester || '',
+          semester: semesterString,
           credits: (ts.credits || 3).toString(),
           grade: ts.completed ? 'A' : '', // Default to A if marked completed in credit tracking
           category,
