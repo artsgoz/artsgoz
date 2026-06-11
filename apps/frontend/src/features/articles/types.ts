@@ -7,4 +7,5 @@ export interface Article {
   href: string;
   author: string;
   category: string;
+  content?: string[];
 }

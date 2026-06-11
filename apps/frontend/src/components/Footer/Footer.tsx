@@ -5,7 +5,7 @@ import { FooterSocialLink } from './FooterSocialLink.js';
 
 export function Footer() {
   return (
-    <footer className="w-full relative overflow-hidden bg-white shadow-[0_-4px_9.5px_0px_rgba(233,146,180,0.3)] lg:shadow-[0_-4px_9.5px_0px_rgba(233,146,180,0.5)] border-t-[20px] border-[#E992B4] select-none">
+    <footer className="w-full relative overflow-hidden bg-white border-t-[20px] border-[#E992B4] select-none">
       {/* Background Watermark Logo */}
       <img
         src={logoImg}

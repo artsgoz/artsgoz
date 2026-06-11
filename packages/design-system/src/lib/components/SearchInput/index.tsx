@@ -2,7 +2,7 @@
 import React, { useState } from 'react';
 import { Search } from 'lucide-react';
 
-interface SearchInputProps extends React.InputHTMLAttributes<HTMLInputElement> {
+interface SearchInputProps extends Omit<React.InputHTMLAttributes<HTMLInputElement>, 'size'> {
   inputClassName?: string;
   /** 'default' = original compact bar (296 x 41px). 'lg' = full-width, taller bar (100% x 55px). */
   size?: 'default' | 'lg';
