@@ -2,7 +2,7 @@
 
 @font-face {
   font-family: 'ChulaCharasNew';
-  src: url('./assets/fonts/ChulaCharasNew-Regular.woff2') format('truetype');
+  src: url('./assets/fonts/ChulaCharasNewReg.ttf') format('truetype');
   font-weight: 400;
   font-style: normal;
   font-display: swap;
@@ -10,7 +10,7 @@
 
 @font-face {
   font-family: 'ChulaCharasNew';
-  src: url('./assets/fonts/ChulaCharasNew-Bold.woff2') format('truetype');
+  src: url('./assets/fonts/ChulaCharasNewBold.ttf') format('truetype');
   font-weight: 700;
   font-style: normal;
   font-display: swap;

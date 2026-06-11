@@ -1,9 +1,11 @@
-import { SectionHeading } from '@org/design-system';
+import { DocumentSearchSection } from '../../../features/documents/index.js';
+import { Footer } from '../../../components/Footer/index.js';
 
 export default function FormsPage() {
   return (
-    <div className="max-w-[1282px] mx-auto px-4 lg:px-[50px] w-full py-16">
-      <SectionHeading title="เอกสาร & ฟอร์ม" description="ดาวน์โหลดแบบฟอร์มและเอกสารสำคัญสำหรับนิสิต" />
-    </div>
+    <>
+      <DocumentSearchSection />
+      <Footer />
+    </>
   );
 }
