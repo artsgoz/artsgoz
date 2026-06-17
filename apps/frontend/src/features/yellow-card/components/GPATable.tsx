@@ -24,7 +24,7 @@ export function GPATable({ subjects }: GPATableProps) {
 
     // Group subjects by semester field (normalized)
     subjects.forEach((sub) => {
-      let sem = sub.semester.trim();
+      let sem = String(sub.semester || '').trim();
       if (!sem) return;
 
       // Normalize common formats like "1/66" or "ภาคต้น / 2566"
@@ -108,7 +108,7 @@ export function GPATable({ subjects }: GPATableProps) {
 
       termSubjects.forEach((sub) => {
         const credit = parseFloat(sub.credits) || 0;
-        const grade = sub.grade.trim().toUpperCase();
+        const grade = String(sub.grade || '').trim().toUpperCase();
 
         if (!grade) return;
 
