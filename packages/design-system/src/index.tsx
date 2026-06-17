@@ -9,5 +9,17 @@ export { IconButton } from './lib/components/IconButton/index.js';
 export { Chip } from './lib/components/Chip/index.js';
 
 import logoImg from './lib/assets/logo_goz_horizontal.ico';
+import cuLogoImg from './lib/assets/CU_logo.ico';
 
-export { logoImg };
+export { logoImg, cuLogoImg };
+export { LoginDropdown } from './lib/components/LoginDropdown/index.js';
+export { MobileSidebar } from './lib/components/MobileSidebar/index.js';
+export { SavedArticleHeader } from './lib/components/SavedArticleHeader/index.js';
+export { FilterSavedArticlePopover } from './lib/components/FilterSavedArticlePopover/index.js';
+export { BlogBanner } from './lib/components/BlogBanner/index.js';
+export { GoToArticlesButton } from './lib/components/GoToArticlesButton/index.js';
+export { StudentProfileCard } from './lib/components/StudentProfileCard/index.js';
+export { ManageAccountCard } from './lib/components/ManageAccountCard/index.js';
+export { MobileStudentProfileCard } from './lib/components/MobileStudentProfileCard/index.js';
+export { MobileManageAccountCard } from './lib/components/MobileManageAccountCard/index.js';
+
