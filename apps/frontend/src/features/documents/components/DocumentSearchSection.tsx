@@ -1,27 +1,27 @@
-import { useState, useMemo, useEffect } from 'react';
+import { useState, useMemo } from 'react';
 import { Search, ListFilter } from 'lucide-react';
-import { MOCK_DOCUMENTS, DOCUMENTS_PER_PAGE } from './constants.js';
+import { MOCK_DOCUMENTS, DOCUMENTS_PER_PAGE } from '../constants.js';
 import { DocumentCard } from './DocumentCard.js';
 import { DocumentPagination } from './DocumentPagination.js';
-import { DOCUMENT_CATEGORIES } from './types.js';
+import { DOCUMENT_CATEGORIES } from '../types.js';
 
 export function DocumentSearchSection() {
   const [searchQuery, setSearchQuery] = useState('');
   const [activeCategory, setActiveCategory] = useState<string | null>(null);
   const [currentPage, setCurrentPage] = useState(1);
-  const [bookmarkedIds, setBookmarkedIds] = useState<Set<string>>(new Set());
-
-  // Load bookmarks from localStorage on mount
-  useEffect(() => {
-    try {
-      const saved = localStorage.getItem('bookmarked_documents');
-      if (saved) {
-        setBookmarkedIds(new Set(JSON.parse(saved)));
+  const [bookmarkedIds, setBookmarkedIds] = useState<Set<string>>(() => {
+    if (typeof window !== 'undefined') {
+      try {
+        const saved = localStorage.getItem('bookmarked_documents');
+        if (saved) {
+          return new Set(JSON.parse(saved));
+        }
+      } catch (e) {
+        console.error('Failed to load bookmarks', e);
       }
-    } catch (e) {
-      console.error('Failed to load bookmarks', e);
     }
-  }, []);
+    return new Set();
+  });
 
   const handleToggleBookmark = (id: string) => {
     setBookmarkedIds((prev) => {

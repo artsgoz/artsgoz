@@ -12,7 +12,9 @@ export interface StudentProfile {
 export type YellowCardCategory =
   | 'หมวดวิชาพื้นฐานอักษรศาสตร์'
   | 'หมวดการศึกษาทั่วไป'
-  | 'หมวดวิชาเลือกเสรี';
+  | 'หมวดวิชาเลือกเสรี'
+  | 'หมวดวิชาเอก'
+  | 'หมวดวิชาโท';
 
 export interface YellowCardSubject {
   id: string;
@@ -34,3 +36,17 @@ export interface GPATermData {
   cgx: number;      // Cumulative Credits Earned
   gpax: number;     // Cumulative GPA
 }
+
+export interface TrackerSubject {
+  id: string;
+  code: string;
+  nameTh: string;
+  nameEn: string;
+  credits: number;
+  category: 'หมวดวิชาพื้นฐานอักษร' | 'หมวดการศึกษาทั่วไป' | 'หมวดวิชาเลือกเสรี' | 'หมวดวิชาเอก' | 'หมวดวิชาโท';
+  semester: number;
+  completed: boolean;
+  group?: string;
+  isCustom?: boolean;
+}
+

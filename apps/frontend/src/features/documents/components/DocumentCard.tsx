@@ -1,5 +1,5 @@
 import { Download, Bookmark, XCircle, AlertCircle, Clock } from 'lucide-react';
-import type { DocumentItem } from './types.js';
+import type { DocumentItem } from '../types.js';
 
 interface DocumentCardProps {
   document: DocumentItem;

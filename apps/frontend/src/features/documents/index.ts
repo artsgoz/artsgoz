@@ -1,5 +1,5 @@
-export { DocumentSearchSection } from './DocumentSearchSection.js';
-export { DocumentCard } from './DocumentCard.js';
-export { DocumentPagination } from './DocumentPagination.js';
+export { DocumentSearchSection } from './components/DocumentSearchSection.js';
+export { DocumentCard } from './components/DocumentCard.js';
+export { DocumentPagination } from './components/DocumentPagination.js';
 export * from './types.js';
 export * from './constants.js';

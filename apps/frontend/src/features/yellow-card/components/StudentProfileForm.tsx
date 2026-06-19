@@ -21,30 +21,30 @@ export function StudentProfileForm({ profile, onChange }: StudentProfileFormProp
   };
 
   return (
-    <div className="w-full bg-white border border-[#D0D0D1]/30 rounded-[16px] p-6 shadow-sm font-[ChulaCharasNew] mb-8 select-none">
-      <div className="flex items-center justify-between border-b border-[#D0D0D1]/20 pb-4 mb-6">
-        <h3 className="text-black text-[22px] font-bold">ข้อมูลนิสิต</h3>
+    <div className="w-full bg-white border border-[#D0D0D1]/30 rounded-[16px] p-6 shadow-sm font-[ChulaCharasNew] mb-8 relative select-none">
+      {/* Absolute Edit Trigger Button on Top Right */}
+      <div className="absolute top-6 right-6 z-10">
         {!isEditing ? (
           <button
             type="button"
             onClick={() => setIsEditing(true)}
-            className="text-[16px] font-bold text-[#DE5D8F] hover:text-[#ca5582] transition-colors cursor-pointer border border-[#DE5D8F]/20 hover:border-[#DE5D8F] rounded-[8px] py-1.5 px-4 bg-white"
+            className="text-[14px] font-bold text-[#DE5D8F] hover:text-[#ca5582] transition-colors cursor-pointer border border-[#DE5D8F]/20 hover:border-[#DE5D8F] rounded-[8px] py-1.5 px-3.5 bg-white shadow-2xs"
           >
             แก้ไข
           </button>
         ) : (
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-2">
             <button
               type="button"
               onClick={handleCancel}
-              className="text-[16px] font-bold text-[#6D6D6D] hover:text-[#545455] transition-colors cursor-pointer border border-[#D0D0D1] rounded-[8px] py-1.5 px-4 bg-white"
+              className="text-[14px] font-bold text-[#6D6D6D] hover:text-[#545455] transition-colors cursor-pointer border border-[#D0D0D1] rounded-[8px] py-1 px-3 bg-white"
             >
               ยกเลิก
             </button>
             <button
               type="button"
               onClick={handleSave}
-              className="text-[16px] font-bold text-white bg-[#E992B4] hover:bg-[#DE5D8F] transition-colors cursor-pointer rounded-[8px] py-1.5 px-4 shadow-sm"
+              className="text-[14px] font-bold text-white bg-[#E992B4] hover:bg-[#DE5D8F] transition-colors cursor-pointer rounded-[8px] py-1 px-3 shadow-sm"
             >
               บันทึก
             </button>
@@ -53,7 +53,7 @@ export function StudentProfileForm({ profile, onChange }: StudentProfileFormProp
       </div>
 
       {isEditing ? (
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 pt-4">
           <div className="flex flex-col gap-1.5">
             <label className="text-[14px] font-bold text-[#6D6D6D]">ชื่อ-นามสกุล</label>
             <input
@@ -135,48 +135,56 @@ export function StudentProfileForm({ profile, onChange }: StudentProfileFormProp
           </div>
         </div>
       ) : (
-        <div className="flex flex-col gap-6">
-          {/* Top Profile Summary Grid (Figma exact representation) */}
-          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-4 bg-[#F7F8F9] p-5 rounded-[12px] border border-[#D0D0D1]/20">
-            <div className="flex flex-col">
-              <span className="text-[13px] font-bold text-[#6D6D6D]">ชื่อ-นามสกุล</span>
-              <span className="text-black text-[16px] font-bold mt-1 break-words">{profile.name}</span>
+        <div className="flex flex-col gap-5 text-[16px] text-black pr-16 md:pr-0">
+          {/* Row 1 */}
+          <div className="flex flex-col md:flex-row md:items-center gap-y-2">
+            <div className="flex items-center flex-1">
+              <span className="w-[109px] font-bold shrink-0 text-black">ข้อมูลนิสิต</span>
+              <span className="text-[#404041]">{profile.name}</span>
             </div>
-            <div className="flex flex-col">
-              <span className="text-[13px] font-bold text-[#6D6D6D]">เลขประจำตัว</span>
-              <span className="text-black text-[16px] font-bold mt-1">{profile.studentId}</span>
-            </div>
-            <div className="flex flex-col">
-              <span className="text-[13px] font-bold text-[#6D6D6D]">เอก</span>
-              <span className="text-black text-[16px] font-bold mt-1">{profile.major}</span>
-            </div>
-            <div className="flex flex-col">
-              <span className="text-[13px] font-bold text-[#6D6D6D]">โท</span>
-              <span className="text-black text-[16px] font-bold mt-1">{profile.minor || 'ไม่มี'}</span>
-            </div>
-            <div className="flex flex-col">
-              <span className="text-[13px] font-bold text-[#6D6D6D]">หลักสูตร</span>
-              <span className="text-black text-[16px] font-bold mt-1">{profile.curriculum}</span>
-            </div>
-            <div className="flex flex-col">
-              <span className="text-[13px] font-bold text-[#6D6D6D]">อาจารย์ที่ปรึกษา</span>
-              <span className="text-black text-[16px] font-bold mt-1 break-words">{profile.advisor}</span>
+            <div className="flex items-center flex-1 md:pl-8">
+              <span className="w-[100px] font-bold shrink-0 text-black">เลขประจำตัว</span>
+              <span className="text-[#404041] font-mono">{profile.studentId}</span>
             </div>
           </div>
 
-          {/* Contact & Phone details */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            <div className="md:col-span-2 flex flex-col gap-1">
-              <span className="text-[14px] font-bold text-[#6D6D6D]">สถานที่ติดต่อ</span>
-              <p className="text-black text-[16px] leading-relaxed mt-1">
-                {profile.address || <span className="text-gray-400 italic">ไม่ได้ระบุ</span>}
-              </p>
+          {/* Row 2 */}
+          <div className="flex flex-col md:flex-row md:items-center gap-y-2">
+            <div className="flex items-center flex-1">
+              <span className="w-[109px] font-bold shrink-0 text-black">เอก</span>
+              <span className="text-[#404041]">{profile.major}</span>
             </div>
-            <div className="flex flex-col gap-1">
-              <span className="text-[14px] font-bold text-[#6D6D6D]">หมายเลขโทรศัพท์</span>
-              <p className="text-black text-[16px] mt-1 font-mono">
-                {profile.phone || <span className="text-gray-400 italic">ไม่ได้ระบุ</span>}
-              </p>
+            <div className="flex items-center flex-1 md:pl-8">
+              <span className="w-[100px] font-bold shrink-0 text-black">โท</span>
+              <span className="text-[#404041]">{profile.minor || 'ไม่มี'}</span>
+            </div>
+          </div>
+
+          {/* Row 3 */}
+          <div className="flex flex-col md:flex-row md:items-center gap-y-2">
+            <div className="flex items-center flex-1">
+              <span className="w-[109px] font-bold shrink-0 text-black">หลักสูตรการศึกษา</span>
+              <span className="text-[#404041]">{profile.curriculum}</span>
+            </div>
+            <div className="flex items-center flex-1 md:pl-8">
+              <span className="w-[100px] font-bold shrink-0 text-black">อาจารย์ที่ปรึกษา</span>
+              <span className="text-[#404041]">{profile.advisor}</span>
+            </div>
+          </div>
+
+          {/* Row 4 */}
+          <div className="flex flex-col md:flex-row md:items-start gap-y-2">
+            <div className="flex items-start w-full">
+              <span className="w-[109px] font-bold shrink-0 text-black pt-0.5">สถานที่ติดต่อ</span>
+              <span className="text-[#404041] leading-relaxed">{profile.address || '-'}</span>
+            </div>
+          </div>
+
+          {/* Row 5 */}
+          <div className="flex flex-col md:flex-row md:items-center gap-y-2">
+            <div className="flex items-center w-full">
+              <span className="w-[109px] font-bold shrink-0 text-black">หมายเลขโทรศัพท์</span>
+              <span className="text-[#404041] font-mono">{profile.phone || '-'}</span>
             </div>
           </div>
         </div>

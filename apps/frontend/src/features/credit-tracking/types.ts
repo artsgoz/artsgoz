@@ -20,6 +20,8 @@ export interface Subject {
   category: SubjectCategory;
   semester: number; // 1-8 (Year 1 Sem 1 = 1, Year 4 Sem 2 = 8)
   completed: boolean;
+  group?: string;
+  isCustom?: boolean;
 }
 
 export interface CategoryProgress {
