@@ -48,7 +48,7 @@ export function MobileSidebar({
           style={{
             position: 'relative',
             width: isLoggedIn ? '255px' : '290px',
-            height: '812px',
+            height: '100%',
           }}
         >
           {/* Logo Area */}

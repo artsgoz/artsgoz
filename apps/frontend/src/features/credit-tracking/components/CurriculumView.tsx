@@ -1,198 +1,275 @@
-import { Check, AlertTriangle } from 'lucide-react';
-import type { Subject, SubjectCategory } from '../types.js';
+import { MessageSquareWarning } from 'lucide-react';
+import type { Subject, AcademicProfile } from '../types.js';
 
 interface CurriculumViewProps {
-  subjects: Subject[];
-  onToggleSubject: (id: string) => void;
+  subjects?: Subject[];
+  onToggleSubject?: (id: string) => void;
+  profile?: AcademicProfile | null;
 }
 
-export function CurriculumView({ subjects, onToggleSubject }: CurriculumViewProps) {
-  // Group subjects by category
-  const categories: SubjectCategory[] = [
-    'หมวดวิชาพื้นฐานอักษร',
-    'หมวดการศึกษาทั่วไป',
-    'หมวดวิชาเอก',
-    'หมวดวิชาโท',
-    'หมวดวิชาเลือกเสรี',
-  ];
+/**
+ * CurriculumView — redesigned to match Figma node 6324-22624.
+ * Layout:
+ *   - Top section: page title + curriculum image/table
+ *   - Information section: major name + description,
+ *     then a table with ส่วนประกอบ / หน่วยกิต / รายละเอียด,
+ *     then an orange warning banner
+ */
+export function CurriculumView({ profile }: CurriculumViewProps) {
+  // Curriculum breakdown data matching Figma (เอกสารสนเทศศึกษา example)
+  const majorName = profile?.major ?? 'เอกสารสนเทศศึกษา';
+  const minorName = profile?.minor ?? '-';
 
-  // Requirements configuration for rendering banners
-  const bannersConfig: Record<
-    SubjectCategory,
-    { completedLabel: string; requiredLabel: string; reqCredits: number }
-  > = {
-    หมวดวิชาพื้นฐานอักษร: {
-      completedLabel: 'วิชาบังคับ 27 หน่วยกิต',
-      requiredLabel: 'วิชาบังคับ',
-      reqCredits: 27,
-    },
-    หมวดการศึกษาทั่วไป: {
-      completedLabel: 'เรียนครบทุกหน่วยกิต',
-      requiredLabel: 'วิชาการศึกษาทั่วไป',
-      reqCredits: 30,
-    },
-    หมวดวิชาเอก: {
-      completedLabel: 'วิชาเอกหลักสูตรครบถ้วน',
-      requiredLabel: 'วิชาบังคับและเลือกเอก',
-      reqCredits: 48,
-    },
-    หมวดวิชาโท: {
-      completedLabel: 'วิชาโทหลักสูตรครบถ้วน',
-      requiredLabel: 'วิชาโท',
-      reqCredits: 18,
-    },
-    หมวดวิชาเลือกเสรี: {
-      completedLabel: 'วิชาเลือกเสรีครบถ้วน',
-      requiredLabel: 'วิชาเลือกเสรี',
-      reqCredits: 6,
-    },
-  };
+  const curriculumRows: { part: string; credits: number; detail: string; isIndented?: boolean }[] =
+    [
+      { part: 'วิชาเอก (Major)', credits: 48, detail: 'แบ่งเป็น 3 กลุ่มวิชาย่อย' },
+      { part: 'กลุ่มวิชาข้อกำหนดเฉพาะ', credits: 18, detail: '', isIndented: true },
+      { part: 'กลุ่มวิชาพื้นฐาน', credits: 12, detail: '', isIndented: true },
+      { part: 'กลุ่มวิชาเชี่ยวชาญ', credits: 18, detail: '', isIndented: true },
+      { part: 'วิชาโท (Minor)', credits: 18, detail: minorName !== '-' ? `วิชาโท: ${minorName}` : 'เลือกวิชาโทสาขาอื่น (ในหรือนอกคณะ)' },
+    ];
 
   return (
-    <div className="w-full space-y-10 font-[ChulaCharasNew] select-none">
-      {categories.map((category) => {
-        const catSubjects = subjects.filter((s) => s.category === category);
-        const config = bannersConfig[category];
+    <div
+      className="w-full space-y-10 select-none"
+      style={{ fontFamily: 'ChulaCharasNew, sans-serif' }}
+    >
+      {/* ───── Top Section: Title + Curriculum Overview ───── */}
+      <div className="flex flex-col gap-6" style={{ maxWidth: '744px' }}>
+        {/* Title */}
+        <div>
+          <h1
+            className="text-black"
+            style={{ fontSize: '28px', fontWeight: 700, lineHeight: '36px' }}
+          >
+            หลักสูตรอักษรศาสตร์บัณทิต
+          </h1>
+        </div>
 
-        const totalCompleted = catSubjects
-          .filter((s) => s.completed)
-          .reduce((sum, s) => sum + s.credits, 0);
+        {/* Curriculum overview table — styled to match Figma node 6257:21468 image */}
+        <div
+          className="w-full overflow-auto rounded-[12px] border border-[#D0D0D1]/30"
+          style={{ background: '#F7F8F9' }}
+        >
+          <table
+            className="w-full text-black border-collapse"
+            style={{ fontSize: '14px', fontWeight: 400, lineHeight: '20px', minWidth: '560px' }}
+          >
+            <thead>
+              <tr style={{ backgroundColor: '#FCEFF4' }}>
+                <th
+                  className="border border-[#D0D0D1]/40 px-3 py-2 text-center font-bold"
+                  colSpan={3}
+                >
+                  หมวดวิชาศึกษาทั่วไป
+                  <br />
+                  <span style={{ fontWeight: 400 }}>30 หน่วยกิต</span>
+                </th>
+                <th
+                  className="border border-[#D0D0D1]/40 px-3 py-2 text-center font-bold"
+                  colSpan={4}
+                >
+                  หมวดวิชาเฉพาะ
+                  <br />
+                  <span style={{ fontWeight: 400 }}>93–117, 111* หน่วยกิต</span>
+                </th>
+                <th className="border border-[#D0D0D1]/40 px-3 py-2 text-center font-bold">
+                  หมวดวิชา
+                  <br />
+                  เลือกเสรี
+                  <br />
+                  <span style={{ fontWeight: 400 }}>6 หน่วยกิต</span>
+                </th>
+              </tr>
+              <tr style={{ backgroundColor: '#F0F0F0', fontSize: '13px' }}>
+                <th className="border border-[#D0D0D1]/40 px-2 py-2 text-center align-top">
+                  วิชาศึกษาทั่วไปทั่วไป
+                  <br />
+                  12 หน่วยกิต
+                </th>
+                <th className="border border-[#D0D0D1]/40 px-2 py-2 text-center align-top">
+                  วิชาศึกษาทั่วไป
+                  <br />
+                  กลุ่มต่างประเทศ
+                  <br />
+                  12 หน่วยกิต
+                </th>
+                <th className="border border-[#D0D0D1]/40 px-2 py-2 text-center align-top">
+                  วิชาศึกษาทั่วไป
+                  <br />
+                  กลุ่มพิเศษ
+                  <br />6 หน่วยกิต
+                </th>
+                <th className="border border-[#D0D0D1]/40 px-2 py-2 text-center align-top">
+                  วิชาพื้นฐาน
+                  <br />
+                  อักษรศาสตร์
+                  <br />
+                  27 หน่วยกิต
+                </th>
+                <th
+                  className="border border-[#D0D0D1]/40 px-2 py-2 text-center align-top"
+                  colSpan={2}
+                >
+                  สาขาวิชาภาษาอังกฤษ
+                </th>
+                <th className="border border-[#D0D0D1]/40 px-2 py-2 text-center align-top">
+                  สาขาวิชาอื่น ๆ
+                </th>
+                <th className="border border-[#D0D0D1]/40 px-2 py-2 text-center" rowSpan={2} />
+              </tr>
+            </thead>
+            <tbody style={{ fontSize: '13px' }}>
+              <tr>
+                <td className="border border-[#D0D0D1]/40 px-2 py-2 align-top text-center" colSpan={3}>
+                  วิชาทั่วไปทั้ง 12 หน่วยกิต
+                </td>
+                <td className="border border-[#D0D0D1]/40 px-2 py-2 align-top text-center">
+                  1. วิชาพื้นฐานอักษรศาสตร์ 27 หน่วยกิต
+                </td>
+                <td className="border border-[#D0D0D1]/40 px-2 py-2 align-top text-center">
+                  วิชาเอก (Major)
+                  <br />
+                  48–60 หน่วยกิต
+                </td>
+                <td className="border border-[#D0D0D1]/40 px-2 py-2 align-top text-center">
+                  วิชาโท (Minor)
+                  <br />
+                  18 หน่วยกิต
+                </td>
+                <td className="border border-[#D0D0D1]/40 px-2 py-2 align-top text-center">
+                  วิชาเอกสาขาอื่น
+                  <br />
+                  45 หน่วยกิต
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
 
-        const isCompleted = totalCompleted >= config.reqCredits;
-        const missingCredits = config.reqCredits - totalCompleted;
+      {/* ───── Information Section ───── */}
+      <div className="flex flex-col gap-6 w-full">
+        {/* Info Header */}
+        <div className="flex flex-col gap-3">
+          <h2
+            className="text-black"
+            style={{ fontSize: '28px', fontWeight: 700, lineHeight: '36px' }}
+          >
+            {majorName}
+          </h2>
+          <p
+            className="text-black"
+            style={{ fontSize: '16px', fontWeight: 400, lineHeight: '24px' }}
+          >
+            ต้องเก็บหน่วยกิตในส่วนวิชาเอกและวิชาโท รวม 66 หน่วยกิต ดังนี้:
+          </p>
+        </div>
 
-        return (
-          <div key={category} className="bg-white border border-[#D0D0D1]/30 rounded-[16px] p-6 shadow-sm">
-            {/* Category Header Bar (matches Figma) */}
-            <div className="flex flex-col sm:flex-row sm:items-center justify-between bg-[#F5CDDC] rounded-[8px] py-4 px-6 mb-6">
-              <h3 className="text-black text-[20px] font-bold">{category}</h3>
-              <span className="text-black text-[18px] font-bold mt-1 sm:mt-0">
-                {config.reqCredits} หน่วยกิต
+        {/* Curriculum Breakdown Table */}
+        <div style={{ maxWidth: '649px' }}>
+          {/* Header row */}
+          <div
+            className="flex items-center justify-between pb-2 mb-1"
+            style={{ borderBottom: '1px solid #D0D0D1' }}
+          >
+            <span
+              className="flex-1 text-black"
+              style={{ fontSize: '18px', fontWeight: 700, lineHeight: '24px' }}
+            >
+              ส่วนประกอบหลักสูตร
+            </span>
+            <span
+              className="w-[100px] text-center text-black"
+              style={{ fontSize: '18px', fontWeight: 700, lineHeight: '24px' }}
+            >
+              หน่วยกิต
+            </span>
+            <span
+              className="flex-1 text-black text-right"
+              style={{ fontSize: '18px', fontWeight: 700, lineHeight: '24px' }}
+            >
+              รายละเอียดเพิ่มเติม
+            </span>
+          </div>
+
+          {/* Data rows */}
+          {curriculumRows.map((row, idx) => (
+            <div
+              key={idx}
+              className="flex items-center justify-between py-3"
+              style={{
+                borderBottom: idx < curriculumRows.length - 1 ? '1px solid #F0F0F0' : 'none',
+              }}
+            >
+              <span
+                className="flex-1 text-black"
+                style={{
+                  fontSize: '16px',
+                  fontWeight: row.isIndented ? 400 : 400,
+                  lineHeight: '24px',
+                  paddingLeft: row.isIndented ? '32px' : '0',
+                  color: row.isIndented ? '#6D6D6D' : '#000000',
+                }}
+              >
+                {row.part}
+              </span>
+              <span
+                className="w-[100px] text-center"
+                style={{
+                  fontSize: '16px',
+                  fontWeight: 400,
+                  lineHeight: '24px',
+                  color: row.isIndented ? '#6D6D6D' : '#000000',
+                }}
+              >
+                {row.credits}
+              </span>
+              <span
+                className="flex-1 text-right"
+                style={{
+                  fontSize: '16px',
+                  fontWeight: 400,
+                  lineHeight: '24px',
+                  color: '#000000',
+                }}
+              >
+                {row.detail}
               </span>
             </div>
+          ))}
+        </div>
 
-            {/* Status Banners (System banners - matches Figma) */}
-            <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-4 mb-6">
-              {/* Info/Check Banner */}
-              <div className="flex-1 flex items-center bg-[#F7F8F9] border border-[#D0D0D1]/30 rounded-[12px] p-4 gap-4">
-                <div className="flex items-center justify-center bg-[#ECF4E7] text-[#64A93C] rounded-full w-8 h-8 shrink-0">
-                  <Check size={18} />
-                </div>
-                <div>
-                  <span className="text-black text-[16px] font-bold block">
-                    {config.completedLabel}
-                  </span>
-                  <span className="text-[#6D6D6D] text-[14px]">
-                    หน่วยกิตวิชาขั้นต่ำ: {config.reqCredits} หน่วยกิต
-                  </span>
-                </div>
-              </div>
-
-              {/* Warning/Success Banner */}
-              {isCompleted ? (
-                <div className="flex-1 flex items-center bg-[#F7F8F9] border border-[#D0D0D1]/30 rounded-[12px] p-4 gap-4">
-                  <div className="flex items-center justify-center bg-[#ECF4E7] text-[#64A93C] rounded-full w-8 h-8 shrink-0">
-                    <Check size={18} />
-                  </div>
-                  <div>
-                    <span className="text-[#64A93C] text-[16px] font-bold block">เรียนครบถ้วน</span>
-                    <span className="text-[#6D6D6D] text-[14px]">
-                      เรียนวิชาในกลุ่มนี้ครบตามเกณฑ์หลักสูตรแล้ว
-                    </span>
-                  </div>
-                </div>
-              ) : (
-                <div className="flex-1 flex items-center bg-[#F7F8F9] border border-[#D0D0D1]/30 rounded-[12px] p-4 gap-4">
-                  <div className="flex items-center justify-center bg-[#FDECC0] text-[#E2B030] rounded-full w-8 h-8 shrink-0">
-                    <AlertTriangle size={18} />
-                  </div>
-                  <div>
-                    <span className="text-[#E2B030] text-[16px] font-bold block">
-                      ขาด {missingCredits} หน่วยกิต
-                    </span>
-                    <span className="text-[#6D6D6D] text-[14px]">
-                      กรุณาเลือกเรียนวิชาเพิ่มเติมให้ครบตามเกณฑ์
-                    </span>
-                  </div>
-                </div>
-              )}
-            </div>
-
-            {/* Subjects Table List */}
-            <div className="w-full">
-              <h4 className="text-black text-[20px] font-bold mb-4">วิชาที่ลงทะเบียนแล้ว</h4>
-
-              {/* Table Container */}
-              <div className="border border-[#D0D0D1]/30 rounded-[12px] overflow-hidden bg-[#F7F8F9]/30">
-                {/* Header */}
-                <div className="flex items-center justify-between border-b border-[#D0D0D1]/30 bg-[#F7F8F9] py-3 px-4 md:px-6 text-[#6D6D6D] text-[16px] font-bold">
-                  <div className="flex items-center gap-10 md:gap-16 flex-1 min-w-0">
-                    <span className="w-[80px] shrink-0 text-left">รหัสวิชา</span>
-                    <span className="flex-1 truncate text-left">ชื่อวิชา</span>
-                  </div>
-                  <div className="flex items-center gap-6 md:gap-12 shrink-0">
-                    <span className="w-[60px] text-right">หน่วยกิต</span>
-                    <span className="w-[48px] text-center">ผ่าน</span>
-                  </div>
-                </div>
-
-                {/* Body Rows */}
-                <div className="divide-y divide-[#D0D0D1]/20">
-                  {catSubjects.map((subject) => (
-                    <div
-                      key={subject.id}
-                      className="flex items-center justify-between py-4 px-4 md:px-6 hover:bg-[#FCEFF4]/10 transition-colors"
-                    >
-                      {/* Left: Code & Name */}
-                      <div className="flex items-center gap-10 md:gap-16 flex-1 min-w-0">
-                        <span className="w-[80px] shrink-0 font-mono text-[16px] text-black">
-                          {subject.code}
-                        </span>
-                        <div className="flex-1 min-w-0 flex flex-col justify-center">
-                          <span className="text-black text-[16px] font-bold truncate">
-                            {subject.nameTh}
-                          </span>
-                          <span className="text-[#6D6D6D] text-[14px] truncate">
-                            {subject.nameEn}
-                          </span>
-                        </div>
-                      </div>
-
-                      {/* Right: Credits & Checkbox */}
-                      <div className="flex items-center gap-6 md:gap-12 shrink-0">
-                        <span className="w-[60px] text-right font-mono text-[16px] text-black">
-                          {subject.credits.toFixed(2)}
-                        </span>
-                        <div className="w-[48px] flex justify-center">
-                          <button
-                            type="button"
-                            onClick={() => onToggleSubject(subject.id)}
-                            className={`w-6 h-6 rounded border-2 flex items-center justify-center transition-all cursor-pointer
-                              ${
-                                subject.completed
-                                  ? 'bg-[#A6CE8F] border-[#A6CE8F] text-white'
-                                  : 'border-[#D0D0D1] bg-white hover:border-[#DE5D8F]'
-                              }`}
-                            aria-label={`ทำเครื่องหมายผ่านวิชา ${subject.nameTh}`}
-                          >
-                            {subject.completed && <Check size={14} strokeWidth={3} />}
-                          </button>
-                        </div>
-                      </div>
-                    </div>
-                  ))}
-
-                  {catSubjects.length === 0 && (
-                    <div className="py-8 text-center text-[#6D6D6D]">
-                      ไม่มีข้อมูลวิชาลงทะเบียนในหมวดหมู่นี้
-                    </div>
-                  )}
-                </div>
-              </div>
-            </div>
+        {/* Orange Warning Banner — matches Figma node 4479:9357 */}
+        <div
+          className="flex items-center gap-3 w-full"
+          style={{
+            backgroundColor: '#EE8A50',
+            borderRadius: '11px',
+            padding: '12px 24px',
+          }}
+        >
+          {/* Icon badge */}
+          <div
+            className="flex items-center justify-center shrink-0"
+            style={{
+              width: 24,
+              height: 24,
+              backgroundColor: '#FDF0E9',
+              borderRadius: '4px',
+            }}
+          >
+            <MessageSquareWarning size={16} style={{ color: '#EE8A50' }} />
           </div>
-        );
-      })}
+          <span
+            className="text-white"
+            style={{ fontSize: '18px', fontWeight: 700, lineHeight: '24px' }}
+          >
+            หมายเหตุสำคัญ: กรณีเลือกวิชาโท มนุษย์ศาสตร์ดิจิทัล หรือ บรรณาธิการศึกษา
+            ต้องได้รับการอนุมัติจากคณะกรรมการบริหารหลักสูตรก่อน
+          </span>
+        </div>
+      </div>
     </div>
   );
 }

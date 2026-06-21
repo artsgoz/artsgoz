@@ -16,6 +16,22 @@
   font-display: swap;
 }
 
+@font-face {
+  font-family: 'Chulalongkorn';
+  src: url('./assets/fonts/CHULALONGKORNReg.otf') format('opentype');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Chulalongkorn';
+  src: url('./assets/fonts/CHULALONGKORNBold.otf') format('opentype');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
 @theme {
   /* =========================================
      Tokens from: primitive
@@ -128,6 +144,7 @@
   --font-weight-regular: 400;
   --font-weight-bold: 700;
   --font-serif: ChulaCharasNew;
+  --font-chulalongkorn: Chulalongkorn;
   --text-heading-24: 24px;
   --text-heading-28: 28px;
   --text-heading-32: 32px;

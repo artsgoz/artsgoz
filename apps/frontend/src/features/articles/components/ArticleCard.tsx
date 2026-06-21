@@ -1,9 +1,10 @@
 import { useState } from 'react';
+import { useNavigate } from 'react-router';
 import { Bookmark } from 'lucide-react';
-import { Button, Chip } from '@org/design-system';
 import mockImage from '../../../assets/ArticleBannerMock.jpg';
 
 interface ArticleCardProps {
+  id: string;
   title: string;
   author: string;
   date: string;
@@ -12,31 +13,36 @@ interface ArticleCardProps {
 }
 
 export function ArticleCard({
+  id,
   title,
   author,
   date,
   category,
   imageUrl,
 }: ArticleCardProps) {
+  const navigate = useNavigate();
   const [isBookmarked, setIsBookmarked] = useState(false);
 
   return (
-    <div className="
-      snap-start shrink-0 relative
-      bg-[var(--blog-banner-background-color-default,#F7F8F9)]
-      rounded-[16px]
-      shadow-[0px_2px_2px_0px_rgba(0,0,0,0.05),0px_4px_3px_0px_rgba(0,0,0,0.1)]
-      overflow-hidden
-      flex flex-col
-      w-[280px] h-[420px]
-      lg:w-[530px] lg:h-[356px]
-      hover:shadow-lg hover:scale-[1.02] transition-all duration-300 cursor-pointer
-    ">
-      {/* Image — inset with gap on mobile, absolutely positioned on desktop */}
+    <div
+      onClick={() => navigate(`/articles/${id}`)}
+      className="
+        snap-start shrink-0 relative overflow-hidden
+        bg-[#F7F8F9] rounded-[16px]
+        shadow-[0px_4px_6px_-1px_rgba(0,0,0,0.1),0px_2px_4px_-2px_rgba(0,0,0,0.05)]
+        cursor-pointer
+        hover:shadow-lg hover:scale-[1.02] transition-all duration-300
+        w-[315px] h-[391px]
+        lg:w-[530px] lg:h-[356px]
+      "
+    >
+      {/* === MOBILE LAYOUT (< lg): fully absolute, Figma spec === */}
+
+      {/* Image: x:18, y:16, w:277, h:260, borderRadius:12px */}
       <div className="
-        mx-auto mt-[16px] shrink-0
-        w-[248px] h-[260px] rounded-[12px] overflow-hidden
-        lg:absolute lg:left-[32px] lg:top-[22px] lg:w-[248px] lg:h-[312px] lg:m-0
+        absolute top-[16px] left-[18px]
+        w-[277px] h-[260px] rounded-[12px] overflow-hidden
+        lg:hidden
       ">
         <img
           src={imageUrl || mockImage}
@@ -45,49 +51,154 @@ export function ArticleCard({
         />
       </div>
 
-      {/* Tags & Bookmark — top-right overlay (both mobile and desktop) */}
-      <div className="absolute right-[24px] top-[24px] flex gap-[8px] items-center z-10 lg:right-[22px] lg:top-[22px]">
-        <Chip variant="primary" className="!px-3 !py-1.5 !text-[13px] !rounded-[8px]">
-          {category}
-        </Chip>
-        <Button
-          variant="secondary"
-          size="icon"
-          onClick={() => setIsBookmarked((prev) => !prev)}
-          className="w-[36px] h-[36px] lg:w-[40px] lg:h-[40px]"
-          aria-label="Bookmark article"
-        >
-          <Bookmark
-            size={18}
-            fill={isBookmarked ? 'currentColor' : 'none'}
-            className="text-white"
-          />
-        </Button>
-      </div>
-
-      {/* Text content — below image on mobile, right panel on desktop */}
+      {/* Title + Author/Date block: x:24, y:289, w:164 */}
       <div className="
-        flex flex-col gap-[10px] items-start
-        px-[16px] pt-[12px] pb-[16px] flex-1
-        lg:absolute lg:w-[194px] lg:left-[304px] lg:top-[107px] lg:gap-[17px] lg:p-0
+        absolute left-[24px] top-[289px]
+        w-[164px] flex flex-col gap-[4px]
+        lg:hidden
       ">
-        {/* Title */}
         <h3 className="
-          overflow-hidden text-ellipsis line-clamp-2 lg:line-clamp-3
-          font-serif text-[16px] lg:text-[20px]
-          text-[var(--blog-banner-label-header,#000)]
-          font-bold leading-[24px] lg:leading-[28px] break-words
-          w-full lg:h-[84px]
+          font-serif text-[16px] font-bold leading-[24px]
+          text-black line-clamp-2 overflow-hidden text-ellipsis break-words w-full
         ">
           {title}
         </h3>
-
-        {/* Author / Date */}
-        <div className="bg-[rgba(255,255,255,0.26)] flex flex-col gap-[4px] items-start justify-center py-[4px] px-[12px] w-full rounded-[8px]">
-          <span className="font-serif text-[12px] lg:text-[14px] text-[var(--blog-banner-label-sub-head,#6D6D6D)] font-bold leading-[18px] lg:leading-[20px] whitespace-nowrap">
+        <div className="flex flex-col gap-[4px]">
+          <span className="font-serif text-[14px] font-bold leading-[20px] text-[#6D6D6D] whitespace-nowrap overflow-hidden text-ellipsis">
             {'เขียนโดย ' + author}
           </span>
-          <span className="font-serif text-[12px] lg:text-[14px] text-[var(--blog-banner-label-caption,#99999A)] font-bold leading-[18px] lg:leading-[20px] whitespace-nowrap">
+          <span className="font-serif text-[14px] font-bold leading-[20px] text-[#99999A] whitespace-nowrap">
+            {'เผยแพร่ ' + date}
+          </span>
+        </div>
+      </div>
+
+      {/* Category badge + Bookmark: x:188, y:289 */}
+      <div className="
+        absolute left-[188px] top-[289px]
+        flex flex-row items-center gap-[9px]
+        lg:hidden
+      ">
+        {/* Category badge: bg #FCEFF4, text #DE5D8F, 12px bold, padding 12px 24px, height 33px, borderRadius 11px */}
+        <span
+          className="font-serif font-bold text-[12px] leading-[18px] text-[#DE5D8F] whitespace-nowrap"
+          style={{
+            backgroundColor: '#FCEFF4',
+            borderRadius: '11px',
+            padding: '7px 12px',
+            height: '33px',
+            display: 'flex',
+            alignItems: 'center',
+          }}
+        >
+          {category}
+        </span>
+        {/* Bookmark button: bg #F8C135, 32×32, borderRadius 8px */}
+        <button
+          type="button"
+          onClick={(e) => {
+            e.stopPropagation();
+            setIsBookmarked((prev) => !prev);
+          }}
+          aria-label="Bookmark article"
+          style={{
+            width: '32px',
+            height: '32px',
+            borderRadius: '8px',
+            backgroundColor: '#F8C135',
+            border: 'none',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            cursor: 'pointer',
+            flexShrink: 0,
+          }}
+        >
+          <Bookmark
+            size={16}
+            fill={isBookmarked ? '#fff' : 'none'}
+            stroke="#fff"
+            strokeWidth={2}
+          />
+        </button>
+      </div>
+
+      {/* === DESKTOP LAYOUT (>= lg): absolutely positioned === */}
+
+      {/* Image left panel */}
+      <div className="
+        hidden lg:block
+        absolute left-[32px] top-[22px]
+        w-[248px] h-[312px] rounded-[12px] overflow-hidden
+      ">
+        <img
+          src={imageUrl || mockImage}
+          alt={title}
+          className="w-full h-full object-cover pointer-events-none"
+        />
+      </div>
+
+      {/* Category chip + Bookmark — top right on desktop */}
+      <div className="hidden lg:flex absolute right-[22px] top-[22px] gap-[8px] items-center z-10">
+        <span
+          className="font-serif font-bold text-[12px] leading-[18px] text-[#DE5D8F] whitespace-nowrap"
+          style={{
+            backgroundColor: '#FCEFF4',
+            borderRadius: '11px',
+            padding: '7px 12px',
+            height: '33px',
+            display: 'flex',
+            alignItems: 'center',
+          }}
+        >
+          {category}
+        </span>
+        <button
+          type="button"
+          onClick={(e) => {
+            e.stopPropagation();
+            setIsBookmarked((prev) => !prev);
+          }}
+          aria-label="Bookmark article"
+          style={{
+            width: '40px',
+            height: '40px',
+            borderRadius: '8px',
+            backgroundColor: '#F8C135',
+            border: 'none',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            cursor: 'pointer',
+            flexShrink: 0,
+          }}
+        >
+          <Bookmark
+            size={18}
+            fill={isBookmarked ? '#fff' : 'none'}
+            stroke="#fff"
+            strokeWidth={2}
+          />
+        </button>
+      </div>
+
+      {/* Text content — right panel on desktop */}
+      <div className="
+        hidden lg:flex flex-col gap-[17px] items-start
+        absolute w-[194px] left-[304px] top-[107px]
+      ">
+        <h3 className="
+          overflow-hidden text-ellipsis line-clamp-3
+          font-serif text-[20px] font-bold leading-[28px]
+          text-black break-words w-full h-[84px]
+        ">
+          {title}
+        </h3>
+        <div className="bg-[rgba(255,255,255,0.26)] flex flex-col gap-[4px] items-start justify-center py-[4px] px-[12px] w-full rounded-[8px]">
+          <span className="font-serif text-[14px] text-[#6D6D6D] font-bold leading-[20px] whitespace-nowrap">
+            {'เขียนโดย ' + author}
+          </span>
+          <span className="font-serif text-[14px] text-[#99999A] font-bold leading-[20px] whitespace-nowrap">
             {'เผยแพร่ ' + date}
           </span>
         </div>
@@ -95,3 +206,4 @@ export function ArticleCard({
     </div>
   );
 }
+

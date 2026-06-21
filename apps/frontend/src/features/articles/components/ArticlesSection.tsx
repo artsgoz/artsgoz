@@ -43,6 +43,7 @@ export function ArticlesSection() {
         {MOCK_ARTICLES.map((article) => (
           <ArticleCard
             key={article.id}
+            id={article.id}
             title={article.title}
             author={article.author}
             date={article.date}
@@ -56,6 +57,7 @@ export function ArticlesSection() {
         {currentArticles.map((article) => (
           <ArticleCard
             key={article.id}
+            id={article.id}
             title={article.title}
             author={article.author}
             date={article.date}
