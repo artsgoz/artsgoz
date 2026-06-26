@@ -204,10 +204,17 @@ jobs:
           CHANNEL="pr${PR_NUMBER}"
           echo "$FIREBASE_SA" > /tmp/firebase-sa.json
           export GOOGLE_APPLICATION_CREDENTIALS=/tmp/firebase-sa.json
-          output=$(npx firebase-tools@latest hosting:channel:deploy "$CHANNEL" \
-            --only frontend \
-            --expires 7d \
-            --project chula-artsgoz-website 2>&1) && exit_code=0 || exit_code=$?
+          firebase_deploy() {
+            npx firebase-tools@latest hosting:channel:deploy "$CHANNEL" \
+              --only frontend --expires 7d \
+              --project chula-artsgoz-website 2>&1
+          }
+          output=$(firebase_deploy) && exit_code=0 || exit_code=$?
+          if [ $exit_code -ne 0 ] && echo "$output" | grep -q "already exists"; then
+            echo "Channel race condition — retrying..."
+            sleep 3
+            output=$(firebase_deploy) && exit_code=0 || exit_code=$?
+          fi
           rm -f /tmp/firebase-sa.json
           if [ $exit_code -ne 0 ] && echo "$output" | grep -q "current active version"; then
             echo "Content unchanged — preview already deployed."
@@ -223,10 +230,17 @@ jobs:
           CHANNEL="pr${PR_NUMBER}"
           echo "$FIREBASE_SA" > /tmp/firebase-sa.json
           export GOOGLE_APPLICATION_CREDENTIALS=/tmp/firebase-sa.json
-          output=$(npx firebase-tools@latest hosting:channel:deploy "$CHANNEL" \
-            --only backoffice \
-            --expires 7d \
-            --project chula-artsgoz-website 2>&1) && exit_code=0 || exit_code=$?
+          firebase_deploy() {
+            npx firebase-tools@latest hosting:channel:deploy "$CHANNEL" \
+              --only backoffice --expires 7d \
+              --project chula-artsgoz-website 2>&1
+          }
+          output=$(firebase_deploy) && exit_code=0 || exit_code=$?
+          if [ $exit_code -ne 0 ] && echo "$output" | grep -q "already exists"; then
+            echo "Channel race condition — retrying..."
+            sleep 3
+            output=$(firebase_deploy) && exit_code=0 || exit_code=$?
+          fi
           rm -f /tmp/firebase-sa.json
           if [ $exit_code -ne 0 ] && echo "$output" | grep -q "current active version"; then
             echo "Content unchanged — preview already deployed."
