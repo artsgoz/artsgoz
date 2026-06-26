@@ -92,6 +92,9 @@
     "react-router": "^8.0.1"
   },
   "pnpm": {
+    "overrides": {
+      "js-yaml": ">=4.2.0"
+    },
     "onlyBuiltDependencies": [
       "@parcel/watcher",
       "@swc/core",
