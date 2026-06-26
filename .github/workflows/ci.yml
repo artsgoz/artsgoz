@@ -93,20 +93,36 @@ jobs:
       - name: Audit dependencies
         run: pnpm audit --prod --audit-level=high
       - run: pnpm build:frontend && pnpm build:backoffice
-      - uses: FirebaseExtended/action-hosting-deploy@500ac625ca2dd40cbd15f7659af953801858032a # v0.11.0
-        with:
-          repoToken: ${{ secrets.GITHUB_TOKEN }}
-          firebaseServiceAccount: ${{ secrets.FIREBASE_SERVICE_ACCOUNT_CHULA_ARTSGOZ_WEBSITE }}
-          channelId: live
-          projectId: chula-artsgoz-website
-          target: frontend
-      - uses: FirebaseExtended/action-hosting-deploy@500ac625ca2dd40cbd15f7659af953801858032a # v0.11.0
-        with:
-          repoToken: ${{ secrets.GITHUB_TOKEN }}
-          firebaseServiceAccount: ${{ secrets.FIREBASE_SERVICE_ACCOUNT_CHULA_ARTSGOZ_WEBSITE }}
-          channelId: live
-          projectId: chula-artsgoz-website
-          target: backoffice
+      - name: Deploy frontend
+        env:
+          FIREBASE_SA: ${{ secrets.FIREBASE_SERVICE_ACCOUNT_CHULA_ARTSGOZ_WEBSITE }}
+        run: |
+          echo "$FIREBASE_SA" > /tmp/firebase-sa.json
+          export GOOGLE_APPLICATION_CREDENTIALS=/tmp/firebase-sa.json
+          output=$(npx firebase-tools@latest deploy --only hosting:frontend --project chula-artsgoz-website --json 2>&1)
+          exit_code=$?
+          rm -f /tmp/firebase-sa.json
+          if [ $exit_code -ne 0 ] && echo "$output" | grep -q "current active version"; then
+            echo "Content unchanged — already deployed. Skipping."
+            exit 0
+          fi
+          echo "$output"
+          exit $exit_code
+      - name: Deploy backoffice
+        env:
+          FIREBASE_SA: ${{ secrets.FIREBASE_SERVICE_ACCOUNT_CHULA_ARTSGOZ_WEBSITE }}
+        run: |
+          echo "$FIREBASE_SA" > /tmp/firebase-sa.json
+          export GOOGLE_APPLICATION_CREDENTIALS=/tmp/firebase-sa.json
+          output=$(npx firebase-tools@latest deploy --only hosting:backoffice --project chula-artsgoz-website --json 2>&1)
+          exit_code=$?
+          rm -f /tmp/firebase-sa.json
+          if [ $exit_code -ne 0 ] && echo "$output" | grep -q "current active version"; then
+            echo "Content unchanged — already deployed. Skipping."
+            exit 0
+          fi
+          echo "$output"
+          exit $exit_code
 
   deploy-staging:
     name: Deploy Staging
@@ -130,20 +146,36 @@ jobs:
       - name: Audit dependencies
         run: pnpm audit --prod --audit-level=high
       - run: pnpm build:frontend && pnpm build:backoffice
-      - uses: FirebaseExtended/action-hosting-deploy@500ac625ca2dd40cbd15f7659af953801858032a # v0.11.0
-        with:
-          repoToken: ${{ secrets.GITHUB_TOKEN }}
-          firebaseServiceAccount: ${{ secrets.FIREBASE_SERVICE_ACCOUNT_CHULA_ARTSGOZ_WEBSITE }}
-          channelId: live
-          projectId: chula-artsgoz-website
-          target: frontend-staging
-      - uses: FirebaseExtended/action-hosting-deploy@500ac625ca2dd40cbd15f7659af953801858032a # v0.11.0
-        with:
-          repoToken: ${{ secrets.GITHUB_TOKEN }}
-          firebaseServiceAccount: ${{ secrets.FIREBASE_SERVICE_ACCOUNT_CHULA_ARTSGOZ_WEBSITE }}
-          channelId: live
-          projectId: chula-artsgoz-website
-          target: backoffice-staging
+      - name: Deploy frontend-staging
+        env:
+          FIREBASE_SA: ${{ secrets.FIREBASE_SERVICE_ACCOUNT_CHULA_ARTSGOZ_WEBSITE }}
+        run: |
+          echo "$FIREBASE_SA" > /tmp/firebase-sa.json
+          export GOOGLE_APPLICATION_CREDENTIALS=/tmp/firebase-sa.json
+          output=$(npx firebase-tools@latest deploy --only hosting:frontend-staging --project chula-artsgoz-website --json 2>&1)
+          exit_code=$?
+          rm -f /tmp/firebase-sa.json
+          if [ $exit_code -ne 0 ] && echo "$output" | grep -q "current active version"; then
+            echo "Content unchanged — already deployed. Skipping."
+            exit 0
+          fi
+          echo "$output"
+          exit $exit_code
+      - name: Deploy backoffice-staging
+        env:
+          FIREBASE_SA: ${{ secrets.FIREBASE_SERVICE_ACCOUNT_CHULA_ARTSGOZ_WEBSITE }}
+        run: |
+          echo "$FIREBASE_SA" > /tmp/firebase-sa.json
+          export GOOGLE_APPLICATION_CREDENTIALS=/tmp/firebase-sa.json
+          output=$(npx firebase-tools@latest deploy --only hosting:backoffice-staging --project chula-artsgoz-website --json 2>&1)
+          exit_code=$?
+          rm -f /tmp/firebase-sa.json
+          if [ $exit_code -ne 0 ] && echo "$output" | grep -q "current active version"; then
+            echo "Content unchanged — already deployed. Skipping."
+            exit 0
+          fi
+          echo "$output"
+          exit $exit_code
 
   deploy-preview:
     name: Deploy PR Preview
@@ -156,6 +188,7 @@ jobs:
       cancel-in-progress: false
     permissions:
       contents: read
+      checks: write
       pull-requests: write
     steps:
       - uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4.3.1
