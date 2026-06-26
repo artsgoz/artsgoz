@@ -1,4 +1,4 @@
-import type { YellowCardSubject, YellowCardCategory } from '../types.js';
+import type { YellowCardSubject } from '../types.js';
 import { CATEGORIES_CONFIG } from '../constants.js';
 import { CurriculumTable } from './CurriculumTable.js';
 import { calculateTotalCredits } from '../utils/yellowCardUtils.js';
@@ -18,8 +18,12 @@ export function YellowCardColumns({
   onAddSubject,
   onDeleteSubject,
 }: YellowCardColumnsProps) {
-  const displayMajor = major && major !== 'เลือกวิชาเอก' ? major : 'สารสนเทศศึกษา';
-  const rightColumnCredits = calculateTotalCredits(subjects, ['หมวดวิชาเอก', 'หมวดวิชาโท']);
+  const displayMajor =
+    major && major !== 'เลือกวิชาเอก' ? major : 'สารสนเทศศึกษา';
+  const rightColumnCredits = calculateTotalCredits(subjects, [
+    'หมวดวิชาเอก',
+    'หมวดวิชาโท',
+  ]);
 
   return (
     <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-start mb-8">
@@ -27,14 +31,18 @@ export function YellowCardColumns({
       <div className="flex flex-col gap-6">
         {/* Main Dark Pink Column Header */}
         <div className="w-full h-[60px] bg-[#E992B4] rounded-[8px] px-5 flex items-center shadow-xs">
-          <span className="text-black text-[18px] font-bold">หลักสูตรอักษรศาสตรบัณฑิต</span>
+          <span className="text-black text-[18px] font-bold">
+            หลักสูตรอักษรศาสตรบัณฑิต
+          </span>
         </div>
 
         {/* Left Column Categories */}
         {CATEGORIES_CONFIG.filter((cat) =>
-          ['หมวดวิชาพื้นฐานอักษรศาสตร์', 'หมวดการศึกษาทั่วไป', 'หมวดวิชาเลือกเสรี'].includes(
-            cat.category
-          )
+          [
+            'หมวดวิชาพื้นฐานอักษรศาสตร์',
+            'หมวดการศึกษาทั่วไป',
+            'หมวดวิชาเลือกเสรี',
+          ].includes(cat.category),
         ).map((catConfig) => (
           <CurriculumTable
             key={catConfig.category}
@@ -63,7 +71,7 @@ export function YellowCardColumns({
 
         {/* Right Column Categories */}
         {CATEGORIES_CONFIG.filter((cat) =>
-          ['หมวดวิชาเอก', 'หมวดวิชาโท'].includes(cat.category)
+          ['หมวดวิชาเอก', 'หมวดวิชาโท'].includes(cat.category),
         ).map((catConfig) => (
           <CurriculumTable
             key={catConfig.category}
