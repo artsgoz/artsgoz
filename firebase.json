@@ -1,0 +1,16 @@
+{
+  "hosting": [
+    {
+      "target": "frontend",
+      "public": "apps/frontend/dist",
+      "ignore": ["firebase.json", "**/.*", "**/node_modules/**"],
+      "rewrites": [{ "source": "**", "destination": "/index.html" }]
+    },
+    {
+      "target": "backoffice",
+      "public": "apps/backoffice/dist",
+      "ignore": ["firebase.json", "**/.*", "**/node_modules/**"],
+      "rewrites": [{ "source": "**", "destination": "/index.html" }]
+    }
+  ]
+}

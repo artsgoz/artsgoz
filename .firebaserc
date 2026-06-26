@@ -1,0 +1,17 @@
+{
+  "projects": {
+    "default": "chula-artsgoz-website"
+  },
+  "targets": {
+    "chula-artsgoz-website": {
+      "hosting": {
+        "frontend": [
+          "artsgoz-frontend"
+        ],
+        "backoffice": [
+          "artsgoz-backoffice"
+        ]
+      }
+    }
+  }
+}
