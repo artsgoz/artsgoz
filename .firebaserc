@@ -10,6 +10,12 @@
         ],
         "backoffice": [
           "artsgoz-backoffice"
+        ],
+        "frontend-staging": [
+          "artsgoz-frontend-staging"
+        ],
+        "backoffice-staging": [
+          "artsgoz-backoffice-staging"
         ]
       }
     }
