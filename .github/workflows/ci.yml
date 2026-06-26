@@ -14,6 +14,20 @@ permissions:
   contents: read
 
 jobs:
+  validate-branch-flow:
+    name: Validate Branch Flow
+    runs-on: ubuntu-latest
+    if: github.event_name == 'pull_request' && github.base_ref == 'develop'
+    steps:
+      - name: Enforce staging → develop flow
+        run: |
+          if [ "${{ github.head_ref }}" != "staging" ]; then
+            echo "Direct PRs to 'develop' are not allowed."
+            echo "Required flow: branch/* → staging → develop"
+            echo "Please open your PR against 'staging' first."
+            exit 1
+          fi
+
   lint:
     name: Lint
     runs-on: ubuntu-latest
