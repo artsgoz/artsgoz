@@ -3,10 +3,10 @@
   "version": "0.0.0",
   "license": "MIT",
   "scripts": {
-    "dev": "nx run-many -t dev",
+    "dev": "nx run-many -t dev --exclude @org/source",
     "dev:frontend": "nx dev @org/frontend",
     "dev:backoffice": "nx dev @org/backoffice",
-    "build": "nx run-many -t build",
+    "build": "nx run-many -t build --exclude @org/source",
     "build:frontend": "nx build @org/frontend",
     "build:backoffice": "nx build @org/backoffice",
     "test": "nx run-many -t test",
@@ -85,6 +85,7 @@
     "vitest": "^4.1.9"
   },
   "dependencies": {
+    "@juristr/nx-tailwind-sync": "^0.0.9",
     "framer-motion": "^12.42.0",
     "lucide-react": "^1.21.0",
     "react": "^19.2.7",

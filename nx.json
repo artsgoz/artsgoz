@@ -63,6 +63,12 @@
     }
   ],
   "targetDefaults": {
+    "build": {
+      "syncGenerators": ["@juristr/nx-tailwind-sync:source-directives"]
+    },
+    "dev": {
+      "syncGenerators": ["@juristr/nx-tailwind-sync:source-directives"]
+    },
     "test": {
       "dependsOn": ["^build"]
     }
