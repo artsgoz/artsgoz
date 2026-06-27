@@ -6,6 +6,7 @@
     "dev": "nx run-many -t dev --exclude @org/source",
     "dev:frontend": "nx dev @org/frontend",
     "dev:backoffice": "nx dev @org/backoffice",
+    "dev:kb-api": "nx serve @org/kb-api",
     "build": "nx run-many -t build --exclude @org/source",
     "build:frontend": "nx build @org/frontend",
     "build:backoffice": "nx build @org/backoffice",
