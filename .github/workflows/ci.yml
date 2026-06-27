@@ -215,6 +215,70 @@ jobs:
           echo "$output"
           exit $exit_code
 
+  deploy-kb-api-production:
+    name: Deploy KB API Production
+    needs: [lint, typecheck, test]
+    if: github.event_name == 'push' && github.ref == 'refs/heads/develop'
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    concurrency:
+      group: deploy-kb-api-production
+      cancel-in-progress: false
+    env:
+      VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+      VERCEL_PROJECT_ID: ${{ secrets.VERCEL_KB_API_PROJECT_ID }}
+      VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+    steps:
+      - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
+      - uses: pnpm/action-setup@0ebf47130e4866e96fce0953f49152a61190b271 # v6.0.9
+        with:
+          version: 10
+      - uses: actions/setup-node@48b55a011bda9f5d6aeb4c2d9c7362e8dae4041e # v6.4.0
+        with:
+          node-version: 22
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - name: Build KB API
+        run: pnpm nx build @org/kb-api
+      - name: Deploy KB API to Vercel production
+        working-directory: apps/kb-api
+        run: |
+          npx vercel@latest pull --yes --environment=production
+          npx vercel@latest build --prod
+          npx vercel@latest deploy --prebuilt --prod
+
+  deploy-kb-api-staging:
+    name: Deploy KB API Staging
+    needs: [lint, typecheck, test]
+    if: github.event_name == 'push' && github.ref == 'refs/heads/staging'
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    concurrency:
+      group: deploy-kb-api-staging
+      cancel-in-progress: false
+    env:
+      VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+      VERCEL_PROJECT_ID: ${{ secrets.VERCEL_KB_API_PROJECT_ID }}
+      VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+    steps:
+      - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
+      - uses: pnpm/action-setup@0ebf47130e4866e96fce0953f49152a61190b271 # v6.0.9
+        with:
+          version: 10
+      - uses: actions/setup-node@48b55a011bda9f5d6aeb4c2d9c7362e8dae4041e # v6.4.0
+        with:
+          node-version: 22
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - name: Build KB API
+        run: pnpm nx build @org/kb-api
+      - name: Deploy KB API to Vercel preview
+        working-directory: apps/kb-api
+        run: |
+          npx vercel@latest pull --yes --environment=preview
+          npx vercel@latest build
+          npx vercel@latest deploy --prebuilt
+
   deploy-preview:
     name: Deploy PR Preview
     needs: [lint, typecheck, test]
@@ -306,6 +370,7 @@ jobs:
           fi
           echo "$output"
           exit $exit_code
+
       - name: Deploy backoffice preview
         if: steps.preview_changes.outputs.backoffice == 'true'
         env:
@@ -333,6 +398,7 @@ jobs:
           fi
           echo "$output"
           exit $exit_code
+
       - name: Deploy kb preview
         if: steps.preview_changes.outputs.kb == 'true'
         env:
@@ -360,3 +426,35 @@ jobs:
           fi
           echo "$output"
           exit $exit_code
+
+  deploy-kb-api-preview:
+    name: Deploy KB API PR Preview
+    needs: [lint, typecheck, test]
+    if: github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name == github.repository && github.actor != 'dependabot[bot]'
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    concurrency:
+      group: deploy-kb-api-preview-${{ github.event.pull_request.number }}
+      cancel-in-progress: true
+    env:
+      VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+      VERCEL_PROJECT_ID: ${{ secrets.VERCEL_KB_API_PROJECT_ID }}
+      VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+    steps:
+      - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
+      - uses: pnpm/action-setup@0ebf47130e4866e96fce0953f49152a61190b271 # v6.0.9
+        with:
+          version: 10
+      - uses: actions/setup-node@48b55a011bda9f5d6aeb4c2d9c7362e8dae4041e # v6.4.0
+        with:
+          node-version: 22
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - name: Build KB API
+        run: pnpm nx build @org/kb-api
+      - name: Deploy KB API to Vercel preview
+        working-directory: apps/kb-api
+        run: |
+          npx vercel@latest pull --yes --environment=preview
+          npx vercel@latest build
+          npx vercel@latest deploy --prebuilt
