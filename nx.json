@@ -63,6 +63,12 @@
     }
   ],
   "targetDefaults": {
+    "build": {
+      "syncGenerators": ["@juristr/nx-tailwind-sync:source-directives"]
+    },
+    "dev": {
+      "syncGenerators": ["@juristr/nx-tailwind-sync:source-directives"]
+    },
     "test": {
       "dependsOn": ["^build"]
     }
@@ -71,15 +77,15 @@
     "@nx/react": {
       "application": {
         "babel": true,
-        "style": "tailwind",
+        "style": "css",
         "linter": "eslint",
         "bundler": "vite"
       },
       "component": {
-        "style": "tailwind"
+        "style": "css"
       },
       "library": {
-        "style": "tailwind",
+        "style": "css",
         "linter": "eslint"
       }
     }

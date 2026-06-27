@@ -106,7 +106,7 @@ jobs:
       - run: pnpm install --frozen-lockfile
       - name: Audit dependencies
         run: pnpm audit --prod --audit-level=high
-      - run: pnpm build:frontend && pnpm build:backoffice
+      - run: pnpm build:frontend && pnpm build:backoffice && pnpm build:kb
       - name: Deploy frontend
         env:
           FIREBASE_SA: ${{ secrets.FIREBASE_SERVICE_ACCOUNT_CHULA_ARTSGOZ_WEBSITE }}
@@ -128,6 +128,20 @@ jobs:
           echo "$FIREBASE_SA" > /tmp/firebase-sa.json
           export GOOGLE_APPLICATION_CREDENTIALS=/tmp/firebase-sa.json
           output=$(npx firebase-tools@latest deploy --only hosting:backoffice --project chula-artsgoz-website --json 2>&1) && exit_code=0 || exit_code=$?
+          rm -f /tmp/firebase-sa.json
+          if [ $exit_code -ne 0 ] && echo "$output" | grep -q "current active version"; then
+            echo "Content unchanged — already deployed. Skipping."
+            exit 0
+          fi
+          echo "$output"
+          exit $exit_code
+      - name: Deploy Knowledge Base
+        env:
+          FIREBASE_SA: ${{ secrets.FIREBASE_SERVICE_ACCOUNT_CHULA_ARTSGOZ_WEBSITE }}
+        run: |
+          echo "$FIREBASE_SA" > /tmp/firebase-sa.json
+          export GOOGLE_APPLICATION_CREDENTIALS=/tmp/firebase-sa.json
+          output=$(npx firebase-tools@latest deploy --only hosting:kb --project chula-artsgoz-website --json 2>&1) && exit_code=0 || exit_code=$?
           rm -f /tmp/firebase-sa.json
           if [ $exit_code -ne 0 ] && echo "$output" | grep -q "current active version"; then
             echo "Content unchanged — already deployed. Skipping."
@@ -157,7 +171,7 @@ jobs:
       - run: pnpm install --frozen-lockfile
       - name: Audit dependencies
         run: pnpm audit --prod --audit-level=high
-      - run: pnpm build:frontend && pnpm build:backoffice
+      - run: pnpm build:frontend && pnpm build:backoffice && pnpm build:kb
       - name: Deploy frontend-staging
         env:
           FIREBASE_SA: ${{ secrets.FIREBASE_SERVICE_ACCOUNT_CHULA_ARTSGOZ_WEBSITE }}
@@ -179,6 +193,20 @@ jobs:
           echo "$FIREBASE_SA" > /tmp/firebase-sa.json
           export GOOGLE_APPLICATION_CREDENTIALS=/tmp/firebase-sa.json
           output=$(npx firebase-tools@latest deploy --only hosting:backoffice-staging --project chula-artsgoz-website --json 2>&1) && exit_code=0 || exit_code=$?
+          rm -f /tmp/firebase-sa.json
+          if [ $exit_code -ne 0 ] && echo "$output" | grep -q "current active version"; then
+            echo "Content unchanged — already deployed. Skipping."
+            exit 0
+          fi
+          echo "$output"
+          exit $exit_code
+      - name: Deploy kb-staging
+        env:
+          FIREBASE_SA: ${{ secrets.FIREBASE_SERVICE_ACCOUNT_CHULA_ARTSGOZ_WEBSITE }}
+        run: |
+          echo "$FIREBASE_SA" > /tmp/firebase-sa.json
+          export GOOGLE_APPLICATION_CREDENTIALS=/tmp/firebase-sa.json
+          output=$(npx firebase-tools@latest deploy --only hosting:kb-staging --project chula-artsgoz-website --json 2>&1) && exit_code=0 || exit_code=$?
           rm -f /tmp/firebase-sa.json
           if [ $exit_code -ne 0 ] && echo "$output" | grep -q "current active version"; then
             echo "Content unchanged — already deployed. Skipping."
@@ -209,7 +237,7 @@ jobs:
           node-version: 22
           cache: pnpm
       - run: pnpm install --frozen-lockfile
-      - run: pnpm build:frontend && pnpm build:backoffice
+      - run: pnpm build:frontend && pnpm build:backoffice && pnpm build:kb
       - name: Deploy frontend preview
         env:
           FIREBASE_SA: ${{ secrets.FIREBASE_SERVICE_ACCOUNT_CHULA_ARTSGOZ_WEBSITE }}
@@ -247,6 +275,32 @@ jobs:
           firebase_deploy() {
             npx firebase-tools@latest hosting:channel:deploy "$CHANNEL" \
               --only backoffice --expires 7d \
+              --project chula-artsgoz-website 2>&1
+          }
+          output=$(firebase_deploy) && exit_code=0 || exit_code=$?
+          if [ $exit_code -ne 0 ] && echo "$output" | grep -q "already exists"; then
+            echo "Channel race condition — retrying..."
+            sleep 3
+            output=$(firebase_deploy) && exit_code=0 || exit_code=$?
+          fi
+          rm -f /tmp/firebase-sa.json
+          if [ $exit_code -ne 0 ] && echo "$output" | grep -q "current active version"; then
+            echo "Content unchanged — preview already deployed."
+            exit 0
+          fi
+          echo "$output"
+          exit $exit_code
+      - name: Deploy kb preview
+        env:
+          FIREBASE_SA: ${{ secrets.FIREBASE_SERVICE_ACCOUNT_CHULA_ARTSGOZ_WEBSITE }}
+          PR_NUMBER: ${{ github.event.pull_request.number }}
+        run: |
+          CHANNEL="pr${PR_NUMBER}"
+          echo "$FIREBASE_SA" > /tmp/firebase-sa.json
+          export GOOGLE_APPLICATION_CREDENTIALS=/tmp/firebase-sa.json
+          firebase_deploy() {
+            npx firebase-tools@latest hosting:channel:deploy "$CHANNEL" \
+              --only kb --expires 7d \
               --project chula-artsgoz-website 2>&1
           }
           output=$(firebase_deploy) && exit_code=0 || exit_code=$?
