@@ -33,6 +33,7 @@
     "@commitlint/cli": "^21.1.0",
     "@commitlint/config-conventional": "^21.1.0",
     "@eslint/js": "^10.0.1",
+    "@juristr/nx-tailwind-sync": "^0.0.9",
     "@next/eslint-plugin-next": "^16.2.9",
     "@nx/devkit": "23.0.1",
     "@nx/eslint": "23.0.1",
@@ -86,7 +87,6 @@
     "vitest": "^4.1.9"
   },
   "dependencies": {
-    "@juristr/nx-tailwind-sync": "^0.0.9",
     "framer-motion": "^12.42.0",
     "lucide-react": "^1.21.0",
     "react": "^19.2.7",
