@@ -9,6 +9,7 @@
     "build": "nx run-many -t build --exclude @org/source",
     "build:frontend": "nx build @org/frontend",
     "build:backoffice": "nx build @org/backoffice",
+    "build:kb": "nx build @org/kb",
     "test": "nx run-many -t test",
     "lint": "nx run-many -t lint",
     "lint:fix": "nx run-many -t lint -- --fix",
