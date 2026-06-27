@@ -250,7 +250,6 @@ jobs:
           which pnpm
           pnpm --version
       - name: Deploy KB API to Vercel production
-        working-directory: apps/kb-api
         env:
           PNPM_BIN: ${{ steps.prepare_pnpm_vercel_production.outputs.pnpm_bin }}
         run: |
@@ -294,7 +293,6 @@ jobs:
           which pnpm
           pnpm --version
       - name: Deploy KB API to Vercel preview
-        working-directory: apps/kb-api
         env:
           PNPM_BIN: ${{ steps.prepare_pnpm_vercel_staging.outputs.pnpm_bin }}
         run: |
@@ -486,7 +484,6 @@ jobs:
           which pnpm
           pnpm --version
       - name: Deploy KB API to Vercel preview
-        working-directory: apps/kb-api
         env:
           PNPM_BIN: ${{ steps.prepare_pnpm_vercel_preview.outputs.pnpm_bin }}
         run: |
