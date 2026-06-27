@@ -257,9 +257,7 @@ jobs:
           export PATH="$PNPM_BIN:$PATH"
           which pnpm
           pnpm --version
-          pnpm dlx vercel@latest pull --yes --environment=production
-          pnpm dlx vercel@latest build --prod
-          pnpm dlx vercel@latest deploy --prebuilt --prod
+          pnpm dlx vercel@latest deploy --yes --prod
 
   deploy-kb-api-staging:
     name: Deploy KB API Staging
@@ -303,9 +301,7 @@ jobs:
           export PATH="$PNPM_BIN:$PATH"
           which pnpm
           pnpm --version
-          pnpm dlx vercel@latest pull --yes --environment=preview
-          pnpm dlx vercel@latest build
-          pnpm dlx vercel@latest deploy --prebuilt
+          pnpm dlx vercel@latest deploy --yes
 
   deploy-preview:
     name: Deploy PR Preview
@@ -497,6 +493,4 @@ jobs:
           export PATH="$PNPM_BIN:$PATH"
           which pnpm
           pnpm --version
-          pnpm dlx vercel@latest pull --yes --environment=preview
-          pnpm dlx vercel@latest build
-          pnpm dlx vercel@latest deploy --prebuilt
+          pnpm dlx vercel@latest deploy --yes
