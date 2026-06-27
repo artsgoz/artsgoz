@@ -241,16 +241,25 @@ jobs:
       - name: Build KB API
         run: pnpm nx build @org/kb-api
       - name: Prepare pnpm for Vercel
+        id: prepare_pnpm_vercel_production
         run: |
           npm install -g pnpm@10.28.0
+          PNPM_BIN="$(dirname "$(which pnpm)")"
+          echo "$PNPM_BIN" >> "$GITHUB_PATH"
+          echo "pnpm_bin=$PNPM_BIN" >> "$GITHUB_OUTPUT"
           which pnpm
           pnpm --version
       - name: Deploy KB API to Vercel production
         working-directory: apps/kb-api
+        env:
+          PNPM_BIN: ${{ steps.prepare_pnpm_vercel_production.outputs.pnpm_bin }}
         run: |
-          npx vercel@latest pull --yes --environment=production
-          npx vercel@latest build --prod
-          npx vercel@latest deploy --prebuilt --prod
+          export PATH="$PNPM_BIN:$PATH"
+          which pnpm
+          pnpm --version
+          pnpm dlx vercel@latest pull --yes --environment=production
+          pnpm dlx vercel@latest build --prod
+          pnpm dlx vercel@latest deploy --prebuilt --prod
 
   deploy-kb-api-staging:
     name: Deploy KB API Staging
@@ -278,16 +287,25 @@ jobs:
       - name: Build KB API
         run: pnpm nx build @org/kb-api
       - name: Prepare pnpm for Vercel
+        id: prepare_pnpm_vercel_staging
         run: |
           npm install -g pnpm@10.28.0
+          PNPM_BIN="$(dirname "$(which pnpm)")"
+          echo "$PNPM_BIN" >> "$GITHUB_PATH"
+          echo "pnpm_bin=$PNPM_BIN" >> "$GITHUB_OUTPUT"
           which pnpm
           pnpm --version
       - name: Deploy KB API to Vercel preview
         working-directory: apps/kb-api
+        env:
+          PNPM_BIN: ${{ steps.prepare_pnpm_vercel_staging.outputs.pnpm_bin }}
         run: |
-          npx vercel@latest pull --yes --environment=preview
-          npx vercel@latest build
-          npx vercel@latest deploy --prebuilt
+          export PATH="$PNPM_BIN:$PATH"
+          which pnpm
+          pnpm --version
+          pnpm dlx vercel@latest pull --yes --environment=preview
+          pnpm dlx vercel@latest build
+          pnpm dlx vercel@latest deploy --prebuilt
 
   deploy-preview:
     name: Deploy PR Preview
@@ -463,13 +481,22 @@ jobs:
       - name: Build KB API
         run: pnpm nx build @org/kb-api
       - name: Prepare pnpm for Vercel
+        id: prepare_pnpm_vercel_preview
         run: |
           npm install -g pnpm@10.28.0
+          PNPM_BIN="$(dirname "$(which pnpm)")"
+          echo "$PNPM_BIN" >> "$GITHUB_PATH"
+          echo "pnpm_bin=$PNPM_BIN" >> "$GITHUB_OUTPUT"
           which pnpm
           pnpm --version
       - name: Deploy KB API to Vercel preview
         working-directory: apps/kb-api
+        env:
+          PNPM_BIN: ${{ steps.prepare_pnpm_vercel_preview.outputs.pnpm_bin }}
         run: |
-          npx vercel@latest pull --yes --environment=preview
-          npx vercel@latest build
-          npx vercel@latest deploy --prebuilt
+          export PATH="$PNPM_BIN:$PATH"
+          which pnpm
+          pnpm --version
+          pnpm dlx vercel@latest pull --yes --environment=preview
+          pnpm dlx vercel@latest build
+          pnpm dlx vercel@latest deploy --prebuilt
