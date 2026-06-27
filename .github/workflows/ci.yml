@@ -242,8 +242,9 @@ jobs:
         run: pnpm nx build @org/kb-api
       - name: Prepare pnpm for Vercel
         run: |
-          corepack enable
-          corepack prepare pnpm@10.28.0 --activate
+          npm install -g pnpm@10.28.0
+          which pnpm
+          pnpm --version
       - name: Deploy KB API to Vercel production
         working-directory: apps/kb-api
         run: |
@@ -278,8 +279,9 @@ jobs:
         run: pnpm nx build @org/kb-api
       - name: Prepare pnpm for Vercel
         run: |
-          corepack enable
-          corepack prepare pnpm@10.28.0 --activate
+          npm install -g pnpm@10.28.0
+          which pnpm
+          pnpm --version
       - name: Deploy KB API to Vercel preview
         working-directory: apps/kb-api
         run: |
@@ -462,8 +464,9 @@ jobs:
         run: pnpm nx build @org/kb-api
       - name: Prepare pnpm for Vercel
         run: |
-          corepack enable
-          corepack prepare pnpm@10.28.0 --activate
+          npm install -g pnpm@10.28.0
+          which pnpm
+          pnpm --version
       - name: Deploy KB API to Vercel preview
         working-directory: apps/kb-api
         run: |
