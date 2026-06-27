@@ -87,6 +87,7 @@
     "vitest": "^4.1.9"
   },
   "dependencies": {
+    "@juristr/nx-tailwind-sync": "^0.0.9",
     "framer-motion": "^12.42.0",
     "lucide-react": "^1.21.0",
     "react": "^19.2.7",
