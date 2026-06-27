@@ -229,6 +229,8 @@ jobs:
       pull-requests: write
     steps:
       - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
+        with:
+          fetch-depth: 0
       - uses: pnpm/action-setup@0ebf47130e4866e96fce0953f49152a61190b271 # v6.0.9
         with:
           version: 10
@@ -237,8 +239,48 @@ jobs:
           node-version: 22
           cache: pnpm
       - run: pnpm install --frozen-lockfile
-      - run: pnpm build:frontend && pnpm build:backoffice && pnpm build:kb
+      - name: Detect preview changes
+        id: preview_changes
+        env:
+          BASE_SHA: ${{ github.event.pull_request.base.sha }}
+          HEAD_SHA: ${{ github.event.pull_request.head.sha }}
+        run: |
+          changed_files="$(git diff --name-only "$BASE_SHA" "$HEAD_SHA")"
+          echo "$changed_files"
+
+          affects_all='^(package.json|pnpm-lock.yaml|nx.json|tsconfig\.base\.json|firebase\.json|packages/design-system/)'
+          affects_frontend='^(apps/frontend/)'
+          affects_backoffice='^(apps/backoffice/)'
+          affects_kb='^(apps/kb/)'
+
+          if echo "$changed_files" | grep -Eq "$affects_all|$affects_frontend"; then
+            echo "frontend=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "frontend=false" >> "$GITHUB_OUTPUT"
+          fi
+
+          if echo "$changed_files" | grep -Eq "$affects_all|$affects_backoffice"; then
+            echo "backoffice=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "backoffice=false" >> "$GITHUB_OUTPUT"
+          fi
+
+          if echo "$changed_files" | grep -Eq "$affects_all|$affects_kb"; then
+            echo "kb=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "kb=false" >> "$GITHUB_OUTPUT"
+          fi
+      - name: Build frontend preview
+        if: steps.preview_changes.outputs.frontend == 'true'
+        run: pnpm build:frontend
+      - name: Build backoffice preview
+        if: steps.preview_changes.outputs.backoffice == 'true'
+        run: pnpm build:backoffice
+      - name: Build kb preview
+        if: steps.preview_changes.outputs.kb == 'true'
+        run: pnpm build:kb
       - name: Deploy frontend preview
+        if: steps.preview_changes.outputs.frontend == 'true'
         env:
           FIREBASE_SA: ${{ secrets.FIREBASE_SERVICE_ACCOUNT_CHULA_ARTSGOZ_WEBSITE }}
           PR_NUMBER: ${{ github.event.pull_request.number }}
@@ -265,6 +307,7 @@ jobs:
           echo "$output"
           exit $exit_code
       - name: Deploy backoffice preview
+        if: steps.preview_changes.outputs.backoffice == 'true'
         env:
           FIREBASE_SA: ${{ secrets.FIREBASE_SERVICE_ACCOUNT_CHULA_ARTSGOZ_WEBSITE }}
           PR_NUMBER: ${{ github.event.pull_request.number }}
@@ -291,6 +334,7 @@ jobs:
           echo "$output"
           exit $exit_code
       - name: Deploy kb preview
+        if: steps.preview_changes.outputs.kb == 'true'
         env:
           FIREBASE_SA: ${{ secrets.FIREBASE_SERVICE_ACCOUNT_CHULA_ARTSGOZ_WEBSITE }}
           PR_NUMBER: ${{ github.event.pull_request.number }}
