@@ -13,17 +13,36 @@ export function AgendaWidgets() {
   const [selectedDate, setSelectedDate] = useState<number>(17);
 
   return (
-    <div className="flex flex-col gap-6 w-full shrink-0">
-      <UpcomingEventsCard events={upcomingEvents} />
-      <CalendarCard
-        daysOfWeek={daysOfWeek}
-        calendarDays={calendarDays}
-        eventsByDate={eventsByDate}
-        selectedDate={selectedDate}
-        onSelectDate={setSelectedDate}
-        getDayLabel={getDayLabel}
-        monthLabel="ส.ค. 2026"
-      />
+    <div className="grid grid-cols-1 lg:grid-cols-[1.15fr_0.85fr] gap-x-12 lg:gap-x-12 gap-y-8 lg:gap-y-12 w-full items-start">
+      {/* Header and Description: Top Right on desktop, top on mobile */}
+      <div className="lg:col-start-2 lg:row-start-1">
+        <div className="flex flex-col gap-1 select-none">
+          <h2 className="font-serif text-[40px] lg:text-[48px] font-bold leading-[1.2] text-[#404041]">
+            ปฏิทินกิจกรรมและกำหนดการ
+          </h2>
+          <p className="font-serif text-[16px] leading-[24px] text-[#6D6D6D]">
+            ติดตามข่าวสาร กิจกรรม และกำหนดการสำคัญต่าง ๆ ของคณะอักษรศาสตร์
+          </p>
+        </div>
+      </div>
+
+      {/* Upcoming Events: Left Column on desktop, middle on mobile */}
+      <div className="lg:col-start-1 lg:row-start-1 lg:row-span-2">
+        <UpcomingEventsCard events={upcomingEvents} />
+      </div>
+
+      {/* Calendar Card: Bottom Right on desktop, bottom on mobile */}
+      <div className="lg:col-start-2 lg:row-start-2">
+        <CalendarCard
+          daysOfWeek={daysOfWeek}
+          calendarDays={calendarDays}
+          eventsByDate={eventsByDate}
+          selectedDate={selectedDate}
+          onSelectDate={setSelectedDate}
+          getDayLabel={getDayLabel}
+          monthLabel="ส.ค. 2026"
+        />
+      </div>
     </div>
   );
 }

@@ -1,4 +1,4 @@
-import type { YellowCardSubject, YellowCardCategory } from '../types.js';
+import type { YellowCardSubject } from '../types.js';
 import { CATEGORIES_CONFIG } from '../constants.js';
 import { CurriculumTable } from './CurriculumTable.js';
 import { calculateTotalCredits } from '../utils/yellowCardUtils.js';

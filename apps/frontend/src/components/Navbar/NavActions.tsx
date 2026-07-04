@@ -1,4 +1,5 @@
 import { useState, useRef } from 'react';
+import { useNavigate } from 'react-router';
 import {
   CULoginButton,
   SearchInput,
@@ -15,6 +16,7 @@ interface NavActionsProps {
 }
 
 export function NavActions({ isLoggedIn, onLogin, onLogout }: NavActionsProps) {
+  const navigate = useNavigate();
   const [isLoginOpen, setIsLoginOpen] = useState(false);
   const [isProfileOpen, setIsProfileOpen] = useState(false);
   const [profileView, setProfileView] = useState<'profile' | 'manage'>('profile');
@@ -61,7 +63,7 @@ export function NavActions({ isLoggedIn, onLogin, onLogout }: NavActionsProps) {
                     onLogout={handleLogoutClick}
                     onManageClick={() => setProfileView('manage')}
                     onSavedClick={() => {
-                      console.log('เมนูที่บันทึกไว้ถูกคลิก');
+                      navigate('/articles?tab=saved');
                       setIsProfileOpen(false);
                     }}
                     onHistoryClick={() => {

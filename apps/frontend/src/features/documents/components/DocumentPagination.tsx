@@ -50,7 +50,7 @@ export function DocumentPagination({
                 key={page}
                 type="button"
                 onClick={() => onPageChange(page)}
-                className="flex items-center justify-center bg-white transition-all cursor-pointer font-[ChulaCharasNew] shadow-sm"
+                className="flex items-center justify-center bg-white transition-all cursor-pointer font-[ChulaCharasNew]"
                 style={{
                   width: '32px',
                   height: '32px',

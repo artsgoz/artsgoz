@@ -45,11 +45,11 @@ export function PDPAForm({ onConfirm }: PDPAFormProps) {
         <button
           type="submit"
           disabled={!acknowledged}
-          className={`w-full max-w-[200px] h-[48px] rounded-[8px] font-bold text-[18px] transition-all shadow-md cursor-pointer flex items-center justify-center
+          className={`w-full max-w-[200px] h-[48px] rounded-[8px] font-bold text-[18px] transition-all cursor-pointer flex items-center justify-center
             ${
               acknowledged
                 ? 'bg-[#E992B4] hover:bg-[#DE5D8F] text-white'
-                : 'bg-[#DFDFE0] text-[#8B8B8C] cursor-not-allowed shadow-none'
+                : 'bg-[#DFDFE0] text-[#8B8B8C] cursor-not-allowed'
             }`}
         >
           ยืนยัน

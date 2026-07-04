@@ -9,7 +9,6 @@ import { CurriculumView } from './CurriculumView.js';
 import { PlannerView } from './PlannerView.js';
 import { AcademicTrackerNavBar, type ActiveTab } from './AcademicTrackerNavBar.js';
 import { SummaryView } from './SummaryView.js';
-import { ScrollToTopButton } from '../../../components/ScrollToTopButton/index.js';
 
 type AppStep = 'pdpa' | 'setup' | 'dashboard';
 
@@ -199,7 +198,7 @@ export function CreditTrackingSection() {
   }
 
   return (
-    <div className="w-full max-w-[1280px] mx-auto px-4 md:px-[85px] py-10 md:py-16 font-[ChulaCharasNew] select-none">
+    <div className="w-full max-w-[1280px] mx-auto px-4 md:px-8 py-10 md:py-16 font-[ChulaCharasNew] select-none">
       {/* Top Header Section with profile display & selector filters (Figma Frame 6429 / 6079) */}
       <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-6 mb-24">
         <div>
@@ -269,8 +268,6 @@ export function CreditTrackingSection() {
           />
         )}
       </div>
-
-      <ScrollToTopButton />
     </div>
   );
 }

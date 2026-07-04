@@ -86,7 +86,7 @@ export function ProfessorsSection() {
      * This is the area within the page frame (below navbar, above footer).
      * The Figma page is 1280px wide. The content starts at x:85 (so ~85px padding each side).
      */
-    <div className="w-full max-w-[1280px] mx-auto px-[85px]">
+    <div className="w-full max-w-[1280px] mx-auto px-8">
       {/*
        * Title — "สืบค้นชื่อบุคลากร"
        * Page 1: y:155, width:1086, 32px w700 #000000

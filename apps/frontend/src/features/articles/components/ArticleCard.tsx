@@ -10,6 +10,7 @@ interface ArticleCardProps {
   date: string;
   category: string;
   imageUrl?: string;
+  onBookmarkChange?: (id: string, bookmarked: boolean) => void;
 }
 
 export function ArticleCard({
@@ -19,9 +20,45 @@ export function ArticleCard({
   date,
   category,
   imageUrl,
+  onBookmarkChange,
 }: ArticleCardProps) {
   const navigate = useNavigate();
-  const [isBookmarked, setIsBookmarked] = useState(false);
+  const [isBookmarked, setIsBookmarked] = useState(() => {
+    try {
+      const saved = localStorage.getItem('bookmarked_articles');
+      if (saved) {
+        const ids = JSON.parse(saved) as string[];
+        return ids.includes(id);
+      }
+    } catch (e) {
+      console.error('Failed to parse bookmarked_articles', e);
+    }
+    return false;
+  });
+
+  const handleBookmarkToggle = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    const nextState = !isBookmarked;
+    setIsBookmarked(nextState);
+    try {
+      const saved = localStorage.getItem('bookmarked_articles');
+      let ids: string[] = [];
+      if (saved) {
+        ids = JSON.parse(saved) as string[];
+      }
+      if (nextState) {
+        if (!ids.includes(id)) ids.push(id);
+      } else {
+        ids = ids.filter((savedId) => savedId !== id);
+      }
+      localStorage.setItem('bookmarked_articles', JSON.stringify(ids));
+      if (onBookmarkChange) {
+        onBookmarkChange(id, nextState);
+      }
+    } catch (err) {
+      console.error('Failed to update bookmarked_articles', err);
+    }
+  };
 
   return (
     <div
@@ -96,10 +133,7 @@ export function ArticleCard({
         {/* Bookmark button: bg #F8C135, 32×32, borderRadius 8px */}
         <button
           type="button"
-          onClick={(e) => {
-            e.stopPropagation();
-            setIsBookmarked((prev) => !prev);
-          }}
+          onClick={handleBookmarkToggle}
           aria-label="Bookmark article"
           style={{
             width: '32px',
@@ -155,10 +189,7 @@ export function ArticleCard({
         </span>
         <button
           type="button"
-          onClick={(e) => {
-            e.stopPropagation();
-            setIsBookmarked((prev) => !prev);
-          }}
+          onClick={handleBookmarkToggle}
           aria-label="Bookmark article"
           style={{
             width: '40px',

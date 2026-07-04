@@ -1,4 +1,5 @@
 import React from 'react';
+import { PATHS } from '../../routes/paths.js';
 
 export interface LinkItem {
   label: string;
@@ -87,7 +88,7 @@ export const FOOTER_COLUMNS: FooterColumnData[] = [
   {
     title: 'ช่วยเหลือ/ร้องเรียน',
     links: [
-      { label: 'ช่วยเหลือ/FAQ', path: '#' },
+      { label: 'ช่วยเหลือ/FAQ', path: PATHS.HELP },
       { label: 'ร้องเรียนปัญหา', path: '#' },
     ],
   },

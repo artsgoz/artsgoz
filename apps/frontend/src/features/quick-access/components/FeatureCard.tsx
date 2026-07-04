@@ -1,11 +1,14 @@
 import { Link } from 'react-router';
 import { LucideIcon } from 'lucide-react';
+import { useRef, useCallback } from 'react';
 
 interface FeatureCardProps {
   title: string;
-  description: string;
+  description?: string;
   icon: LucideIcon;
   href: string;
+  size?: 'sm' | 'lg';
+  isExternal?: boolean;
 }
 
 export function FeatureCard({
@@ -13,30 +16,86 @@ export function FeatureCard({
   description,
   icon: IconComponent,
   href,
+  size = 'sm',
+  isExternal = false,
 }: FeatureCardProps) {
-  return (
-    <Link
-      to={href}
-      className="group relative block w-[150px] h-[150px] rounded-[12px] border border-[#D0D0D1] bg-[#FFF] shadow-[2px_3px_6px_0_rgba(0,0,0,0.12)] overflow-hidden transition-all duration-300 hover:scale-[1.02] shrink-0"
-    >
-      {/* Icon Area perfectly centered both vertically and horizontally in the available space above bottom label (height 107px) */}
-      <div className="absolute top-0 left-0 w-full h-[107px] flex items-center justify-center">
-        <IconComponent 
-          size={56} 
-          strokeWidth={1.5}
-          className="text-[#E992B4] transition-all duration-300 ease-in-out group-hover:-translate-y-2 group-hover:scale-[0.9]" 
-        />
-      </div>
+  const isLarge = size === 'lg';
+  const cardRef = useRef<HTMLAnchorElement>(null);
 
-      {/* Bottom Label Container */}
-      <div className="absolute bottom-0 left-0 w-full h-[43px] group-hover:h-[85px] bg-[#E992B4] rounded-b-[12px] flex flex-col items-center justify-center group-hover:justify-start group-hover:pt-[10px] px-2 transition-all duration-300 ease-in-out z-10">
-        <span className="text-white text-[18px] font-semibold font-serif leading-none text-center w-[135px] z-10">
-          {title}
-        </span>
-        <p className="text-white text-[11px] text-center leading-snug mt-0 group-hover:mt-1 opacity-0 max-h-0 group-hover:max-h-[36px] group-hover:opacity-100 transition-all duration-300 ease-in-out overflow-hidden w-[135px] line-clamp-2">
+  const handleMouseMove = useCallback((e: React.MouseEvent<HTMLAnchorElement>) => {
+    const card = cardRef.current;
+    if (!card) return;
+    const rect = card.getBoundingClientRect();
+    const cx = rect.left + rect.width / 2;
+    const cy = rect.top + rect.height / 2;
+    const dx = (e.clientX - cx) / (rect.width / 2);
+    const dy = (e.clientY - cy) / (rect.height / 2);
+    // Max tilt 10deg
+    const rotateX = -dy * 10;
+    const rotateY = dx * 10;
+    card.style.transform = `perspective(600px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale(1.04)`;
+  }, []);
+
+  const handleMouseLeave = useCallback(() => {
+    const card = cardRef.current;
+    if (!card) return;
+    card.style.transform = 'perspective(600px) rotateX(0deg) rotateY(0deg) scale(1)';
+  }, []);
+
+  const content = (
+    <div className="relative z-10 flex flex-col items-center justify-center w-full">
+      <IconComponent
+        size={isLarge ? 64 : 44}
+        strokeWidth={isLarge ? 1.25 : 1.5}
+        className="text-[#E992B4] transition-colors duration-200"
+      />
+      <span
+        className={`text-[#404041] font-bold font-serif leading-tight text-center max-w-full line-clamp-2 mt-2 ${
+          isLarge ? 'text-[20px] md:text-[24px]' : 'text-[16px] md:text-[18px]'
+        }`}
+      >
+        {title}
+      </span>
+      {description && (
+        <p
+          className={`text-[#6D6D6D] text-center leading-relaxed opacity-0 max-h-0 group-hover:opacity-100 transition-all duration-300 ease-in-out overflow-hidden w-full line-clamp-3 mt-1.5 ${
+            isLarge
+              ? 'text-[12px] md:text-[14px] group-hover:max-h-[80px]'
+              : 'text-[11px] group-hover:max-h-[50px]'
+          }`}
+        >
           {description}
         </p>
-      </div>
+      )}
+    </div>
+  );
+
+  const commonProps = {
+    ref: cardRef,
+    onMouseMove: handleMouseMove,
+    onMouseLeave: handleMouseLeave,
+    className: `group relative flex flex-col items-center justify-center w-full rounded-lg border border-[#D0D0D1]/60 bg-white overflow-hidden p-6 text-center cursor-pointer ${
+      isLarge
+        ? 'h-full min-h-[350px] md:min-h-[394px] shadow-[2px_3px_12px_0_rgba(0,0,0,0.15)]'
+        : 'h-[195px] shadow-[2px_3px_8px_0_rgba(0,0,0,0.12)]'
+    }`,
+    style: {
+      transition: 'transform 0.15s ease-out, box-shadow 0.2s ease, border-color 0.2s ease',
+      willChange: 'transform' as const,
+    },
+  };
+
+  if (isExternal) {
+    return (
+      <a href={href} target="_blank" rel="noopener noreferrer" {...commonProps}>
+        {content}
+      </a>
+    );
+  }
+
+  return (
+    <Link to={href} {...commonProps}>
+      {content}
     </Link>
   );
 }

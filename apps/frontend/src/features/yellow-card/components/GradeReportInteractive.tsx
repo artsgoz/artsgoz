@@ -73,7 +73,7 @@ export function GradeReportInteractive({
               <button
                 type="button"
                 onClick={(e) => { e.stopPropagation(); onAddSubject(); }}
-                className="w-[44px] h-[44px] bg-[#E992B4] hover:bg-[#DE5D8F] text-white rounded-full flex items-center justify-center cursor-pointer transition-all shadow-md mx-auto mt-4"
+                className="w-[44px] h-[44px] bg-[#E992B4] hover:bg-[#DE5D8F] text-white rounded-full flex items-center justify-center cursor-pointer transition-all mx-auto mt-4"
                 title="เพิ่มรายวิชาเพิ่มเติม"
               >
                 <Plus size={20} />

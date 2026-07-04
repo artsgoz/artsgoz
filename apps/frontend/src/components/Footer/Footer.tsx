@@ -13,7 +13,7 @@ export function Footer() {
         className="absolute right-[-163px] bottom-[-55px] w-[494px] h-[292px] opacity-[0.04] pointer-events-none select-none object-contain hidden lg:block"
       />
 
-      <div className="relative z-10 w-full max-w-[1282px] mx-auto px-4 lg:px-[50px] py-10 lg:pt-[44px] lg:pb-[40px] flex flex-col lg:flex-row justify-between items-start gap-12 lg:gap-[99px]">
+      <div className="relative z-10 w-full max-w-[1282px] mx-auto px-4 lg:px-6 py-10 lg:pt-[44px] lg:pb-[40px] flex flex-col lg:flex-row justify-between items-start gap-12 lg:gap-[99px]">
         {/* Left Section: Branding & Socials */}
         <div className="w-full lg:w-[298px] flex flex-col items-start shrink-0">
           <img

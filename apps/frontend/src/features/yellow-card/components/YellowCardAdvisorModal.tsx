@@ -27,7 +27,7 @@ export function YellowCardAdvisorModal({
           <button
             type="button"
             onClick={onConfirm}
-            className="w-full bg-[#E992B4] hover:bg-[#DE5D8F] text-white font-bold text-[16px] h-[44px] rounded-[8px] cursor-pointer shadow-sm transition-colors"
+            className="w-full bg-[#E992B4] hover:bg-[#DE5D8F] text-white font-bold text-[16px] h-[44px] rounded-[8px] cursor-pointer transition-colors"
           >
             ยืนยันการส่งใบเหลือง
           </button>

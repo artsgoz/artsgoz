@@ -8,7 +8,7 @@ export const MOCK_UPCOMING_EVENTS: UpcomingEvent[] = [
   {
     month: 'มี.ค.',
     day: 31,
-    dayLabel: 'วันนี้',
+    dayLabels: ['วันนี้', 'สำคัญ'],
     title: 'ส่งแบบเสนอหัวข้อโครงงาน',
     time: '13:00 – 15:00 น.',
     isToday: true,
@@ -16,7 +16,7 @@ export const MOCK_UPCOMING_EVENTS: UpcomingEvent[] = [
   {
     month: 'เม.ย.',
     day: 1,
-    dayLabel: 'พรุ่งนี้',
+    dayLabels: ['พรุ่งนี้', 'ห้ามลืม'],
     title: 'สัมมนาวิชาการระดับชาติ',
     time: '09:00 – 12:00 น.',
     isToday: false,
@@ -24,7 +24,7 @@ export const MOCK_UPCOMING_EVENTS: UpcomingEvent[] = [
   {
     month: 'เม.ย.',
     day: 2,
-    dayLabel: 'พฤ.',
+    dayLabel: 'สำคัญ',
     title: 'ปฐมนิเทศฝึกงานภาคฤดูร้อน',
     time: '10:00 – 12:00 น.',
     isToday: false,
@@ -32,7 +32,7 @@ export const MOCK_UPCOMING_EVENTS: UpcomingEvent[] = [
   {
     month: 'เม.ย.',
     day: 3,
-    dayLabel: 'ศ.',
+    dayLabel: 'ห้ามลืม',
     title: 'ประชุมคณะกรรมการนิสิตประจำภาควิชา',
     time: '16:30 – 18:30 น.',
     isToday: false,

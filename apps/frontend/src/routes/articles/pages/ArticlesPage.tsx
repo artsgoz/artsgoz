@@ -1,7 +1,8 @@
-import { useMemo } from 'react';
-import { useSearchParams } from 'react-router';
+import { useMemo, useState } from 'react';
+import { useSearchParams, useNavigate } from 'react-router';
 import { SectionHeading, SearchInput, Pagination } from '@org/design-system';
-import { Search } from 'lucide-react';
+import { Search, SlidersHorizontal, ArrowRight, Feather, Timer, Bookmark, BookmarkX } from 'lucide-react';
+import { motion, AnimatePresence } from 'framer-motion';
 import {
   ArticleCard,
   CategoryFilterBar,
@@ -11,8 +12,146 @@ import { Footer } from '../../../components/Footer/index.js';
 
 const ITEMS_PER_PAGE = 6;
 
+// Mock Saved Data for Internships & Reviews
+const MOCK_SAVED_INTERNSHIPS = [
+  {
+    id: 'intern-01',
+    company: 'LINE Man Wongnai',
+    role: 'Content Creator Intern',
+    period: 'มิ.ย. - ต.ค. 2568',
+    category: 'การตลาด',
+    author: 'ศิษย์เก่าอักษรฯ #86',
+    date: '28/05/69',
+    tags: ['WFH', 'มีค่าเบี้ยเลี้ยง'],
+  },
+  {
+    id: 'intern-02',
+    company: 'Shopee Thailand',
+    role: 'UX/UI Designer Intern',
+    period: 'มิ.ย. - ต.ค. 2568',
+    category: 'เทคโนโลยี',
+    author: 'ศิษย์เก่าอักษรฯ #85',
+    date: '15/05/69',
+    tags: ['Hybrid', 'มีค่าเบี้ยเลี้ยง'],
+  }
+];
+
+const MOCK_SAVED_REVIEWS = [
+  {
+    id: 'rev-01',
+    company: 'Agoda',
+    role: 'Localization Specialist Intern',
+    rating: 5,
+    excerpt: 'รีวิวประสบการณ์ฝึกงานแปลและจัดการภาษาที่ Agoda บรรยากาศการทำงานแบบอินเตอร์ เพื่อนร่วมงานน่ารักมาก ได้ใช้ภาษาอังกฤษตลอดเวลา...',
+    category: 'แปลภาษา',
+    author: 'พี่พลอย #84',
+    date: '10/05/69'
+  },
+  {
+    id: 'rev-02',
+    company: 'True Digital Group',
+    role: 'Product Management Intern',
+    rating: 4.5,
+    excerpt: 'ฝึกงานในทีม Product Manager ได้เรียนรู้กระบวนการทำ Agile/Scrum การทำ User Research และทดสอบระบบ พี่ๆ ดูแลดีมาก สอนงานแบบจัดเต็ม...',
+    category: 'การบริหาร',
+    author: 'พี่มิน #85',
+    date: '02/05/69'
+  }
+];
+
+// Helper to parse Thai date (e.g. '28/05/69' -> timestamp)
+const parseThaiDate = (dateStr: string) => {
+  try {
+    const [day, month, year] = dateStr.split('/').map(Number);
+    // year 69 is 2026 (BE 2569 is 2026, so 2000 + 69 - 43 = 2026)
+    return new Date(2000 + year - 43, month - 1, day).getTime();
+  } catch {
+    return 0;
+  }
+};
+
+// Premium Horizontal Saved Card Component
+function SavedArticleCard({
+  article,
+  onUnbookmark,
+}: {
+  article: typeof MOCK_ARTICLES[0];
+  onUnbookmark: () => void;
+}) {
+  const navigate = useNavigate();
+
+  return (
+    <div
+      onClick={() => navigate(`/articles/${article.id}`)}
+      className="w-full max-w-[1056px] rounded-2xl border border-gray-200 bg-white hover:bg-[#FDF8FA]/30 hover:border-[#E992B4]/40 shadow-xs hover:shadow-md transition-all duration-300 overflow-hidden flex flex-col md:flex-row cursor-pointer group"
+    >
+      {/* Cover Image */}
+      <div className="w-full md:w-[280px] lg:w-[320px] aspect-[4/3] md:aspect-auto h-[200px] md:h-auto shrink-0 overflow-hidden relative">
+        <img
+          src={article.imageUrl}
+          alt={article.title}
+          className="w-full h-full object-cover group-hover:scale-103 transition-transform duration-500"
+        />
+        <div className="absolute inset-0 bg-black/5" />
+      </div>
+
+      {/* Info Content */}
+      <div className="flex-1 p-6 flex flex-col justify-between gap-4">
+        
+        {/* Header line: Title / Category / Bookmark */}
+        <div className="flex justify-between items-start gap-4">
+          <div className="flex-1 flex flex-col gap-2">
+            <h3 className="text-[20px] md:text-[22px] lg:text-[24px] font-bold text-[#404041] font-serif leading-snug group-hover:text-[#DE5D8F] transition-colors line-clamp-1">
+              {article.title}
+            </h3>
+            <p className="text-[14px] md:text-[15px] text-gray-500 font-serif leading-relaxed line-clamp-2">
+              {article.excerpt}
+            </p>
+          </div>
+
+          <div className="flex items-center gap-2 shrink-0">
+            <span className="px-3 py-1 text-[12px] font-bold text-[#DE5D8F] bg-[#FCEFF4] rounded-full font-serif whitespace-nowrap">
+              {article.category}
+            </span>
+            <button
+              onClick={(e) => {
+                e.stopPropagation();
+                onUnbookmark();
+              }}
+              className="w-8 h-8 rounded-lg bg-[#F8C135] text-white flex items-center justify-center hover:bg-[#DE5D8F] transition-colors cursor-pointer shadow-xs active:scale-95"
+              aria-label="Remove bookmark"
+            >
+              <Bookmark size={15} fill="white" />
+            </button>
+          </div>
+        </div>
+
+        {/* Bottom line: Author, Date, and Read CTA */}
+        <div className="flex items-center justify-between border-t border-gray-100 pt-4 text-[13px] text-gray-400 font-serif">
+          <div className="flex items-center gap-4">
+            <span className="flex items-center gap-1.5">
+              <Feather size={14} className="text-gray-350" />
+              {article.author}
+            </span>
+            <span className="flex items-center gap-1.5">
+              <Timer size={14} className="text-gray-350" />
+              {article.date}
+            </span>
+          </div>
+          <span className="flex items-center gap-1 text-[#DE5D8F] font-bold group-hover:translate-x-1 transition-transform">
+            อ่านต่อ
+            <ArrowRight size={14} />
+          </span>
+        </div>
+
+      </div>
+    </div>
+  );
+}
+
 export default function ArticlesPage() {
   const [searchParams, setSearchParams] = useSearchParams();
+  const navigate = useNavigate();
 
   const CATEGORIES = useMemo(() => {
     const cats = Array.from(new Set(MOCK_ARTICLES.map((a) => a.category)));
@@ -23,8 +162,72 @@ export default function ArticlesPage() {
   const searchQuery = searchParams.get('search') || '';
   const selectedCategory = searchParams.get('category') || 'ทั้งหมด';
   const currentPage = Number(searchParams.get('page')) || 1;
+  const isSavedTab = searchParams.get('tab') === 'saved';
 
-  // Handler helpers to update URL params
+  // State for Saved Items page
+  const [savedSearchQuery, setSavedSearchQuery] = useState('');
+  const [savedTab, setSavedTab] = useState<'articles' | 'internships' | 'reviews'>('articles');
+  const [bookmarkedIds, setBookmarkedIds] = useState<string[]>(() => {
+    try {
+      const saved = localStorage.getItem('bookmarked_articles');
+      return saved ? JSON.parse(saved) : [];
+    } catch {
+      return [];
+    }
+  });
+  const [isFilterOpen, setIsFilterOpen] = useState(false);
+  const [sortBySavedDate, setSortBySavedDate] = useState<'newest' | 'oldest'>('newest');
+  const [sortByPostDate, setSortByPostDate] = useState<'newest' | 'oldest'>('newest');
+
+  const handleUnbookmark = (id: string) => {
+    try {
+      const updated = bookmarkedIds.filter((bid) => bid !== id);
+      setBookmarkedIds(updated);
+      localStorage.setItem('bookmarked_articles', JSON.stringify(updated));
+    } catch (e) {
+      console.error(e);
+    }
+  };
+
+  // Filter and Sort Saved Articles
+  const savedArticles = useMemo(() => {
+    // 1. Get articles that match the bookmarked IDs
+    let list = MOCK_ARTICLES.filter((article) => bookmarkedIds.includes(article.id));
+
+    // 2. Search filter
+    if (savedSearchQuery.trim() !== '') {
+      const query = savedSearchQuery.trim().toLowerCase();
+      list = list.filter(
+        (article) =>
+          article.title.toLowerCase().includes(query) ||
+          article.excerpt.toLowerCase().includes(query) ||
+          article.author.toLowerCase().includes(query)
+      );
+    }
+
+    // 3. Sort by Date Saved / Date Posted
+    // Since localStorage preserves the sequence of bookmarking, we can use the order of bookmarkedIds
+    if (sortBySavedDate === 'newest') {
+      // Reverse array based on bookmarkedIds index (last bookmarked is first)
+      list = [...list].sort(
+        (a, b) => bookmarkedIds.indexOf(b.id) - bookmarkedIds.indexOf(a.id)
+      );
+    } else {
+      list = [...list].sort(
+        (a, b) => bookmarkedIds.indexOf(a.id) - bookmarkedIds.indexOf(b.id)
+      );
+    }
+
+    if (sortByPostDate === 'newest') {
+      list = [...list].sort((a, b) => parseThaiDate(b.date) - parseThaiDate(a.date));
+    } else if (sortByPostDate === 'oldest') {
+      list = [...list].sort((a, b) => parseThaiDate(a.date) - parseThaiDate(b.date));
+    }
+
+    return list;
+  }, [bookmarkedIds, savedSearchQuery, sortBySavedDate, sortByPostDate]);
+
+  // Handler helpers to update URL params for main tab
   const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
     setSearchParams(
@@ -78,7 +281,7 @@ export default function ArticlesPage() {
     );
   };
 
-  // Filter articles by category + search query
+  // Filter articles by category + search query for main tab
   const filteredArticles = useMemo(() => {
     return MOCK_ARTICLES.filter((article) => {
       const matchesCategory =
@@ -104,10 +307,295 @@ export default function ArticlesPage() {
     );
   }, [filteredArticles, currentPage]);
 
+  // ── Render Saved Items View ──
+  if (isSavedTab) {
+    return (
+      <>
+        <div className="bg-white min-h-screen">
+          <div className="max-w-[1282px] mx-auto px-4 lg:px-6 w-full py-12 md:py-20 flex flex-col gap-10">
+            
+            {/* Header Title Section */}
+            <div className="flex flex-col gap-6 w-full relative">
+              <div className="flex items-center gap-4">
+                <Bookmark size={40} className="text-[#DE5D8F] shrink-0" fill="#DE5D8F" />
+                <h1 className="text-[36px] md:text-[48px] font-bold text-[#404041] font-serif leading-none">
+                  ที่บันทึกไว้
+                </h1>
+              </div>
+
+              {/* Search and Filters bar */}
+              <div className="flex flex-col md:flex-row gap-4 items-center w-full relative">
+                <div className="flex-1 w-full">
+                  <SearchInput
+                    size="lg"
+                    placeholder="ค้นหาสิ่งที่บันทึกไว้"
+                    value={savedSearchQuery}
+                    onChange={(e) => setSavedSearchQuery(e.target.value)}
+                  />
+                </div>
+                
+                {/* Filter Popover Toggle */}
+                <div className="relative w-full md:w-auto self-stretch md:self-auto flex">
+                  <button
+                    onClick={() => setIsFilterOpen(!isFilterOpen)}
+                    className={`flex items-center justify-center gap-2.5 px-6 h-[52px] rounded-[10px] border border-gray-250 font-serif text-[15px] font-bold transition-all cursor-pointer w-full md:w-auto ${
+                      isFilterOpen ? 'bg-[#FCEFF4] text-[#DE5D8F] border-[#E992B4]' : 'bg-white hover:bg-gray-50 text-gray-600'
+                    }`}
+                  >
+                    <SlidersHorizontal size={16} />
+                    ตัวกรอง
+                  </button>
+
+                  <AnimatePresence>
+                    {isFilterOpen && (
+                      <motion.div
+                        initial={{ opacity: 0, y: 10 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        exit={{ opacity: 0, y: 10 }}
+                        transition={{ duration: 0.2 }}
+                        className="absolute right-0 top-[60px] w-full md:w-[360px] p-6 bg-white border border-gray-200 rounded-2xl shadow-xl z-40 flex flex-col gap-6"
+                      >
+                        <h4 className="font-bold text-[18px] text-[#404041] font-serif border-b border-gray-100 pb-2">
+                          ตัวกรองและจัดเรียง
+                        </h4>
+
+                        {/* Date Saved Sort */}
+                        <div className="flex flex-col gap-3">
+                          <span className="text-[15px] font-bold text-gray-500 font-serif">วันที่บันทึก</span>
+                          <div className="flex flex-col gap-2">
+                            <label className="flex items-center gap-3 cursor-pointer group text-gray-700 hover:text-black">
+                              <input
+                                type="radio"
+                                name="savedDate"
+                                checked={sortBySavedDate === 'newest'}
+                                onChange={() => setSortBySavedDate('newest')}
+                                className="w-4 h-4 accent-[#DE5D8F] border-gray-300"
+                              />
+                              <span className="text-[14px] font-serif">เรียงจากใหม่ที่สุด</span>
+                            </label>
+                            <label className="flex items-center gap-3 cursor-pointer group text-gray-700 hover:text-black">
+                              <input
+                                type="radio"
+                                name="savedDate"
+                                checked={sortBySavedDate === 'oldest'}
+                                onChange={() => setSortBySavedDate('oldest')}
+                                className="w-4 h-4 accent-[#DE5D8F] border-gray-300"
+                              />
+                              <span className="text-[14px] font-serif">เรียงจากเก่าที่สุด</span>
+                            </label>
+                          </div>
+                        </div>
+
+                        {/* Date Posted Sort */}
+                        <div className="flex flex-col gap-3">
+                          <span className="text-[15px] font-bold text-gray-500 font-serif">วันที่โพสต์</span>
+                          <div className="flex flex-col gap-2">
+                            <label className="flex items-center gap-3 cursor-pointer group text-gray-700 hover:text-black">
+                              <input
+                                type="radio"
+                                name="postedDate"
+                                checked={sortByPostDate === 'newest'}
+                                onChange={() => setSortByPostDate('newest')}
+                                className="w-4 h-4 accent-[#DE5D8F] border-gray-300"
+                              />
+                              <span className="text-[14px] font-serif">เรียงจากใหม่ที่สุด</span>
+                            </label>
+                            <label className="flex items-center gap-3 cursor-pointer group text-gray-700 hover:text-black">
+                              <input
+                                type="radio"
+                                name="postedDate"
+                                checked={sortByPostDate === 'oldest'}
+                                onChange={() => setSortByPostDate('oldest')}
+                                className="w-4 h-4 accent-[#DE5D8F] border-gray-300"
+                              />
+                              <span className="text-[14px] font-serif">เรียงจากเก่าที่สุด</span>
+                            </label>
+                          </div>
+                        </div>
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
+                </div>
+              </div>
+
+              {/* Sub-tab Selectors */}
+              <div className="flex items-center gap-8 border-b border-gray-150 pb-1 mt-4">
+                <button
+                  onClick={() => setSavedTab('articles')}
+                  className={`pb-3 font-serif text-[18px] md:text-[20px] font-bold cursor-pointer relative transition-colors duration-200 focus:outline-none ${
+                    savedTab === 'articles' ? 'text-[#DE5D8F]' : 'text-[#AEAEAE] hover:text-[#7A7A7A]'
+                  }`}
+                >
+                  บทความ
+                  {savedTab === 'articles' && (
+                    <motion.div
+                      layoutId="savedTabUnderline"
+                      className="absolute bottom-0 left-0 right-0 h-[3px] bg-[#DE5D8F] rounded-full"
+                    />
+                  )}
+                </button>
+                <button
+                  onClick={() => setSavedTab('internships')}
+                  className={`pb-3 font-serif text-[18px] md:text-[20px] font-bold cursor-pointer relative transition-colors duration-200 focus:outline-none ${
+                    savedTab === 'internships' ? 'text-[#DE5D8F]' : 'text-[#AEAEAE] hover:text-[#7A7A7A]'
+                  }`}
+                >
+                  ฝึกงาน
+                  {savedTab === 'internships' && (
+                    <motion.div
+                      layoutId="savedTabUnderline"
+                      className="absolute bottom-0 left-0 right-0 h-[3px] bg-[#DE5D8F] rounded-full"
+                    />
+                  )}
+                </button>
+                <button
+                  onClick={() => setSavedTab('reviews')}
+                  className={`pb-3 font-serif text-[18px] md:text-[20px] font-bold cursor-pointer relative transition-colors duration-200 focus:outline-none ${
+                    savedTab === 'reviews' ? 'text-[#DE5D8F]' : 'text-[#AEAEAE] hover:text-[#7A7A7A]'
+                  }`}
+                >
+                  รีวิวฝึกงาน
+                  {savedTab === 'reviews' && (
+                    <motion.div
+                      layoutId="savedTabUnderline"
+                      className="absolute bottom-0 left-0 right-0 h-[3px] bg-[#DE5D8F] rounded-full"
+                    />
+                  )}
+                </button>
+              </div>
+            </div>
+
+            {/* ── Saved Items Lists ── */}
+            <div className="flex flex-col gap-6 w-full items-center">
+              
+              {/* Tab 1: Articles */}
+              {savedTab === 'articles' && (
+                savedArticles.length > 0 ? (
+                  <div className="flex flex-col gap-6 w-full items-center">
+                    {savedArticles.map((article) => (
+                      <SavedArticleCard
+                        key={article.id}
+                        article={article}
+                        onUnbookmark={() => handleUnbookmark(article.id)}
+                      />
+                    ))}
+                  </div>
+                ) : (
+                  <div className="flex flex-col items-center justify-center py-20 text-center bg-[#FDF8FA]/30 border border-dashed border-pink-200 rounded-[24px] w-full px-4">
+                    <BookmarkX size={64} className="text-pink-300 mb-4" />
+                    <h3 className="text-[20px] font-bold text-gray-700 font-serif mb-2">
+                      ไม่มีบทความที่บันทึกไว้
+                    </h3>
+                    <p className="text-gray-400 max-w-sm text-[15px] font-serif mb-6 leading-relaxed">
+                      คุณยังไม่ได้บันทึกบทความใดๆ ไว้ในที่นี้ ลองไปเลือกสำรวจอ่านบทความต่างๆ ได้เลย
+                    </p>
+                    <button
+                      onClick={() => navigate('/articles')}
+                      className="px-6 py-2.5 bg-[#E992B4] hover:bg-[#DE5D8F] text-white font-bold rounded-xl transition-all cursor-pointer active:scale-95 font-serif text-[15px]"
+                    >
+                      สำรวจบทความ
+                    </button>
+                  </div>
+                )
+              )}
+
+              {/* Tab 2: Internships (Mock Data) */}
+              {savedTab === 'internships' && (
+                <div className="flex flex-col gap-6 w-full items-center">
+                  {MOCK_SAVED_INTERNSHIPS.map((intern) => (
+                    <div
+                      key={intern.id}
+                      className="w-full max-w-[1056px] rounded-2xl border border-gray-200 bg-white p-6 flex flex-col justify-between gap-4 shadow-xs"
+                    >
+                      <div className="flex justify-between items-start gap-4">
+                        <div className="flex flex-col gap-1.5">
+                          <span className="text-[13px] font-bold text-[#DE5D8F] font-serif">{intern.company}</span>
+                          <h3 className="text-[20px] font-bold text-[#404041] font-serif leading-tight">{intern.role}</h3>
+                          <div className="flex gap-2 mt-1">
+                            {intern.tags.map((t, i) => (
+                              <span key={i} className="px-2 py-0.5 text-[11px] font-bold text-gray-500 bg-gray-100 rounded-sm font-sans">{t}</span>
+                            ))}
+                          </div>
+                        </div>
+                        <span className="px-3 py-1 text-[12px] font-bold text-[#DE5D8F] bg-[#FCEFF4] rounded-full font-serif">{intern.category}</span>
+                      </div>
+                      <div className="flex items-center justify-between border-t border-gray-100 pt-4 text-[13px] text-gray-400 font-serif">
+                        <div className="flex items-center gap-4">
+                          <span>ระยะเวลา: {intern.period}</span>
+                        </div>
+                        <a href="#" onClick={(e) => e.preventDefault()} className="text-[#DE5D8F] font-bold flex items-center gap-1">
+                          รายละเอียดเพิ่มเติม
+                          <ArrowRight size={14} />
+                        </a>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              )}
+
+              {/* Tab 3: Reviews (Mock Data) */}
+              {savedTab === 'reviews' && (
+                <div className="flex flex-col gap-6 w-full items-center">
+                  {MOCK_SAVED_REVIEWS.map((rev) => (
+                    <div
+                      key={rev.id}
+                      className="w-full max-w-[1056px] rounded-2xl border border-gray-200 bg-white p-6 flex flex-col justify-between gap-4 shadow-xs"
+                    >
+                      <div className="flex justify-between items-start gap-4">
+                        <div className="flex flex-col gap-1.5">
+                          <span className="text-[13px] font-bold text-gray-400 font-serif">{rev.company} • {rev.role}</span>
+                          <p className="text-[15px] text-[#404041] font-serif leading-relaxed line-clamp-2 mt-1">
+                            &ldquo;{rev.excerpt}&rdquo;
+                          </p>
+                        </div>
+                        <span className="px-3 py-1 text-[12px] font-bold text-[#DE5D8F] bg-[#FCEFF4] rounded-full font-serif whitespace-nowrap">{rev.category}</span>
+                      </div>
+                      <div className="flex items-center justify-between border-t border-gray-100 pt-4 text-[13px] text-gray-400 font-serif">
+                        <div className="flex items-center gap-3">
+                          <span>เขียนโดย: {rev.author}</span>
+                          <span>•</span>
+                          <span>โพสต์เมื่อ: {rev.date}</span>
+                        </div>
+                        <a href="#" onClick={(e) => e.preventDefault()} className="text-[#DE5D8F] font-bold flex items-center gap-1">
+                          อ่านรีวิวฉบับเต็ม
+                          <ArrowRight size={14} />
+                        </a>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              )}
+
+            </div>
+
+            {/* Bottom CTA to redirect back to standard Articles view */}
+            <div className="flex justify-end w-full max-w-[1056px] mx-auto mt-6">
+              <button
+                onClick={() => {
+                  setSearchParams((prev) => {
+                    prev.delete('tab');
+                    return prev;
+                  });
+                }}
+                className="flex items-center justify-center gap-2.5 px-8 h-[58px] rounded-xl bg-[#E992B4] hover:bg-[#DE5D8F] text-white font-bold font-serif text-[16px] shadow-md hover:shadow-lg transition-all active:scale-97 select-none cursor-pointer"
+              >
+                ไปที่หน้าบทความ
+                <ArrowRight size={18} />
+              </button>
+            </div>
+
+          </div>
+        </div>
+        <Footer />
+      </>
+    );
+  }
+
+  // ── Standard Articles Page View ──
   return (
     <>
       <div className="bg-white min-h-screen">
-        <div className="max-w-[1282px] mx-auto px-4 lg:px-[50px] w-full py-12 md:py-16 flex flex-col gap-8">
+        <div className="max-w-[1282px] mx-auto px-4 lg:px-6 w-full py-12 md:py-16 flex flex-col gap-8">
 
           {/* Page Title */}
           <SectionHeading
@@ -145,6 +633,15 @@ export default function ArticlesPage() {
                   date={article.date}
                   category={article.category}
                   imageUrl={article.imageUrl}
+                  onBookmarkChange={(id, bookmarked) => {
+                    setBookmarkedIds((prev) => {
+                      if (bookmarked) {
+                        return prev.includes(id) ? prev : [...prev, id];
+                      } else {
+                        return prev.filter((bid) => bid !== id);
+                      }
+                    });
+                  }}
                 />
               ))}
             </div>
@@ -160,7 +657,7 @@ export default function ArticlesPage() {
               {(searchQuery || selectedCategory !== 'ทั้งหมด') && (
                 <button
                   onClick={handleClearFilters}
-                  className="mt-6 px-6 py-2.5 bg-[#E992B4] hover:bg-[#DE5D8F] text-white font-bold rounded-[9999px] transition-all cursor-pointer active:scale-95 font-serif text-[14px] shadow-sm"
+                  className="mt-6 px-6 py-2.5 bg-[#E992B4] hover:bg-[#DE5D8F] text-white font-bold rounded-[9999px] transition-all cursor-pointer active:scale-95 font-serif text-[14px]"
                 >
                   ล้างตัวกรองทั้งหมด
                 </button>
@@ -184,4 +681,3 @@ export default function ArticlesPage() {
     </>
   );
 }
-

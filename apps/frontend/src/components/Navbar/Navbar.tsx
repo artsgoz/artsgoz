@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Link } from 'react-router';
 import { logoImg, MobileStudentProfileCard, MobileManageAccountCard } from '@org/design-system';
 import { PATHS } from '../../routes/paths.js';
@@ -12,6 +12,27 @@ export function Navbar() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [isMobileProfileOpen, setIsMobileProfileOpen] = useState(false);
   const [mobileProfileView, setMobileProfileView] = useState<'profile' | 'manage'>('profile');
+  const [isScrolled, setIsScrolled] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = (e: Event) => {
+      const target = e.target as HTMLElement | Document;
+      let scrollTopValue = 0;
+      if (target === document) {
+        scrollTopValue = window.scrollY || document.documentElement.scrollTop;
+      } else if (target instanceof HTMLElement) {
+        scrollTopValue = target.scrollTop;
+      }
+      setIsScrolled(scrollTopValue > 20);
+    };
+
+    window.addEventListener('scroll', handleScroll, true);
+    return () => window.removeEventListener('scroll', handleScroll, true);
+  }, []);
+
+  const fadeClassName = `transition-all duration-300 ease-in-out ${
+    isScrolled ? 'opacity-0 pointer-events-none invisible' : 'opacity-100 pointer-events-auto visible'
+  }`;
 
   const handleLogin = () => {
     // TODO: เชื่อมต่อ API ล็อกอินจริง (เช่น นำ Token ที่ได้รับหลังการตรวจสอบผ่าน SSO ไปเช็คกับระบบฐานข้อมูล)
@@ -25,8 +46,22 @@ export function Navbar() {
   };
 
   return (
-    <nav className="w-full bg-[#FFF] relative z-50 shadow-[0_4px_4px_0_rgba(0,0,0,0.25)] transition-all duration-300">
-      <div className="flex items-center justify-between lg:justify-end w-full h-[65px] lg:h-[81px] px-4 lg:pl-[50px] lg:pr-[40px] gap-4 lg:gap-[38px]">
+    <nav className="w-full fixed top-0 left-0 z-50 bg-transparent transition-all duration-300">
+      {/* Background layer 1: Solid white with shadow (unscrolled state) */}
+      <div
+        className={`absolute inset-0 bg-white shadow-[0_4px_4px_0_rgba(0,0,0,0.25)] transition-opacity duration-300 ease-in-out z-0 ${
+          isScrolled ? 'opacity-0' : 'opacity-100'
+        }`}
+      />
+
+      {/* Background layer 2: Fading white gradient (scrolled state) */}
+      <div
+        className={`absolute inset-0 bg-gradient-to-b from-white via-white/80 to-transparent transition-opacity duration-300 ease-in-out z-0 ${
+          isScrolled ? 'opacity-100' : 'opacity-0'
+        }`}
+      />
+
+      <div className="relative z-10 flex items-center justify-between lg:justify-end w-full h-[65px] lg:h-[81px] px-4 lg:px-6 gap-4 lg:gap-[38px]">
         <Link
           to={PATHS.ROOT}
           className="shrink-0 flex items-center hover:opacity-90 transition-opacity lg:mr-auto"
@@ -38,18 +73,26 @@ export function Navbar() {
           />
         </Link>
 
-        <DesktopMenu />
+        <div className={`hidden lg:block ${fadeClassName}`}>
+          <DesktopMenu />
+        </div>
 
-        <NavActions
-          isLoggedIn={isLoggedIn}
-          onLogin={handleLogin}
-          onLogout={handleLogout}
-        />
+        <div className={`hidden sm:block ${fadeClassName}`}>
+          <div className="flex items-center gap-4 lg:gap-[38px]">
+            <NavActions
+              isLoggedIn={isLoggedIn}
+              onLogin={handleLogin}
+              onLogout={handleLogout}
+            />
+          </div>
+        </div>
 
-        <MobileMenuToggle
-          isOpen={isMobileMenuOpen}
-          onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-        />
+        <div className={`lg:hidden ${fadeClassName}`}>
+          <MobileMenuToggle
+            isOpen={isMobileMenuOpen}
+            onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+          />
+        </div>
       </div>
 
       <MobileMenuPanel

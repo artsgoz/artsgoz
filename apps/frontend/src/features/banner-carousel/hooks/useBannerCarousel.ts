@@ -22,6 +22,13 @@ export function useBannerCarousel(
     setDisplayIndex((prev) => prev - 1);
   };
 
+  const goToSlide = (index: number) => {
+    if (!hasMultiple) return;
+    if (isTransitioning) return;
+    setIsTransitioning(true);
+    setDisplayIndex(index + 1);
+  };
+
   const handleTransitionEnd = () => {
     if (!hasMultiple) return;
 
@@ -54,6 +61,7 @@ export function useBannerCarousel(
     isTransitioning,
     nextSlide,
     prevSlide,
+    goToSlide,
     handleTransitionEnd,
   };
 }

@@ -23,7 +23,7 @@ export function YellowCardFooterBar({ onCancel, onSave }: YellowCardFooterBarPro
         <button
           type="button"
           onClick={onSave}
-          className="bg-[#E992B4] hover:bg-[#DE5D8F] text-white font-bold text-[17px] px-8 h-[48px] rounded-[8px] cursor-pointer shadow-md transition-colors"
+          className="bg-[#E992B4] hover:bg-[#DE5D8F] text-white font-bold text-[17px] px-8 h-[48px] rounded-[8px] cursor-pointer transition-colors"
         >
           ยืนยันและบันทึก
         </button>

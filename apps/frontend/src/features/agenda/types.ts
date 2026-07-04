@@ -14,7 +14,8 @@ export interface AgendaEvent {
 export interface UpcomingEvent {
   month: string;
   day: number;
-  dayLabel: string;        // e.g. "วันนี้", "พรุ่งนี้", "พฤ."
+  dayLabel?: string;        // e.g. "วันนี้", "พรุ่งนี้", "พฤ."
+  dayLabels?: string[];     // Array of labels for multiple chips
   title: string;
   time: string;
   isToday: boolean;

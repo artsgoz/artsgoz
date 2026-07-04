@@ -28,7 +28,7 @@ export function StudentProfileForm({ profile, onChange }: StudentProfileFormProp
           <button
             type="button"
             onClick={() => setIsEditing(true)}
-            className="text-[14px] font-bold text-[#DE5D8F] hover:text-[#ca5582] transition-colors cursor-pointer border border-[#DE5D8F]/20 hover:border-[#DE5D8F] rounded-[8px] py-1.5 px-3.5 bg-white shadow-2xs"
+            className="text-[14px] font-bold text-[#DE5D8F] hover:text-[#ca5582] transition-colors cursor-pointer border border-[#DE5D8F]/20 hover:border-[#DE5D8F] rounded-[8px] py-1.5 px-3.5 bg-white"
           >
             แก้ไข
           </button>
@@ -44,7 +44,7 @@ export function StudentProfileForm({ profile, onChange }: StudentProfileFormProp
             <button
               type="button"
               onClick={handleSave}
-              className="text-[14px] font-bold text-white bg-[#E992B4] hover:bg-[#DE5D8F] transition-colors cursor-pointer rounded-[8px] py-1 px-3 shadow-sm"
+              className="text-[14px] font-bold text-white bg-[#E992B4] hover:bg-[#DE5D8F] transition-colors cursor-pointer rounded-[8px] py-1 px-3"
             >
               บันทึก
             </button>

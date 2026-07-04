@@ -9,6 +9,9 @@ export default defineConfig(() => ({
     port: 4200,
     host: 'localhost',
   },
+  optimizeDeps: {
+    exclude: ['@org/design-system'],
+  },
   preview: {
     port: 4200,
     host: 'localhost',

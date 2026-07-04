@@ -80,7 +80,7 @@ export function DocumentSearchSection() {
   };
 
   return (
-    <div className="w-full max-w-[1280px] mx-auto px-4 md:px-[85px] py-10 md:py-16">
+    <div className="w-full max-w-[1280px] mx-auto px-4 md:px-8 py-10 md:py-16">
       {/* Title */}
       <h1 className="font-[ChulaCharasNew] text-black font-bold text-[32px] mb-6 select-none">
         ค้นหาเอกสาร
@@ -103,7 +103,7 @@ export function DocumentSearchSection() {
         {/* Filter Icon Button */}
         <button
           type="button"
-          className="flex items-center justify-center bg-[#E992B4] hover:bg-[#DE5D8F] text-white rounded-[8px] transition-colors duration-200 w-8 h-8 cursor-pointer shrink-0 shadow-sm"
+          className="flex items-center justify-center bg-[#E992B4] hover:bg-[#DE5D8F] text-white rounded-[8px] transition-colors duration-200 w-8 h-8 cursor-pointer shrink-0"
           aria-label="ตัวกรองเพิ่มเติม"
         >
           <ListFilter size={16} />
@@ -119,7 +119,7 @@ export function DocumentSearchSection() {
               key={category}
               type="button"
               onClick={() => handleCategoryClick(category)}
-              className={`font-[ChulaCharasNew] font-bold rounded-full md:rounded-[9999px] cursor-pointer transition-all shrink-0 shadow-sm border border-transparent
+              className={`font-[ChulaCharasNew] font-bold rounded-full md:rounded-[9999px] cursor-pointer transition-all shrink-0 border border-transparent
                 text-[10px] md:text-[14px] 
                 h-[20px] md:h-[32px]
                 px-2 md:px-4

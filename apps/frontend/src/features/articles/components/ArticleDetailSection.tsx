@@ -29,7 +29,7 @@ export function ArticleDetailSection() {
 
   return (
     <div className="w-full bg-white">
-      <div className="max-w-[1065px] mx-auto px-4 lg:px-[50px] py-10 md:py-14 flex flex-col gap-12">
+      <div className="max-w-[1065px] mx-auto px-4 lg:px-6 py-10 md:py-14 flex flex-col gap-12">
 
         {/* Back button — not in Figma but helpful UX */}
         <button
@@ -153,7 +153,7 @@ export function ArticleDetailSection() {
       </div>
 
       {/* ── "อ่านต่อ" section (Figma: Frame 6519, column gap:65px, width:1181) ── */}
-      <div className="w-full max-w-[1181px] mx-auto px-4 lg:px-[50px] pb-14 flex flex-col gap-10">
+      <div className="w-full max-w-[1181px] mx-auto px-4 lg:px-6 pb-14 flex flex-col gap-10">
         {/* "อ่านต่อ": ChulaCharasNew, 32px, bold, lineHeight:40px, black */}
         <h2 className="font-serif font-bold text-[24px] md:text-[32px] leading-[32px] md:leading-[40px] text-black">
           อ่านต่อ

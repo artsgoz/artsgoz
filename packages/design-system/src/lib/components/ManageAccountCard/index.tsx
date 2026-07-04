@@ -85,7 +85,7 @@ export function ManageAccountCard({
             {/* Circular Pink Edit Pencil Button */}
             <button
               onClick={onEditClick}
-              className="w-[48px] h-[48px] rounded-full bg-[var(--color-background-primary-default,#E992B4)] hover:bg-[var(--color-background-primary-dark,#DE5D8F)] text-white flex items-center justify-center cursor-pointer shadow-md hover:scale-105 active:scale-95 transition-all shrink-0"
+              className="w-[48px] h-[48px] rounded-full bg-[var(--color-background-primary-default,#E992B4)] hover:bg-[var(--color-background-primary-dark,#DE5D8F)] text-white flex items-center justify-center cursor-pointer hover:scale-105 active:scale-95 transition-all shrink-0"
               aria-label="Edit Profile"
             >
               <Icon name="Pencil" sizeVariant="md" className="text-white" />

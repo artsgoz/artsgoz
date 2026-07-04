@@ -1,14 +1,14 @@
-import { useState, useRef } from 'react';
+import { useState, useEffect } from 'react';
 import { useSearchParams } from 'react-router';
 import {
   BookOpen, Users, Bookmark, ListTodo, FileText, Search,
   GraduationCap, Globe, ClipboardList, Umbrella, Heart, Pill,
   Brain, HeartHandshake, Dumbbell, Smile, Bus, Lightbulb,
-  X, Compass, ChevronDown, ChevronLeft, ChevronRight,
+  X, Compass,
 } from 'lucide-react';
-import { Link } from 'react-router';
 import { LucideIcon } from 'lucide-react';
 import { SectionHeading } from '@org/design-system';
+import { FeatureCard } from '../../../features/quick-access/index.js';
 import { PATHS } from '../../paths';
 import { Footer } from '../../../components/Footer/index.js';
 
@@ -50,24 +50,25 @@ interface CategoryGroup {
   id: string;
   title: string;
   tag: string;
+  subtitle: string;
 }
 
 const CATEGORY_GROUPS: CategoryGroup[] = [
-  { id: 'general',    title: 'บริการทั่วไป',          tag: 'general' },
-  { id: 'academic',   title: 'บริการวิชาการ',         tag: 'academic' },
-  { id: 'learning',   title: 'วางแผนการเรียน',        tag: 'learning' },
-  { id: 'kos',        title: 'บริการโดย กอศ.',        tag: 'kos' },
-  { id: 'mental',     title: 'สุขภาพจิต',             tag: 'mental' },
-  { id: 'university', title: 'บริการจากมหาวิทยาลัย', tag: 'university' },
+  { id: 'general', title: 'บริการทั่วไป', tag: 'general', subtitle: 'ข้อมูลทั่วไปและชมรมต่าง ๆ ในคณะ' },
+  { id: 'academic', title: 'บริการวิชาการ', tag: 'academic', subtitle: 'ใบคำร้อง ทุนการศึกษา และหลักสูตร' },
+  { id: 'learning', title: 'วางแผนการเรียน', tag: 'learning', subtitle: 'เครื่องมืออำนวยความสะดวกการเรียน' },
+  { id: 'kos', title: 'บริการโดย กอศ.', tag: 'kos', subtitle: 'สวัสดิการนิสิตโดยคณะกรรมการนิสิต' },
+  { id: 'mental', title: 'สุขภาพจิต', tag: 'mental', subtitle: 'แหล่งปรึกษาและพื้นที่ดูแลสุขภาพใจ' },
+  { id: 'university', title: 'บริการจากมหาวิทยาลัย', tag: 'university', subtitle: 'รถโดยสาร ศูนย์กีฬา และบริการส่วนกลาง' },
 ];
 
 const SIDEBAR_ITEMS = [
-  { id: 'all',        label: 'บริการทั้งหมด', tag: 'all' },
-  { id: 'general',    label: 'บริการทั่วไป',  tag: 'general' },
-  { id: 'academic',   label: 'บริการวิชาการ', tag: 'academic' },
-  { id: 'learning',   label: 'วางแผนการเรียน', tag: 'learning' },
-  { id: 'kos',        label: 'บริการโดย กอศ.', tag: 'kos' },
-  { id: 'mental',     label: 'สุขภาพจิต',      tag: 'mental' },
+  { id: 'all', label: 'บริการทั้งหมด', tag: 'all' },
+  { id: 'general', label: 'บริการทั่วไป', tag: 'general' },
+  { id: 'academic', label: 'บริการวิชาการ', tag: 'academic' },
+  { id: 'learning', label: 'วางแผนการเรียน', tag: 'learning' },
+  { id: 'kos', label: 'บริการโดย กอศ.', tag: 'kos' },
+  { id: 'mental', label: 'สุขภาพจิต', tag: 'mental' },
   { id: 'university', label: 'บริการจากมหาวิทยาลัย', tag: 'university' },
 ];
 
@@ -117,27 +118,6 @@ function getModalContent(serviceName: string) {
   }
 }
 
-// ── FeatureCard (supports external links) ─────────────────────────────────────
-function ServiceFeatureCard({ title, description, icon: IconComponent, href, isExternal }: {
-  title: string; description: string; icon: LucideIcon; href: string; isExternal?: boolean;
-}) {
-  const inner = (
-    <div className="group relative w-[150px] h-[150px] rounded-[12px] border border-[#D0D0D1] bg-[#FFF] shadow-[2px_3px_6px_0_rgba(0,0,0,0.12)] overflow-hidden transition-all duration-300 hover:scale-[1.02] shrink-0">
-      <div className="absolute top-0 left-0 w-full h-[107px] flex items-center justify-center">
-        <IconComponent size={56} strokeWidth={1.5} className="text-[#E992B4] transition-all duration-300 ease-in-out group-hover:-translate-y-2 group-hover:scale-[0.9]" />
-      </div>
-      <div className="absolute bottom-0 left-0 w-full h-[43px] group-hover:h-[85px] bg-[#E992B4] rounded-b-[12px] flex flex-col items-center justify-center group-hover:justify-start group-hover:pt-[10px] px-2 transition-all duration-300 ease-in-out z-10">
-        <span className="text-white text-[18px] font-semibold font-serif leading-none text-center w-[135px] z-10">{title}</span>
-        <p className="text-white text-[11px] text-center leading-snug mt-0 group-hover:mt-1 opacity-0 max-h-0 group-hover:max-h-[36px] group-hover:opacity-100 transition-all duration-300 ease-in-out overflow-hidden w-[135px] line-clamp-2">{description}</p>
-      </div>
-    </div>
-  );
-
-  if (isExternal) {
-    return <a href={href} target="_blank" rel="noopener noreferrer" className="shrink-0">{inner}</a>;
-  }
-  return <Link to={href} className="shrink-0">{inner}</Link>;
-}
 
 // ── Main Page ──────────────────────────────────────────────────────────────────
 export default function StudentServicesPage() {
@@ -146,11 +126,124 @@ export default function StudentServicesPage() {
   const [selectedFilter, setSelectedFilter] = useState('all');
 
   const activeService = searchParams.get('service');
-  const scrollRefs = useRef<{ [key: string]: HTMLDivElement | null }>({});
 
-  const handleScroll = (categoryId: string, direction: 'left' | 'right') => {
-    const el = scrollRefs.current[categoryId];
-    if (el) el.scrollBy({ left: direction === 'left' ? -350 : 350, behavior: 'smooth' });
+  // Scrollspy effect to highlight the category link on scroll
+  useEffect(() => {
+    if (searchQuery) return;
+
+    const handleScrollSpy = () => {
+      const scrollPosition = window.scrollY + 180;
+
+      if (window.scrollY < 200) {
+        setSelectedFilter('all');
+        return;
+      }
+
+      let currentFilter = 'all';
+      for (const group of CATEGORY_GROUPS) {
+        const el = document.getElementById(`section-${group.id}`);
+        if (el) {
+          const top = el.offsetTop;
+          const height = el.offsetHeight;
+          if (scrollPosition >= top && scrollPosition < top + height) {
+            currentFilter = group.id;
+            break;
+          }
+        }
+      }
+      setSelectedFilter(currentFilter);
+    };
+
+    window.addEventListener('scroll', handleScrollSpy);
+    return () => window.removeEventListener('scroll', handleScrollSpy);
+  }, [searchQuery]);
+
+  const renderServicesGrid = (groupServices: ServiceItem[]) => {
+    const count = groupServices.length;
+
+    if (count === 3) {
+      return (
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-2 lg:gap-2 w-full">
+          <div className="md:row-span-2 h-full">
+            <FeatureCard
+              title={groupServices[0].title}
+              description={groupServices[0].description}
+              icon={groupServices[0].icon}
+              href={groupServices[0].href}
+              isExternal={groupServices[0].isExternal}
+              size="lg"
+            />
+          </div>
+          <div className="h-[180px] md:h-[189px]">
+            <FeatureCard
+              title={groupServices[1].title}
+              description={groupServices[1].description}
+              icon={groupServices[1].icon}
+              href={groupServices[1].href}
+              isExternal={groupServices[1].isExternal}
+              size="sm"
+            />
+          </div>
+          <div className="h-[180px] md:h-[189px]">
+            <FeatureCard
+              title={groupServices[2].title}
+              description={groupServices[2].description}
+              icon={groupServices[2].icon}
+              href={groupServices[2].href}
+              isExternal={groupServices[2].isExternal}
+              size="sm"
+            />
+          </div>
+        </div>
+      );
+    }
+
+    if (count === 5) {
+      return (
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-2 lg:gap-2 w-full">
+          <div className="h-full">
+            <FeatureCard
+              title={groupServices[0].title}
+              description={groupServices[0].description}
+              icon={groupServices[0].icon}
+              href={groupServices[0].href}
+              isExternal={groupServices[0].isExternal}
+              size="lg"
+            />
+          </div>
+          <div className="grid grid-cols-2 gap-2 lg:gap-2">
+            {groupServices.slice(1).map((service, index) => (
+              <FeatureCard
+                key={index}
+                title={service.title}
+                description={service.description}
+                icon={service.icon}
+                href={service.href}
+                isExternal={service.isExternal}
+                size="sm"
+              />
+            ))}
+          </div>
+        </div>
+      );
+    }
+
+    // Default (e.g. 6 items or any other count)
+    return (
+      <div className="grid grid-cols-2 md:grid-cols-3 gap-2 lg:gap-2 w-full">
+        {groupServices.map((service, index) => (
+          <FeatureCard
+            key={index}
+            title={service.title}
+            description={service.description}
+            icon={service.icon}
+            href={service.href}
+            isExternal={service.isExternal}
+            size="sm"
+          />
+        ))}
+      </div>
+    );
   };
 
   const closeModal = () => {
@@ -159,194 +252,192 @@ export default function StudentServicesPage() {
     setSearchParams(newParams);
   };
 
+  // Clicks in sidebar categories do not filter main services right side.
+  // We only filter right-side services by the search query.
   const filteredServices = servicesData.filter((service) => {
     const matchesSearch =
       service.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
       service.description.toLowerCase().includes(searchQuery.toLowerCase());
-    const matchesFilter = selectedFilter === 'all' || service.tags.includes(selectedFilter);
-    return matchesSearch && matchesFilter;
+    return matchesSearch;
   });
 
-  let renderGroups = CATEGORY_GROUPS;
-  if (selectedFilter !== 'all') {
-    if (selectedFilter === 'learning') {
-      renderGroups = [{ id: 'learning', title: 'วางแผนการเรียน', tag: 'learning' }];
-    } else if (selectedFilter === 'mental') {
-      renderGroups = [{ id: 'mental', title: 'สุขภาพจิต', tag: 'mental' }];
-    } else {
-      renderGroups = CATEGORY_GROUPS.filter((g) => g.tag === selectedFilter);
-    }
-  }
+  // Always show all category groups on the right side
+  const renderGroups = CATEGORY_GROUPS;
 
   const modalData = activeService ? getModalContent(activeService) : null;
   const ModalIcon = modalData?.icon;
 
   return (
-    <div className="w-full bg-[#FFF] flex flex-col min-h-screen">
-      {/* Top Main Section container */}
-      <div className="max-w-[1282px] mx-auto px-4 lg:px-[50px] w-full py-12 flex-1">
+    <div className="w-full bg-[#FFF] flex flex-col min-h-screen relative">
+      {/* Main Container: Wrap all content side-by-side */}
+      <div className="flex-1 w-full bg-white flex flex-col pt-12 pb-16">
+        <div className="max-w-[1282px] w-full mx-auto px-4 lg:px-6 flex-1 flex flex-col">
+          {/* Page Title — matches Figma "ค้นหาบริการนิสิต" at top */}
+          <SectionHeading title="ค้นหาบริการนิสิต" description="เมนูลัดสำหรับเข้าถึงระบบต่างๆ ของคณะอักษรศาสตร์ ครบครันในที่เดียว" />
 
-        {/* Page Title — matches Figma "ค้นหาบริการนิสิต" at top */}
-        <SectionHeading title="ค้นหาบริการนิสิต" />
-
-        {/* Search bar — matches Figma search row below title */}
-        <div className="mt-8 border-b border-gray-100 pb-8 w-full">
-          <div className="relative max-w-full">
-            <Search size={18} className="absolute left-4 top-1/2 -translate-y-1/2 text-[#DE5D8F] pointer-events-none" />
-            <input
-              type="text"
-              placeholder="ค้นหาเอกสาร..."
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full pl-12 pr-10 py-3 rounded-full border border-[#8B8B8C] bg-white text-[16px] font-[ChulaCharasNew] text-[#DE5D8F] placeholder:text-[#DE5D8F] focus:outline-none focus:ring-2 focus:ring-[#DE5D8F]/30 transition-all"
-            />
-            {searchQuery && (
-              <button onClick={() => setSearchQuery('')} className="absolute right-4 top-1/2 -translate-y-1/2 text-[#8B8B8C] hover:text-[#DE5D8F] cursor-pointer transition-colors">
-                <X size={16} />
-              </button>
-            )}
-          </div>
-        </div>
-
-        {/* Content Body: Sidebar + Main Services */}
-        <div className="mt-10 flex flex-col lg:flex-row gap-10 items-start">
-
-          {/* Mobile chip strip */}
-          <div className="w-full lg:hidden overflow-x-auto flex gap-2 pb-4 scrollbar-none snap-x border-b border-gray-100">
-            {SIDEBAR_ITEMS.map((item) => {
-              const isActive = selectedFilter === item.tag;
-              return (
-                <button
-                  key={item.id}
-                  onClick={() => setSelectedFilter(item.tag)}
-                  className={`px-4 py-2 rounded-full text-[14px] font-bold transition-all whitespace-nowrap snap-center cursor-pointer font-[ChulaCharasNew] ${isActive ? 'bg-[#DE5D8F] text-white shadow-sm' : 'bg-gray-100 text-[#404041] hover:bg-gray-200'}`}
-                >
-                  {item.label}
+          {/* Search bar — matches Figma search row below title */}
+          <div className="mt-8 pb-8 w-full">
+            <div className="relative max-w-full">
+              <Search size={18} className="absolute left-4 top-1/2 -translate-y-1/2 text-[#DE5D8F] pointer-events-none" />
+              <input
+                type="text"
+                placeholder="ค้นหาบริการนิสิต..."
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                className="w-full pl-12 pr-10 py-3 rounded-full border border-[#8B8B8C] bg-white text-[16px] font-[ChulaCharasNew] text-[#DE5D8F] placeholder:text-[#DE5D8F] focus:outline-none focus:ring-2 focus:ring-[#DE5D8F]/30 transition-all"
+              />
+              {searchQuery && (
+                <button onClick={() => setSearchQuery('')} className="absolute right-4 top-1/2 -translate-y-1/2 text-[#8B8B8C] hover:text-[#DE5D8F] cursor-pointer transition-colors">
+                  <X size={16} />
                 </button>
-              );
-            })}
+              )}
+            </div>
           </div>
 
-          {/* Desktop Left Sidebar — matches Figma w:216 accordion list */}
-          <aside className="hidden lg:block w-[216px] shrink-0 sticky top-24">
-            <div className="flex flex-col bg-white rounded-xl border border-[#D0D0D1]/60 shadow-[2px_4px_12px_-1px_rgba(0,0,0,0.06)] overflow-hidden">
-              {SIDEBAR_ITEMS.map((item) => {
-                const isActive = selectedFilter === item.tag;
-                return (
-                  <button
-                    key={item.id}
-                    onClick={() => setSelectedFilter(item.tag)}
-                    className={`flex items-center justify-between px-6 py-[14px] border-b border-[#F5CDDC] last:border-b-0 text-left transition-all duration-200 cursor-pointer font-[ChulaCharasNew] ${
-                      isActive
-                        ? 'bg-[#F5CDDC]/20 border-l-4 border-l-[#DE5D8F]'
-                        : 'hover:bg-gray-50'
-                    }`}
-                  >
-                    <span className={`text-[20px] font-bold leading-none ${isActive ? 'text-[#DE5D8F]' : 'text-[#DE5D8F]'}`}>
-                      {item.label}
-                    </span>
-                    <ChevronDown
-                      size={20}
-                      className={`transition-transform duration-200 text-[#404041] ${isActive ? 'rotate-180' : ''}`}
-                    />
-                  </button>
-                );
-              })}
-            </div>
-          </aside>
-
-          {/* Right Area: category sections with FeatureCard rows */}
-          <div className="flex-1 w-full space-y-[60px]">
-            {searchQuery ? (
-              // Search results
-              <div>
-                <div className="bg-[#F5CDDC] px-5 py-4 rounded-lg flex items-center justify-between min-h-[60px] mb-6 shadow-sm">
-                  <h3 className="text-[18px] font-bold text-[#404041] font-[ChulaCharasNew]">
-                    ผลลัพธ์การค้นหาสำหรับ: "{searchQuery}" ({filteredServices.length} รายการ)
-                  </h3>
-                </div>
-                {filteredServices.length > 0 ? (
-                  <div className="flex flex-wrap gap-5">
-                    {filteredServices.map((service, index) => (
-                      <ServiceFeatureCard
-                        key={index}
-                        title={service.title}
-                        description={service.description}
-                        icon={service.icon}
-                        href={service.href}
-                        isExternal={service.isExternal}
-                      />
-                    ))}
-                  </div>
-                ) : (
-                  <div className="flex flex-col items-center justify-center py-16 text-center">
-                    <Search size={48} className="text-gray-300 mb-4" />
-                    <p className="text-gray-500 text-[16px] font-[ChulaCharasNew]">ไม่พบผลลัพธ์ที่ตรงกับคำค้นหาของคุณ</p>
+          {/* Side-by-Side Content Layout */}
+          <div className="flex flex-col lg:flex-row gap-10 mt-10 flex-1">
+            {/* Desktop Left Menu: Category Links (Clean simple text-link list, wider and larger) */}
+            <nav className="hidden lg:block w-[320px] shrink-0">
+              <div className="sticky top-28 flex flex-col gap-4 select-none">
+                {SIDEBAR_ITEMS.map((item) => {
+                  const isActive = selectedFilter === item.tag;
+                  return (
                     <button
-                      onClick={() => setSearchQuery('')}
-                      className="mt-4 px-4 py-2 text-[14px] font-bold text-[#DE5D8F] border border-[#DE5D8F] rounded-lg hover:bg-[#F5CDDC]/20 transition-colors font-[ChulaCharasNew] cursor-pointer"
+                      key={item.id}
+                      onClick={() => {
+                        setSelectedFilter(item.tag);
+                        if (item.tag === 'all') {
+                          window.scrollTo({ top: 0, behavior: 'smooth' });
+                        } else {
+                          const el = document.getElementById(`section-${item.tag}`);
+                          if (el) {
+                            el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                          }
+                        }
+                      }}
+                      className={`text-left text-[19px] font-bold font-[ChulaCharasNew] transition-all duration-200 cursor-pointer w-full py-2 bg-transparent focus:outline-none border-none ${
+                        isActive 
+                          ? 'text-[#DE5D8F]' 
+                          : 'text-gray-500 hover:text-[#DE5D8F]/80'
+                      }`}
                     >
-                      ล้างคำค้นหา
+                      {item.label}
                     </button>
-                  </div>
-                )}
+                  );
+                })}
               </div>
-            ) : (
-              // Category browsing
-              renderGroups.map((group) => {
-                const groupServices = filteredServices.filter((s) =>
-                  selectedFilter === 'all' ? s.category === group.id : s.tags.includes(group.tag)
-                );
-                if (groupServices.length === 0) return null;
+            </nav>
 
-                return (
-                  <section key={group.id} className="w-full">
-                    {/* Pink section header — "academic tracker curriculum tab" from Figma */}
-                    <div className="bg-[#F5CDDC] px-5 rounded-[8px] flex items-end justify-between h-[60px] pb-3 mb-6 shadow-[0_2px_4px_rgba(0,0,0,0.03)]">
-                      <h3 className="text-[18px] font-bold text-black font-[ChulaCharasNew]">{group.title}</h3>
+            {/* Right Area: category sections with FeatureCard rows */}
+            <div className="flex-1 min-w-0">
+              {/* Mobile text-link navigation */}
+              <div className="w-full lg:hidden overflow-x-auto flex gap-6 pb-4 scrollbar-none snap-x mb-6">
+                {SIDEBAR_ITEMS.map((item) => {
+                  const isActive = selectedFilter === item.tag;
+                  return (
+                    <button
+                      key={item.id}
+                      onClick={() => {
+                        setSelectedFilter(item.tag);
+                        if (item.tag === 'all') {
+                          window.scrollTo({ top: 0, behavior: 'smooth' });
+                        } else {
+                          const el = document.getElementById(`section-${item.tag}`);
+                          if (el) {
+                            el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                          }
+                        }
+                      }}
+                      className={`py-2 text-[16px] font-bold transition-all whitespace-nowrap snap-center cursor-pointer font-[ChulaCharasNew] border-none bg-transparent focus:outline-none ${
+                        isActive 
+                          ? 'text-[#DE5D8F]' 
+                          : 'text-gray-500 hover:text-[#DE5D8F]/80'
+                      }`}
+                    >
+                      {item.label}
+                    </button>
+                  );
+                })}
+              </div>
+
+              {/* Main Sections Grid */}
+              <div className="space-y-[60px] w-full">
+                {searchQuery ? (
+                  // Search results
+                  <div>
+                    <div className="flex items-baseline justify-between pb-3 mb-6">
+                      <h3 className="text-[26px] font-bold text-gray-900 font-serif leading-none">
+                        ผลลัพธ์การค้นหาสำหรับ: "{searchQuery}"
+                      </h3>
+                      <span className="text-[13px] font-semibold text-gray-400 font-serif tracking-wide">
+                        {filteredServices.length} รายการ
+                      </span>
                     </div>
-
-                    {/* Horizontal scroll row with arrow buttons */}
-                    <div className="relative group/scroll flex items-center w-full">
-                      <button
-                        onClick={() => handleScroll(group.id, 'left')}
-                        className="absolute left-2 z-20 bg-white/95 hover:bg-white text-[#404041] hover:text-[#DE5D8F] p-2.5 rounded-full shadow-lg border border-gray-100 opacity-0 group-hover/scroll:opacity-100 transition-opacity duration-200 hidden lg:block active:scale-95 cursor-pointer"
-                        title="เลื่อนซ้าย"
-                      >
-                        <ChevronLeft size={20} />
-                      </button>
-
-                      <div
-                        ref={(el) => { scrollRefs.current[group.id] = el; }}
-                        className="flex overflow-x-auto gap-5 pb-4 pt-1 px-1 scrollbar-none snap-x snap-mandatory scroll-smooth w-full [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]"
-                      >
-                        {groupServices.map((service, index) => (
-                          <div key={index} className="snap-start shrink-0">
-                            <ServiceFeatureCard
-                              title={service.title}
-                              description={service.description}
-                              icon={service.icon}
-                              href={service.href}
-                              isExternal={service.isExternal}
-                            />
-                          </div>
+                    {filteredServices.length > 0 ? (
+                      <div className="grid grid-cols-2 md:grid-cols-3 gap-2 lg:gap-2 w-full">
+                        {filteredServices.map((service, index) => (
+                          <FeatureCard
+                            key={index}
+                            title={service.title}
+                            description={service.description}
+                            icon={service.icon}
+                            href={service.href}
+                            isExternal={service.isExternal}
+                            size="sm"
+                          />
                         ))}
                       </div>
+                    ) : (
+                      <div className="flex flex-col items-center justify-center py-16 text-center">
+                        <Search size={48} className="text-gray-300 mb-4" />
+                        <p className="text-gray-500 text-[16px] font-[ChulaCharasNew]">ไม่พบผลลัพธ์ที่ตรงกับคำค้นหาของคุณ</p>
+                        <button
+                          onClick={() => setSearchQuery('')}
+                          className="mt-4 px-4 py-2 text-[14px] font-bold text-[#DE5D8F] border border-[#DE5D8F] rounded-lg hover:bg-[#DE5D8F]/10 transition-colors font-[ChulaCharasNew] cursor-pointer"
+                        >
+                          ล้างคำค้นหา
+                        </button>
+                      </div>
+                    )}
+                  </div>
+                ) : (
+                  // Category browsing — always show all categories
+                  renderGroups.map((group) => {
+                    const groupServices = filteredServices.filter((s) => {
+                      if (group.id === 'general') return s.category === 'general';
+                      return s.tags.includes(group.id);
+                    });
+                    if (groupServices.length === 0) return null;
 
-                      <button
-                        onClick={() => handleScroll(group.id, 'right')}
-                        className="absolute right-2 z-20 bg-white/95 hover:bg-white text-[#404041] hover:text-[#DE5D8F] p-2.5 rounded-full shadow-lg border border-gray-100 opacity-0 group-hover/scroll:opacity-100 transition-opacity duration-200 hidden lg:block active:scale-95 cursor-pointer"
-                        title="เลื่อนขวา"
+                    return (
+                      <section
+                        key={group.id}
+                        id={`section-${group.id}`}
+                        className="w-full scroll-mt-28"
                       >
-                        <ChevronRight size={20} />
-                      </button>
-                    </div>
-                  </section>
-                );
-              })
-            )}
+                        <div className="flex items-baseline justify-between pb-3 mb-6 select-none">
+                          <h3 className="text-[26px] font-bold text-gray-900 font-serif leading-none">
+                            {group.title}
+                          </h3>
+                          <span className="text-[13px] font-semibold text-gray-400 font-serif tracking-wide">
+                            {group.subtitle}
+                          </span>
+                        </div>
+
+                        {renderServicesGrid(groupServices)}
+                      </section>
+                    );
+                  })
+                )}
+              </div>
+            </div>
           </div>
         </div>
+      </div>
+
+      {/* Footer at the bottom of the viewport below both sidebar and content */}
+      <div className="relative z-30">
+        <Footer />
       </div>
 
       {/* Modal for KOS services */}
@@ -372,7 +463,7 @@ export default function StudentServicesPage() {
             <div className="px-6 pb-6 flex justify-end">
               <button
                 onClick={closeModal}
-                className="px-6 py-2.5 bg-[#E992B4] hover:bg-[#DE5D8F] text-white rounded-lg font-[ChulaCharasNew] text-[14px] font-bold transition-all duration-200 active:scale-95 cursor-pointer shadow-sm"
+                className="px-6 py-2.5 bg-[#E992B4] hover:bg-[#DE5D8F] text-white rounded-lg font-[ChulaCharasNew] text-[14px] font-bold transition-all duration-200 active:scale-95 cursor-pointer"
               >
                 ตกลง
               </button>
@@ -380,8 +471,6 @@ export default function StudentServicesPage() {
           </div>
         </div>
       )}
-
-      <Footer />
     </div>
   );
 }
