@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Button } from '@org/design-system';
 import { X, HelpCircle } from 'lucide-react';
@@ -23,10 +23,11 @@ export function AddShortcutModal({ isOpen, onClose, currentMenus, onAdd }: AddSh
     );
   });
 
-  // Reset selected index when the list of available services changes
-  useEffect(() => {
+  const [prevIsOpen, setPrevIsOpen] = useState(isOpen);
+  if (isOpen !== prevIsOpen) {
+    setPrevIsOpen(isOpen);
     setSelectedIndex(0);
-  }, [availableServices.length, isOpen]);
+  }
 
   if (!isOpen) return null;
 

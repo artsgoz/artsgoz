@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { DEFAULT_SERIALIZABLE_MENUS, ICON_MAP } from '../constants.js';
 import { FeatureMenu } from '../types.js';
 import { HelpCircle } from 'lucide-react';
@@ -13,45 +13,42 @@ interface SerializableFeatureMenu {
 
 const LOCAL_STORAGE_KEY = 'artsgoz_quick_access';
 
-export function useQuickAccess() {
-  const [menus, setMenus] = useState<FeatureMenu[]>([]);
+function resolveMenus(serializable: SerializableFeatureMenu[]): FeatureMenu[] {
+  return serializable.map((m) => ({
+    title: m.title,
+    description: m.description,
+    icon: ICON_MAP[m.iconName] || HelpCircle,
+    href: m.href,
+    iconName: m.iconName,
+    isExternal: m.isExternal,
+  }));
+}
 
-  // Load from localStorage on mount
-  useEffect(() => {
+function loadInitialMenus(): FeatureMenu[] {
+  try {
     const saved = localStorage.getItem(LOCAL_STORAGE_KEY);
-    let loadedMenus: SerializableFeatureMenu[] = [];
     if (saved) {
-      try {
-        loadedMenus = JSON.parse(saved);
-      } catch (e) {
-        console.error('Failed to parse quick access menus from localStorage', e);
+      const parsed = JSON.parse(saved) as SerializableFeatureMenu[];
+      if (parsed && parsed.length > 0) {
+        return resolveMenus(parsed);
       }
     }
-    
-    if (!loadedMenus || loadedMenus.length === 0) {
-      loadedMenus = DEFAULT_SERIALIZABLE_MENUS;
-    }
+  } catch (e) {
+    console.error('Failed to parse quick access menus from localStorage', e);
+  }
+  return resolveMenus(DEFAULT_SERIALIZABLE_MENUS);
+}
 
-    // Map serializable menus to FeatureMenu (resolve icons)
-    const resolvedMenus: FeatureMenu[] = loadedMenus.map((m) => ({
-      title: m.title,
-      description: m.description,
-      icon: ICON_MAP[m.iconName] || HelpCircle,
-      href: m.href,
-      iconName: m.iconName,
-      isExternal: m.isExternal
-    } as any));
-
-    setMenus(resolvedMenus);
-  }, []);
+export function useQuickAccess() {
+  const [menus, setMenus] = useState<FeatureMenu[]>(loadInitialMenus);
 
   const saveMenus = (newMenus: FeatureMenu[]) => {
-    const serializable: SerializableFeatureMenu[] = newMenus.map((m: any) => ({
+    const serializable: SerializableFeatureMenu[] = newMenus.map((m) => ({
       title: m.title,
       description: m.description,
       iconName: m.iconName || 'Link2',
       href: m.href,
-      isExternal: m.isExternal
+      isExternal: m.isExternal,
     }));
     localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(serializable));
     setMenus(newMenus);
@@ -64,8 +61,8 @@ export function useQuickAccess() {
       icon: ICON_MAP[newMenu.iconName] || HelpCircle,
       href: newMenu.href,
       iconName: newMenu.iconName,
-      isExternal: newMenu.isExternal
-    } as any;
+      isExternal: newMenu.isExternal,
+    };
 
     const updated = [...menus, resolved];
     saveMenus(updated);
@@ -77,13 +74,7 @@ export function useQuickAccess() {
   };
 
   const resetMenus = () => {
-    const resolved = DEFAULT_SERIALIZABLE_MENUS.map((m) => ({
-      title: m.title,
-      description: m.description,
-      icon: ICON_MAP[m.iconName] || HelpCircle,
-      href: m.href,
-      iconName: m.iconName
-    } as any));
+    const resolved = resolveMenus(DEFAULT_SERIALIZABLE_MENUS);
     saveMenus(resolved);
   };
 
@@ -91,6 +82,6 @@ export function useQuickAccess() {
     menus,
     addMenu,
     deleteMenu,
-    resetMenus
+    resetMenus,
   };
 }

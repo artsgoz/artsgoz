@@ -1,6 +1,6 @@
 import { useState, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Search, Bookmark, Star, ChevronDown } from 'lucide-react';
+import { Search, Bookmark, ChevronDown } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Footer } from '../../../components/Footer/index.js';
 import { MOCK_OPEN_INTERNSHIPS, LANGUAGE_FILTER_TAGS } from '../internshipsData.js';

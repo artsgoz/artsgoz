@@ -26,12 +26,13 @@ import {
   Dumbbell,
   Smile,
   Bus,
-  Lightbulb
+  Lightbulb,
+  LucideIcon
 } from 'lucide-react';
 import { FeatureMenu } from './types.js';
 import { PATHS } from '../../routes/paths.js';
 
-export const ICON_MAP: Record<string, React.ComponentType<any>> = {
+export const ICON_MAP: Record<string, LucideIcon> = {
   ListTodo,
   BookUser,
   GraduationCap,

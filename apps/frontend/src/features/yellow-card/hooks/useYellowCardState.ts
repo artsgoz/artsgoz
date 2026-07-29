@@ -81,7 +81,7 @@ export function useYellowCardState() {
       let category: YellowCardCategory = 'credit_tracking.categories.basic';
       const catConfig = CATEGORIES_CONFIG.find((c) => c.groups.includes(groupName));
       if (catConfig) {
-        category = catConfig.category;
+        category = catConfig.category as YellowCardCategory;
       }
 
       const newSubject: YellowCardSubject = {
