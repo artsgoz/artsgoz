@@ -22,17 +22,18 @@ export function mapTrackerSubjectToYellowCard(
   studentId: string
 ): YellowCardSubject {
   // Map category
-  let category: YellowCardCategory = 'หมวดวิชาพื้นฐานอักษรศาสตร์';
-  if (ts.category === 'หมวดการศึกษาทั่วไป') {
-    category = 'หมวดการศึกษาทั่วไป';
-  } else if (ts.category === 'หมวดวิชาเลือกเสรี') {
-    category = 'หมวดวิชาเลือกเสรี';
-  } else if (ts.category === 'หมวดวิชาเอก') {
-    category = 'หมวดวิชาเอก';
-  } else if (ts.category === 'หมวดวิชาโท') {
-    category = 'หมวดวิชาโท';
-  } else if (ts.category === 'หมวดวิชาพื้นฐานอักษร') {
-    category = 'หมวดวิชาพื้นฐานอักษรศาสตร์';
+  let category: YellowCardCategory = 'credit_tracking.categories.basic';
+  const tsCat = String(ts.category || '');
+  if (tsCat === 'credit_tracking.categories.general' || tsCat === 'หมวดการศึกษาทั่วไป') {
+    category = 'credit_tracking.categories.general';
+  } else if (tsCat === 'credit_tracking.categories.free' || tsCat === 'หมวดวิชาเลือกเสรี') {
+    category = 'credit_tracking.categories.free';
+  } else if (tsCat === 'credit_tracking.categories.major' || tsCat === 'หมวดวิชาเอก') {
+    category = 'credit_tracking.categories.major';
+  } else if (tsCat === 'credit_tracking.categories.minor' || tsCat === 'หมวดวิชาโท') {
+    category = 'credit_tracking.categories.minor';
+  } else if (tsCat === 'credit_tracking.categories.basic' || tsCat === 'หมวดวิชาพื้นฐานอักษรศาสตร์' || tsCat === 'หมวดวิชาพื้นฐานอักษร') {
+    category = 'credit_tracking.categories.basic';
   }
 
   // Map group (default to first group in the category, or find match)
@@ -43,7 +44,7 @@ export function mapTrackerSubjectToYellowCard(
       (g) =>
         g.includes(ts.group || '') ||
         (ts.group && ts.group.includes(g)) ||
-        (ts.category === 'หมวดวิชาเลือกเสรี' && g === 'หมวดเลือกเสรี')
+        (tsCat === 'หมวดวิชาเลือกเสรี' && g === 'credit_tracking.planner.groups.free.g1')
     );
     group = matchedGroup || catConfig.groups[0] || '';
   }
@@ -64,7 +65,7 @@ export function mapTrackerSubjectToYellowCard(
   return {
     id: `tracker-${ts.id}`,
     code: ts.code || '0000000',
-    name: ts.nameTh || ts.nameEn || 'ชื่อวิชา',
+    nameKey: ts.nameKey || 'yellow_card.placeholder_subject',
     semester: semesterString,
     credits: (ts.credits || 3).toString(),
     grade: ts.completed ? 'A' : '', // Default to A if marked completed in credit tracking
@@ -81,5 +82,5 @@ export function mergeImportedSubjects(
   currentSubjects: YellowCardSubject[],
   importedSubjects: YellowCardSubject[]
 ): YellowCardSubject[] {
-  return [...currentSubjects.filter((s) => s.code || s.name), ...importedSubjects];
+  return [...currentSubjects.filter((s) => s.code || s.nameKey), ...importedSubjects];
 }

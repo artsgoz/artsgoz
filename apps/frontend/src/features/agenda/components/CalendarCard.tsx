@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { AgendaEvent } from '../types.js';
 
@@ -18,15 +19,16 @@ export function CalendarCard({
   selectedDate,
   onSelectDate,
   getDayLabel,
-  monthLabel = 'ส.ค. 2026',
+  monthLabel = 'agenda.month_label',
 }: CalendarCardProps) {
+  const { t } = useTranslation();
   return (
     <div className="bg-white rounded-2xl border border-gray-100 shadow-[0_4px_20px_-4px_rgba(0,0,0,0.05)] p-5 w-full">
       {/* Minimal Header */}
       <div className="flex items-center justify-between mb-4">
         <div className="flex flex-col">
           <span className="font-serif text-xl md:text-2xl font-bold text-gray-900 tracking-tight">
-            {monthLabel}
+            {t(monthLabel)}
           </span>
           <span className="font-chulalongkorn text-[13px] md:text-[14px] font-semibold text-pink-500 uppercase tracking-wide mt-0.5">
             {`${getDayLabel(selectedDate)}ที่ ${selectedDate} ส.ค.`}
@@ -110,7 +112,7 @@ export function CalendarCard({
       {eventsByDate[selectedDate] && eventsByDate[selectedDate].length > 0 && (
         <div className="mt-4 pt-4 border-t border-gray-100">
           <span className="text-[12px] md:text-[13px] font-bold text-gray-400 uppercase tracking-wider block mb-2 font-chulalongkorn">
-            กิจกรรมประจำวัน
+            {t('agenda.upcoming_title')}
           </span>
           <div className="space-y-2">
             {eventsByDate[selectedDate].map((event) => (
@@ -121,7 +123,7 @@ export function CalendarCard({
                 <div className="w-1.5 h-1.5 rounded-full bg-pink-500 mt-1.5 shrink-0" />
                 <div className="flex-1 min-w-0">
                   <p className="font-serif text-[15px] md:text-[16px] font-bold text-gray-850 leading-snug">
-                    {event.title}
+                    {t(event.title)}
                   </p>
                   <p className="text-[12px] md:text-[13px] font-medium text-gray-400 mt-0.5">{event.time}</p>
                 </div>

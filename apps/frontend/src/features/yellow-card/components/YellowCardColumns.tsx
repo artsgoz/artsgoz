@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import type { YellowCardSubject } from '../types.js';
 import { CATEGORIES_CONFIG } from '../constants.js';
 import { CurriculumTable } from './CurriculumTable.js';
@@ -18,21 +19,24 @@ export function YellowCardColumns({
   onAddSubject,
   onDeleteSubject,
 }: YellowCardColumnsProps) {
-  const displayMajor = major && major !== 'เลือกวิชาเอก' ? major : 'สารสนเทศศึกษา';
-  const rightColumnCredits = calculateTotalCredits(subjects, ['หมวดวิชาเอก', 'หมวดวิชาโท']);
+  const { t } = useTranslation();
+  const displayMajor = major && major !== 'เลือกวิชาเอก' && major !== 'credit_tracking.profile.select_major' 
+    ? t(major) 
+    : t('credit_tracking.majors.default');
+
+  const rightColumnCredits = calculateTotalCredits(subjects, ['credit_tracking.categories.major', 'credit_tracking.categories.minor']);
 
   return (
-    <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-start mb-8">
-      {/* Left Column (หลักสูตรอักษรศาสตร์บัณฑิต) */}
-      <div className="flex flex-col gap-6">
-        {/* Main Dark Pink Column Header */}
-        <div className="w-full h-[60px] bg-[#E992B4] rounded-[8px] px-5 flex items-center shadow-xs">
-          <span className="text-black text-[18px] font-bold">หลักสูตรอักษรศาสตรบัณฑิต</span>
+    <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-start mb-8 min-w-0 w-full">
+      {/* Left Column */}
+      <div className="flex flex-col gap-6 min-w-0">
+        <div className="w-full h-[60px] bg-[#E992B4] rounded-[8px] px-5 flex items-center shadow-xs min-w-0">
+          <span className="text-black text-[18px] font-bold truncate">{t('credit_tracking.curriculum.title')}</span>
         </div>
 
         {/* Left Column Categories */}
         {CATEGORIES_CONFIG.filter((cat) =>
-          ['หมวดวิชาพื้นฐานอักษรศาสตร์', 'หมวดการศึกษาทั่วไป', 'หมวดวิชาเลือกเสรี'].includes(
+          ['credit_tracking.categories.basic', 'credit_tracking.categories.general', 'credit_tracking.categories.free'].includes(
             cat.category
           )
         ).map((catConfig) => (
@@ -49,21 +53,20 @@ export function YellowCardColumns({
         ))}
       </div>
 
-      {/* Right Column (วิชาเอก + วิชาโท) */}
-      <div className="flex flex-col gap-6">
-        {/* Main Dark Pink Column Header */}
-        <div className="w-full h-[60px] bg-[#E992B4] rounded-[8px] px-5 flex items-center justify-between shadow-xs">
-          <span className="text-black text-[18px] font-bold truncate max-w-[320px]">
-            วิชาเอก: {displayMajor}
+      {/* Right Column */}
+      <div className="flex flex-col gap-6 min-w-0">
+        <div className="w-full h-[60px] bg-[#E992B4] rounded-[8px] px-5 flex items-center justify-between shadow-xs min-w-0 gap-4">
+          <span className="text-black text-[18px] font-bold truncate">
+            {t('credit_tracking.profile.major_label')}: {displayMajor}
           </span>
           <span className="text-black text-[16px] font-bold shrink-0">
-            รวม {rightColumnCredits} นก.
+            {t('credit_tracking.planner.total_credits', { credits: rightColumnCredits })}
           </span>
         </div>
 
         {/* Right Column Categories */}
         {CATEGORIES_CONFIG.filter((cat) =>
-          ['หมวดวิชาเอก', 'หมวดวิชาโท'].includes(cat.category)
+          ['credit_tracking.categories.major', 'credit_tracking.categories.minor'].includes(cat.category)
         ).map((catConfig) => (
           <CurriculumTable
             key={catConfig.category}

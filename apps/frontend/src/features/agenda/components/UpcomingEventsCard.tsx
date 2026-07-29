@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import { UpcomingEvent } from '../types.js';
 import { AgendaBadge } from './AgendaBadge.js';
 
@@ -6,16 +7,17 @@ interface UpcomingEventsCardProps {
 }
 
 export function UpcomingEventsCard({ events }: UpcomingEventsCardProps) {
+  const { t } = useTranslation();
   return (
     <div className="bg-white rounded-2xl border border-gray-100 shadow-[0_4px_20px_-4px_rgba(0,0,0,0.05)] p-6 md:p-8 w-full">
       {/* Card Header */}
       <div className="flex items-center justify-between mb-6">
-        <span className="font-serif text-xl md:text-2xl font-bold text-gray-900 tracking-tight">กิจกรรมใกล้มาถึง</span>
+        <span className="font-serif text-xl md:text-2xl font-bold text-gray-900 tracking-tight">{t('agenda.upcoming_title')}</span>
         <button
           type="button"
           className="font-serif text-[15px] md:text-[16px] font-bold text-[#DE5D8F] hover:text-[#DE5D8F]/80 transition-colors duration-200 cursor-pointer focus:outline-none bg-transparent border-none"
         >
-          ดูทั้งหมด
+          {t('agenda.view_all')}
         </button>
       </div>
 
@@ -44,14 +46,14 @@ export function UpcomingEventsCard({ events }: UpcomingEventsCardProps) {
                     {event.day}
                   </span>
                   <span className="font-serif text-[10px] md:text-[11px] font-semibold uppercase tracking-wider mt-0.5 opacity-80">
-                    {event.month}
+                    {t(event.month)}
                   </span>
                 </div>
 
                 {/* Event Info */}
                 <div className="flex flex-col ml-4 md:ml-5 min-w-0 flex-1 justify-center">
                   <h4 className="font-serif text-[16px] md:text-[18px] font-bold text-gray-800 leading-snug line-clamp-1 group-hover:text-pink-500 transition-colors">
-                    {event.title}
+                    {t(event.title)}
                   </h4>
                   <span className="text-[12px] md:text-[13px] font-medium leading-none text-gray-400 mt-1">{event.time}</span>
                 </div>
@@ -61,10 +63,10 @@ export function UpcomingEventsCard({ events }: UpcomingEventsCardProps) {
               <div className="flex items-center gap-1.5 pl-3 shrink-0 flex-wrap justify-end">
                 {event.dayLabels && event.dayLabels.length > 0 ? (
                   event.dayLabels.map((label, idx) => (
-                    <AgendaBadge key={`${label}-${idx}`}>{label}</AgendaBadge>
+                    <AgendaBadge key={`${label}-${idx}`}>{t(label)}</AgendaBadge>
                   ))
                 ) : event.dayLabel ? (
-                  <AgendaBadge>{event.dayLabel}</AgendaBadge>
+                  <AgendaBadge>{t(event.dayLabel)}</AgendaBadge>
                 ) : null}
               </div>
             </div>

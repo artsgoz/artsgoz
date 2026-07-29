@@ -1,9 +1,15 @@
+import { useTranslation } from 'react-i18next';
 import { SectionHeading } from '@org/design-system';
 
 export default function InternshipsPage() {
+  const { t } = useTranslation();
+
   return (
     <div className="max-w-[1282px] mx-auto px-4 lg:px-6 w-full py-16">
-      <SectionHeading title="รีวิวฝึกงาน" description="อ่านรีวิวประสบการณ์ฝึกงานจากรุ่นพี่คณะอักษรศาสตร์" />
+      <SectionHeading 
+        title={t('quick_access.menus.internship_review_title')} 
+        description={t('quick_access.menus.internship_review_desc')} 
+      />
     </div>
   );
 }

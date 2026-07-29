@@ -1,9 +1,11 @@
 import { useRef } from 'react';
 import { useSearchParams } from 'react-router';
+import { useTranslation } from 'react-i18next';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { MOCK_CLUBS } from '../constants.js';
 
 export function ClubSelector() {
+  const { t } = useTranslation();
   const [searchParams, setSearchParams] = useSearchParams();
   const activeId = searchParams.get('id') || 'club-04'; // Default to Dance Club (club-04)
   const scrollContainerRef = useRef<HTMLDivElement>(null);
@@ -16,7 +18,6 @@ export function ClubSelector() {
       },
       { replace: true }
     );
-    // Optional: smooth scroll selector to active item
     const element = document.getElementById(`selector-item-${id}`);
     element?.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
   };
@@ -36,7 +37,7 @@ export function ClubSelector() {
       {/* Scroll controls */}
       <button
         onClick={() => scroll('left')}
-        className="absolute left-[-16px] top-1/2 -translate-y-1/2 z-20 flex items-center justify-center w-10 h-10 rounded-full bg-white shadow-md border border-gray-100 hover:scale-105 active:scale-95 transition-all text-gray-600 hover:text-black cursor-pointer hidden md:flex"
+        className="absolute left-[-16px] top-1/2 -translate-y-1/2 z-20 flex items-center justify-center w-10 h-10 rounded-full bg-white shadow-md border border-gray-100 hover:scale-105 active:scale-95 transition-all text-gray-600 hover:text-black cursor-pointer hidden md:flex border-none"
         aria-label="Scroll left"
       >
         <ChevronLeft size={20} strokeWidth={2.5} />
@@ -56,12 +57,13 @@ export function ClubSelector() {
       >
         {MOCK_CLUBS.map((club) => {
           const isActive = club.id === activeId;
+          const translatedName = t(club.nameKey);
           return (
             <button
               key={club.id}
               id={`selector-item-${club.id}`}
               onClick={() => handleSelectClub(club.id)}
-              className="flex flex-col items-center gap-2.5 shrink-0 snap-center cursor-pointer group focus:outline-none"
+              className="flex flex-col items-center gap-2.5 shrink-0 snap-center cursor-pointer group focus:outline-none border-none bg-transparent"
               style={{ width: '80px' }}
             >
               {/* Circular Avatar */}
@@ -85,10 +87,10 @@ export function ClubSelector() {
               <span
                 className={`
                   text-[13px] text-center font-serif leading-tight w-full line-clamp-2 transition-colors duration-300
-                  ${isActive ? 'text-[#DE5D8F] font-bold font-semibold' : 'text-black group-hover:text-[#DE5D8F]'}
+                  ${isActive ? 'text-[#DE5D8F] font-bold' : 'text-black group-hover:text-[#DE5D8F]'}
                 `}
               >
-                {club.name}
+                {translatedName}
               </span>
             </button>
           );
@@ -97,7 +99,7 @@ export function ClubSelector() {
 
       <button
         onClick={() => scroll('right')}
-        className="absolute right-[-16px] top-1/2 -translate-y-1/2 z-20 flex items-center justify-center w-10 h-10 rounded-full bg-white shadow-md border border-gray-100 hover:scale-105 active:scale-95 transition-all text-gray-600 hover:text-black cursor-pointer hidden md:flex"
+        className="absolute right-[-16px] top-1/2 -translate-y-1/2 z-20 flex items-center justify-center w-10 h-10 rounded-full bg-white shadow-md border border-gray-100 hover:scale-105 active:scale-95 transition-all text-gray-600 hover:text-black cursor-pointer hidden md:flex border-none"
         aria-label="Scroll right"
       >
         <ChevronRight size={20} strokeWidth={2.5} />

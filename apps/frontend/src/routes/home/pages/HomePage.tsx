@@ -1,7 +1,11 @@
+import { useState } from 'react';
 import { motion } from 'framer-motion';
+import { Plus, Settings } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
+import { Button } from '@org/design-system';
 import { HomeBanner } from '../../../features/banner-carousel/index.js';
 import { AgendaWidgets } from '../../../features/agenda/index.js';
-import { QuickAccessSection } from '../../../features/quick-access/index.js';
+import { QuickAccessSection, useQuickAccess, AddShortcutModal } from '../../../features/quick-access/index.js';
 import { ArticlesSection } from '../../../features/articles/index.js';
 import { ClubsSection } from '../../../features/clubs/index.js';
 import { Footer } from '../../../components/Footer/index.js';
@@ -35,6 +39,11 @@ function NoiseOverlay() {
 }
 
 export function HomePage() {
+  const { menus, addMenu, deleteMenu } = useQuickAccess();
+  const { t } = useTranslation();
+  const [isManageMode, setIsManageMode] = useState(false);
+  const [isAddModalOpen, setIsAddModalOpen] = useState(false);
+
   const sectionTransition = {
     duration: 1.2,
     ease: [0.16, 1, 0.3, 1] as const, // Premium custom cubic bezier easing
@@ -52,7 +61,7 @@ export function HomePage() {
         initial={{ opacity: 0, filter: 'blur(12px)' }}
         animate={{ opacity: 1, filter: 'blur(0px)' }}
         transition={{ duration: 1.6, ease: [0.16, 1, 0.3, 1] }}
-        className="w-full h-[calc(100vh-81px)] bg-white shrink-0 relative overflow-hidden"
+        className="w-full h-[calc(100vh-65px)] lg:h-[calc(100vh-81px)] bg-white shrink-0 relative overflow-hidden"
       >
         <HomeBanner />
         <NoiseOverlay />
@@ -66,21 +75,57 @@ export function HomePage() {
         viewport={{ once: true, margin: '-100px' }}
         variants={sectionVariants}
         transition={sectionTransition}
-        className="w-full bg-white py-20 lg:py-24 relative overflow-hidden"
+        className="w-full bg-white mt-8 lg:mt-16 py-16 md:py-24 lg:py-32 scroll-mt-[85px] lg:scroll-mt-[105px] relative overflow-hidden"
       >
-        <div className="max-w-[1282px] mx-auto px-4 lg:px-6 w-full flex flex-col lg:flex-row items-start gap-12 lg:gap-24 relative z-10">
-          {/* Left: Section title + description */}
-          <div className="w-full lg:w-[320px] shrink-0 flex flex-col justify-start lg:pt-4">
-            <h2 className="font-serif text-[40px] lg:text-[48px] font-bold leading-[1.2] text-[#404041] mb-4">
-              บริการนิสิต
-            </h2>
-            <p className="font-serif text-[16px] leading-[24px] text-[#6D6D6D]">
-              เมนูลัดสำหรับเข้าถึงระบบต่างๆ ของคณะอักษรศาสตร์ ครบครันในที่เดียว
-            </p>
+        <div className="max-w-[1282px] mx-auto px-4 lg:px-6 w-full flex flex-col gap-8 relative z-10">
+          <div className="w-full flex flex-col lg:flex-row items-start gap-12 lg:gap-24">
+            {/* Left: Section title + description */}
+            <div className="w-full lg:w-[320px] shrink-0 flex flex-col justify-start lg:pt-4">
+              <h2 className="font-serif text-[40px] lg:text-[48px] font-bold leading-[1.2] text-[#404041] mb-4">
+                {t('home.student_services_title')}
+              </h2>
+              <p className="font-serif text-[16px] leading-[24px] text-[#6D6D6D]">
+                {t('home.student_services_desc')}
+              </p>
+            </div>
+            {/* Right: Quick Access cards grid */}
+            <div className="flex-1 min-w-0">
+              <QuickAccessSection 
+                hideHeading 
+                showActionButtons={false} 
+                menus={menus}
+                isManageMode={isManageMode}
+                onDeleteMenu={deleteMenu}
+              />
+            </div>
           </div>
-          {/* Right: Quick Access cards grid */}
-          <div className="flex-1 min-w-0">
-            <QuickAccessSection hideHeading />
+          {/* Action buttons spanning full width under both columns */}
+          <div className="flex flex-row justify-end items-center gap-4 mt-4 w-full border-t border-gray-100 pt-6">
+            {isManageMode ? (
+              <Button 
+                onClick={() => setIsManageMode(false)}
+                className="flex items-center gap-2 bg-[#de5d8f] hover:bg-[#ca5582] text-white border-none active:scale-95 transition-all"
+              >
+                {t('home.done')}
+              </Button>
+            ) : (
+              <Button 
+                onClick={() => setIsManageMode(true)}
+                variant="outline"
+                className="flex items-center gap-2 hover:bg-gray-50 active:scale-95 transition-all"
+              >
+                <Settings size={16} />
+                {t('home.manage_menu')}
+              </Button>
+            )}
+            <Button 
+              onClick={() => setIsAddModalOpen(true)}
+              variant="outline"
+              className="flex items-center gap-2 hover:bg-gray-50 active:scale-95 transition-all"
+            >
+              <Plus size={16} />
+              {t('home.add_shortcut')}
+            </Button>
           </div>
         </div>
         <NoiseOverlay />
@@ -93,7 +138,7 @@ export function HomePage() {
         viewport={{ once: true, margin: '-100px' }}
         variants={sectionVariants}
         transition={sectionTransition}
-        className="w-full bg-[var(--blog-banner-background-color-default,#F7F8F9)] py-20 lg:py-24 relative overflow-hidden"
+        className="w-full bg-[var(--blog-banner-background-color-default,#F7F8F9)] py-16 md:py-24 lg:py-32 relative overflow-hidden"
       >
         <div className="max-w-[1282px] mx-auto px-4 lg:px-6 w-full relative z-10">
           <AgendaWidgets />
@@ -108,7 +153,7 @@ export function HomePage() {
         viewport={{ once: true, margin: '-100px' }}
         variants={sectionVariants}
         transition={sectionTransition}
-        className="w-full bg-white py-20 lg:py-24 relative overflow-hidden"
+        className="w-full bg-white py-16 md:py-24 lg:py-32 relative overflow-hidden"
       >
         <div className="max-w-[1282px] mx-auto px-4 lg:px-6 w-full relative z-10">
           <ArticlesSection />
@@ -123,7 +168,7 @@ export function HomePage() {
         viewport={{ once: true, margin: '-100px' }}
         variants={sectionVariants}
         transition={sectionTransition}
-        className="w-full bg-[var(--blog-banner-background-color-default,#F7F8F9)] py-20 lg:py-24 relative overflow-hidden"
+        className="w-full bg-[var(--blog-banner-background-color-default,#F7F8F9)] py-16 md:py-24 lg:py-32 relative overflow-hidden"
       >
         <div className="max-w-[1282px] mx-auto px-4 lg:px-6 w-full relative z-10">
           <ClubsSection />
@@ -135,6 +180,14 @@ export function HomePage() {
       <div className="w-full">
         <Footer />
       </div>
+
+      {/* Add Shortcut dialog popup */}
+      <AddShortcutModal 
+        isOpen={isAddModalOpen}
+        onClose={() => setIsAddModalOpen(false)}
+        currentMenus={menus}
+        onAdd={addMenu}
+      />
     </div>
   );
 }

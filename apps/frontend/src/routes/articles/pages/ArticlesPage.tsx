@@ -1,6 +1,7 @@
 import { useMemo, useState } from 'react';
 import { useSearchParams, useNavigate } from 'react-router';
-import { SectionHeading, SearchInput, Pagination } from '@org/design-system';
+import { useTranslation } from 'react-i18next';
+import { SectionHeading, SearchInput, Pagination, Button } from '@org/design-system';
 import { Search, SlidersHorizontal, ArrowRight, Feather, Timer, Bookmark, BookmarkX } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
@@ -12,27 +13,27 @@ import { Footer } from '../../../components/Footer/index.js';
 
 const ITEMS_PER_PAGE = 6;
 
-// Mock Saved Data for Internships & Reviews
+// Mock Saved Data for Internships & Reviews with i18n keys
 const MOCK_SAVED_INTERNSHIPS = [
   {
     id: 'intern-01',
     company: 'LINE Man Wongnai',
-    role: 'Content Creator Intern',
-    period: 'มิ.ย. - ต.ค. 2568',
-    category: 'การตลาด',
-    author: 'ศิษย์เก่าอักษรฯ #86',
+    roleKey: 'articles.saved_internships.intern1.role',
+    periodKey: 'articles.saved_internships.intern1.period',
+    categoryKey: 'articles.saved_internships.intern1.category',
+    authorKey: 'articles.saved_internships.intern1.author',
     date: '28/05/69',
-    tags: ['WFH', 'มีค่าเบี้ยเลี้ยง'],
+    tagsKeys: ['articles.tags.wfh', 'articles.tags.allowance'],
   },
   {
     id: 'intern-02',
     company: 'Shopee Thailand',
-    role: 'UX/UI Designer Intern',
-    period: 'มิ.ย. - ต.ค. 2568',
-    category: 'เทคโนโลยี',
-    author: 'ศิษย์เก่าอักษรฯ #85',
+    roleKey: 'articles.saved_internships.intern2.role',
+    periodKey: 'articles.saved_internships.intern2.period',
+    categoryKey: 'articles.saved_internships.intern2.category',
+    authorKey: 'articles.saved_internships.intern2.author',
     date: '15/05/69',
-    tags: ['Hybrid', 'มีค่าเบี้ยเลี้ยง'],
+    tagsKeys: ['articles.tags.hybrid', 'articles.tags.allowance'],
   }
 ];
 
@@ -40,21 +41,21 @@ const MOCK_SAVED_REVIEWS = [
   {
     id: 'rev-01',
     company: 'Agoda',
-    role: 'Localization Specialist Intern',
+    roleKey: 'articles.saved_reviews.review1.role',
     rating: 5,
-    excerpt: 'รีวิวประสบการณ์ฝึกงานแปลและจัดการภาษาที่ Agoda บรรยากาศการทำงานแบบอินเตอร์ เพื่อนร่วมงานน่ารักมาก ได้ใช้ภาษาอังกฤษตลอดเวลา...',
-    category: 'แปลภาษา',
-    author: 'พี่พลอย #84',
+    excerptKey: 'articles.saved_reviews.review1.excerpt',
+    categoryKey: 'articles.saved_reviews.review1.category',
+    authorKey: 'articles.saved_reviews.review1.author',
     date: '10/05/69'
   },
   {
     id: 'rev-02',
     company: 'True Digital Group',
-    role: 'Product Management Intern',
+    roleKey: 'articles.saved_reviews.review2.role',
     rating: 4.5,
-    excerpt: 'ฝึกงานในทีม Product Manager ได้เรียนรู้กระบวนการทำ Agile/Scrum การทำ User Research และทดสอบระบบ พี่ๆ ดูแลดีมาก สอนงานแบบจัดเต็ม...',
-    category: 'การบริหาร',
-    author: 'พี่มิน #85',
+    excerptKey: 'articles.saved_reviews.review2.excerpt',
+    categoryKey: 'articles.saved_reviews.review2.category',
+    authorKey: 'articles.saved_reviews.review2.author',
     date: '02/05/69'
   }
 ];
@@ -78,7 +79,13 @@ function SavedArticleCard({
   article: typeof MOCK_ARTICLES[0];
   onUnbookmark: () => void;
 }) {
+  const { t } = useTranslation();
   const navigate = useNavigate();
+
+  const title = t(article.title);
+  const excerpt = t(article.excerpt);
+  const category = t(article.category);
+  const author = t(article.author);
 
   return (
     <div
@@ -89,36 +96,36 @@ function SavedArticleCard({
       <div className="w-full md:w-[280px] lg:w-[320px] aspect-[4/3] md:aspect-auto h-[200px] md:h-auto shrink-0 overflow-hidden relative">
         <img
           src={article.imageUrl}
-          alt={article.title}
+          alt={title}
           className="w-full h-full object-cover group-hover:scale-103 transition-transform duration-500"
         />
         <div className="absolute inset-0 bg-black/5" />
       </div>
 
       {/* Info Content */}
-      <div className="flex-1 p-6 flex flex-col justify-between gap-4">
+      <div className="flex-1 p-6 flex flex-col justify-between gap-4 min-w-0">
         
         {/* Header line: Title / Category / Bookmark */}
         <div className="flex justify-between items-start gap-4">
-          <div className="flex-1 flex flex-col gap-2">
-            <h3 className="text-[20px] md:text-[22px] lg:text-[24px] font-bold text-[#404041] font-serif leading-snug group-hover:text-[#DE5D8F] transition-colors line-clamp-1">
-              {article.title}
+          <div className="flex-1 flex flex-col gap-2 min-w-0">
+            <h3 className="text-[20px] md:text-[22px] lg:text-[24px] font-bold text-[#404041] font-serif leading-snug group-hover:text-[#DE5D8F] transition-colors line-clamp-1 break-words">
+              {title}
             </h3>
-            <p className="text-[14px] md:text-[15px] text-gray-500 font-serif leading-relaxed line-clamp-2">
-              {article.excerpt}
+            <p className="text-[14px] md:text-[15px] text-gray-500 font-serif leading-relaxed line-clamp-2 break-words">
+              {excerpt}
             </p>
           </div>
 
           <div className="flex items-center gap-2 shrink-0">
             <span className="px-3 py-1 text-[12px] font-bold text-[#DE5D8F] bg-[#FCEFF4] rounded-full font-serif whitespace-nowrap">
-              {article.category}
+              {category}
             </span>
             <button
               onClick={(e) => {
                 e.stopPropagation();
                 onUnbookmark();
               }}
-              className="w-8 h-8 rounded-lg bg-[#F8C135] text-white flex items-center justify-center hover:bg-[#DE5D8F] transition-colors cursor-pointer shadow-xs active:scale-95"
+              className="w-8 h-8 rounded-lg bg-[#F8C135] text-white flex items-center justify-center hover:bg-[#DE5D8F] transition-colors cursor-pointer shadow-xs active:scale-95 border-none"
               aria-label="Remove bookmark"
             >
               <Bookmark size={15} fill="white" />
@@ -127,19 +134,19 @@ function SavedArticleCard({
         </div>
 
         {/* Bottom line: Author, Date, and Read CTA */}
-        <div className="flex items-center justify-between border-t border-gray-100 pt-4 text-[13px] text-gray-400 font-serif">
-          <div className="flex items-center gap-4">
-            <span className="flex items-center gap-1.5">
-              <Feather size={14} className="text-gray-350" />
-              {article.author}
+        <div className="flex items-center justify-between border-t border-gray-100 pt-4 text-[13px] text-gray-400 font-serif flex-wrap gap-2">
+          <div className="flex items-center gap-4 flex-wrap">
+            <span className="flex items-center gap-1.5 min-w-0 truncate max-w-[150px] md:max-w-none">
+              <Feather size={14} className="text-gray-350 shrink-0" />
+              <span className="truncate">{t('articles.written_by', { author })}</span>
             </span>
-            <span className="flex items-center gap-1.5">
-              <Timer size={14} className="text-gray-350" />
-              {article.date}
+            <span className="flex items-center gap-1.5 whitespace-nowrap">
+              <Timer size={14} className="text-gray-350 shrink-0" />
+              {t('articles.published', { date: article.date })}
             </span>
           </div>
-          <span className="flex items-center gap-1 text-[#DE5D8F] font-bold group-hover:translate-x-1 transition-transform">
-            อ่านต่อ
+          <span className="flex items-center gap-1 text-[#DE5D8F] font-bold group-hover:translate-x-1 transition-transform shrink-0">
+            {t('articles.read_more')}
             <ArrowRight size={14} />
           </span>
         </div>
@@ -150,17 +157,18 @@ function SavedArticleCard({
 }
 
 export default function ArticlesPage() {
+  const { t } = useTranslation();
   const [searchParams, setSearchParams] = useSearchParams();
   const navigate = useNavigate();
 
   const CATEGORIES = useMemo(() => {
     const cats = Array.from(new Set(MOCK_ARTICLES.map((a) => a.category)));
-    return ['ทั้งหมด', ...cats];
+    return ['articles.categories.all', ...cats];
   }, []);
 
   // Sync state from URL parameters
   const searchQuery = searchParams.get('search') || '';
-  const selectedCategory = searchParams.get('category') || 'ทั้งหมด';
+  const selectedCategory = searchParams.get('category') || 'articles.categories.all';
   const currentPage = Number(searchParams.get('page')) || 1;
   const isSavedTab = searchParams.get('tab') === 'saved';
 
@@ -191,24 +199,19 @@ export default function ArticlesPage() {
 
   // Filter and Sort Saved Articles
   const savedArticles = useMemo(() => {
-    // 1. Get articles that match the bookmarked IDs
     let list = MOCK_ARTICLES.filter((article) => bookmarkedIds.includes(article.id));
 
-    // 2. Search filter
     if (savedSearchQuery.trim() !== '') {
       const query = savedSearchQuery.trim().toLowerCase();
       list = list.filter(
         (article) =>
-          article.title.toLowerCase().includes(query) ||
-          article.excerpt.toLowerCase().includes(query) ||
-          article.author.toLowerCase().includes(query)
+          t(article.title).toLowerCase().includes(query) ||
+          t(article.excerpt).toLowerCase().includes(query) ||
+          t(article.author).toLowerCase().includes(query)
       );
     }
 
-    // 3. Sort by Date Saved / Date Posted
-    // Since localStorage preserves the sequence of bookmarking, we can use the order of bookmarkedIds
     if (sortBySavedDate === 'newest') {
-      // Reverse array based on bookmarkedIds index (last bookmarked is first)
       list = [...list].sort(
         (a, b) => bookmarkedIds.indexOf(b.id) - bookmarkedIds.indexOf(a.id)
       );
@@ -225,7 +228,7 @@ export default function ArticlesPage() {
     }
 
     return list;
-  }, [bookmarkedIds, savedSearchQuery, sortBySavedDate, sortByPostDate]);
+  }, [bookmarkedIds, savedSearchQuery, sortBySavedDate, sortByPostDate, t]);
 
   // Handler helpers to update URL params for main tab
   const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -247,7 +250,7 @@ export default function ArticlesPage() {
   const handleCategorySelect = (category: string) => {
     setSearchParams(
       (prev) => {
-        if (category && category !== 'ทั้งหมด') {
+        if (category && category !== 'articles.categories.all') {
           prev.set('category', category);
         } else {
           prev.delete('category');
@@ -285,18 +288,18 @@ export default function ArticlesPage() {
   const filteredArticles = useMemo(() => {
     return MOCK_ARTICLES.filter((article) => {
       const matchesCategory =
-        selectedCategory === 'ทั้งหมด' || article.category === selectedCategory;
+        selectedCategory === 'articles.categories.all' || article.category === selectedCategory;
 
       const query = searchQuery.trim().toLowerCase();
       const matchesSearch =
         query === '' ||
-        article.title.toLowerCase().includes(query) ||
-        article.excerpt.toLowerCase().includes(query) ||
-        article.author.toLowerCase().includes(query);
+        t(article.title).toLowerCase().includes(query) ||
+        t(article.excerpt).toLowerCase().includes(query) ||
+        t(article.author).toLowerCase().includes(query);
 
       return matchesCategory && matchesSearch;
     });
-  }, [searchQuery, selectedCategory]);
+  }, [searchQuery, selectedCategory, t]);
 
   const totalPages = Math.ceil(filteredArticles.length / ITEMS_PER_PAGE);
 
@@ -319,7 +322,7 @@ export default function ArticlesPage() {
               <div className="flex items-center gap-4">
                 <Bookmark size={40} className="text-[#DE5D8F] shrink-0" fill="#DE5D8F" />
                 <h1 className="text-[36px] md:text-[48px] font-bold text-[#404041] font-serif leading-none">
-                  ที่บันทึกไว้
+                  {t('articles.saved_title')}
                 </h1>
               </div>
 
@@ -328,7 +331,7 @@ export default function ArticlesPage() {
                 <div className="flex-1 w-full">
                   <SearchInput
                     size="lg"
-                    placeholder="ค้นหาสิ่งที่บันทึกไว้"
+                    placeholder={t('articles.search_saved_placeholder')}
                     value={savedSearchQuery}
                     onChange={(e) => setSavedSearchQuery(e.target.value)}
                   />
@@ -343,7 +346,7 @@ export default function ArticlesPage() {
                     }`}
                   >
                     <SlidersHorizontal size={16} />
-                    ตัวกรอง
+                    {t('articles.filter')}
                   </button>
 
                   <AnimatePresence>
@@ -356,12 +359,12 @@ export default function ArticlesPage() {
                         className="absolute right-0 top-[60px] w-full md:w-[360px] p-6 bg-white border border-gray-200 rounded-2xl shadow-xl z-40 flex flex-col gap-6"
                       >
                         <h4 className="font-bold text-[18px] text-[#404041] font-serif border-b border-gray-100 pb-2">
-                          ตัวกรองและจัดเรียง
+                          {t('articles.filter_and_sort')}
                         </h4>
 
                         {/* Date Saved Sort */}
                         <div className="flex flex-col gap-3">
-                          <span className="text-[15px] font-bold text-gray-500 font-serif">วันที่บันทึก</span>
+                          <span className="text-[15px] font-bold text-gray-500 font-serif">{t('articles.date_saved')}</span>
                           <div className="flex flex-col gap-2">
                             <label className="flex items-center gap-3 cursor-pointer group text-gray-700 hover:text-black">
                               <input
@@ -371,7 +374,7 @@ export default function ArticlesPage() {
                                 onChange={() => setSortBySavedDate('newest')}
                                 className="w-4 h-4 accent-[#DE5D8F] border-gray-300"
                               />
-                              <span className="text-[14px] font-serif">เรียงจากใหม่ที่สุด</span>
+                              <span className="text-[14px] font-serif">{t('articles.sort_newest')}</span>
                             </label>
                             <label className="flex items-center gap-3 cursor-pointer group text-gray-700 hover:text-black">
                               <input
@@ -381,14 +384,14 @@ export default function ArticlesPage() {
                                 onChange={() => setSortBySavedDate('oldest')}
                                 className="w-4 h-4 accent-[#DE5D8F] border-gray-300"
                               />
-                              <span className="text-[14px] font-serif">เรียงจากเก่าที่สุด</span>
+                              <span className="text-[14px] font-serif">{t('articles.sort_oldest')}</span>
                             </label>
                           </div>
                         </div>
 
                         {/* Date Posted Sort */}
                         <div className="flex flex-col gap-3">
-                          <span className="text-[15px] font-bold text-gray-500 font-serif">วันที่โพสต์</span>
+                          <span className="text-[15px] font-bold text-gray-500 font-serif">{t('articles.date_posted')}</span>
                           <div className="flex flex-col gap-2">
                             <label className="flex items-center gap-3 cursor-pointer group text-gray-700 hover:text-black">
                               <input
@@ -398,7 +401,7 @@ export default function ArticlesPage() {
                                 onChange={() => setSortByPostDate('newest')}
                                 className="w-4 h-4 accent-[#DE5D8F] border-gray-300"
                               />
-                              <span className="text-[14px] font-serif">เรียงจากใหม่ที่สุด</span>
+                              <span className="text-[14px] font-serif">{t('articles.sort_newest')}</span>
                             </label>
                             <label className="flex items-center gap-3 cursor-pointer group text-gray-700 hover:text-black">
                               <input
@@ -408,7 +411,7 @@ export default function ArticlesPage() {
                                 onChange={() => setSortByPostDate('oldest')}
                                 className="w-4 h-4 accent-[#DE5D8F] border-gray-300"
                               />
-                              <span className="text-[14px] font-serif">เรียงจากเก่าที่สุด</span>
+                              <span className="text-[14px] font-serif">{t('articles.sort_oldest')}</span>
                             </label>
                           </div>
                         </div>
@@ -422,11 +425,11 @@ export default function ArticlesPage() {
               <div className="flex items-center gap-8 border-b border-gray-150 pb-1 mt-4">
                 <button
                   onClick={() => setSavedTab('articles')}
-                  className={`pb-3 font-serif text-[18px] md:text-[20px] font-bold cursor-pointer relative transition-colors duration-200 focus:outline-none ${
+                  className={`pb-3 font-serif text-[18px] md:text-[20px] font-bold cursor-pointer relative transition-colors duration-200 focus:outline-none border-none bg-transparent ${
                     savedTab === 'articles' ? 'text-[#DE5D8F]' : 'text-[#AEAEAE] hover:text-[#7A7A7A]'
                   }`}
                 >
-                  บทความ
+                  {t('articles.tab_articles')}
                   {savedTab === 'articles' && (
                     <motion.div
                       layoutId="savedTabUnderline"
@@ -436,11 +439,11 @@ export default function ArticlesPage() {
                 </button>
                 <button
                   onClick={() => setSavedTab('internships')}
-                  className={`pb-3 font-serif text-[18px] md:text-[20px] font-bold cursor-pointer relative transition-colors duration-200 focus:outline-none ${
+                  className={`pb-3 font-serif text-[18px] md:text-[20px] font-bold cursor-pointer relative transition-colors duration-200 focus:outline-none border-none bg-transparent ${
                     savedTab === 'internships' ? 'text-[#DE5D8F]' : 'text-[#AEAEAE] hover:text-[#7A7A7A]'
                   }`}
                 >
-                  ฝึกงาน
+                  {t('articles.tab_internships')}
                   {savedTab === 'internships' && (
                     <motion.div
                       layoutId="savedTabUnderline"
@@ -450,11 +453,11 @@ export default function ArticlesPage() {
                 </button>
                 <button
                   onClick={() => setSavedTab('reviews')}
-                  className={`pb-3 font-serif text-[18px] md:text-[20px] font-bold cursor-pointer relative transition-colors duration-200 focus:outline-none ${
+                  className={`pb-3 font-serif text-[18px] md:text-[20px] font-bold cursor-pointer relative transition-colors duration-200 focus:outline-none border-none bg-transparent ${
                     savedTab === 'reviews' ? 'text-[#DE5D8F]' : 'text-[#AEAEAE] hover:text-[#7A7A7A]'
                   }`}
                 >
-                  รีวิวฝึกงาน
+                  {t('articles.tab_reviews')}
                   {savedTab === 'reviews' && (
                     <motion.div
                       layoutId="savedTabUnderline"
@@ -484,16 +487,16 @@ export default function ArticlesPage() {
                   <div className="flex flex-col items-center justify-center py-20 text-center bg-[#FDF8FA]/30 border border-dashed border-pink-200 rounded-[24px] w-full px-4">
                     <BookmarkX size={64} className="text-pink-300 mb-4" />
                     <h3 className="text-[20px] font-bold text-gray-700 font-serif mb-2">
-                      ไม่มีบทความที่บันทึกไว้
+                      {t('articles.no_saved_articles')}
                     </h3>
                     <p className="text-gray-400 max-w-sm text-[15px] font-serif mb-6 leading-relaxed">
-                      คุณยังไม่ได้บันทึกบทความใดๆ ไว้ในที่นี้ ลองไปเลือกสำรวจอ่านบทความต่างๆ ได้เลย
+                      {t('articles.no_saved_articles_desc')}
                     </p>
                     <button
                       onClick={() => navigate('/articles')}
-                      className="px-6 py-2.5 bg-[#E992B4] hover:bg-[#DE5D8F] text-white font-bold rounded-xl transition-all cursor-pointer active:scale-95 font-serif text-[15px]"
+                      className="px-6 py-2.5 bg-[#E992B4] hover:bg-[#DE5D8F] text-white font-bold rounded-xl transition-all cursor-pointer active:scale-95 font-serif text-[15px] border-none"
                     >
-                      สำรวจบทความ
+                      {t('articles.explore_articles')}
                     </button>
                   </div>
                 )
@@ -508,23 +511,23 @@ export default function ArticlesPage() {
                       className="w-full max-w-[1056px] rounded-2xl border border-gray-200 bg-white p-6 flex flex-col justify-between gap-4 shadow-xs"
                     >
                       <div className="flex justify-between items-start gap-4">
-                        <div className="flex flex-col gap-1.5">
-                          <span className="text-[13px] font-bold text-[#DE5D8F] font-serif">{intern.company}</span>
-                          <h3 className="text-[20px] font-bold text-[#404041] font-serif leading-tight">{intern.role}</h3>
-                          <div className="flex gap-2 mt-1">
-                            {intern.tags.map((t, i) => (
-                              <span key={i} className="px-2 py-0.5 text-[11px] font-bold text-gray-500 bg-gray-100 rounded-sm font-sans">{t}</span>
+                        <div className="flex flex-col gap-1.5 min-w-0">
+                          <span className="text-[13px] font-bold text-[#DE5D8F] font-serif truncate">{intern.company}</span>
+                          <h3 className="text-[20px] md:text-[22px] font-bold text-[#404041] font-serif leading-tight truncate">{t(intern.roleKey)}</h3>
+                          <div className="flex flex-wrap gap-2 mt-1">
+                            {intern.tagsKeys.map((tagKey, i) => (
+                              <span key={i} className="px-2 py-0.5 text-[11px] font-bold text-gray-500 bg-gray-100 rounded-sm font-sans">{t(tagKey)}</span>
                             ))}
                           </div>
                         </div>
-                        <span className="px-3 py-1 text-[12px] font-bold text-[#DE5D8F] bg-[#FCEFF4] rounded-full font-serif">{intern.category}</span>
+                        <span className="px-3 py-1 text-[12px] font-bold text-[#DE5D8F] bg-[#FCEFF4] rounded-full font-serif shrink-0 whitespace-nowrap">{t(intern.categoryKey)}</span>
                       </div>
                       <div className="flex items-center justify-between border-t border-gray-100 pt-4 text-[13px] text-gray-400 font-serif">
                         <div className="flex items-center gap-4">
-                          <span>ระยะเวลา: {intern.period}</span>
+                          <span>{t('articles.period_label', { period: t(intern.periodKey) })}</span>
                         </div>
-                        <a href="#" onClick={(e) => e.preventDefault()} className="text-[#DE5D8F] font-bold flex items-center gap-1">
-                          รายละเอียดเพิ่มเติม
+                        <a href="#" onClick={(e) => e.preventDefault()} className="text-[#DE5D8F] font-bold flex items-center gap-1 shrink-0">
+                          {t('articles.more_details')}
                           <ArrowRight size={14} />
                         </a>
                       </div>
@@ -542,22 +545,22 @@ export default function ArticlesPage() {
                       className="w-full max-w-[1056px] rounded-2xl border border-gray-200 bg-white p-6 flex flex-col justify-between gap-4 shadow-xs"
                     >
                       <div className="flex justify-between items-start gap-4">
-                        <div className="flex flex-col gap-1.5">
-                          <span className="text-[13px] font-bold text-gray-400 font-serif">{rev.company} • {rev.role}</span>
-                          <p className="text-[15px] text-[#404041] font-serif leading-relaxed line-clamp-2 mt-1">
-                            &ldquo;{rev.excerpt}&rdquo;
+                        <div className="flex flex-col gap-1.5 min-w-0">
+                          <span className="text-[13px] font-bold text-gray-400 font-serif truncate">{rev.company} • {t(rev.roleKey)}</span>
+                          <p className="text-[15px] text-[#404041] font-serif leading-relaxed line-clamp-2 mt-1 break-words">
+                            &ldquo;{t(rev.excerptKey)}&rdquo;
                           </p>
                         </div>
-                        <span className="px-3 py-1 text-[12px] font-bold text-[#DE5D8F] bg-[#FCEFF4] rounded-full font-serif whitespace-nowrap">{rev.category}</span>
+                        <span className="px-3 py-1 text-[12px] font-bold text-[#DE5D8F] bg-[#FCEFF4] rounded-full font-serif shrink-0 whitespace-nowrap">{t(rev.categoryKey)}</span>
                       </div>
-                      <div className="flex items-center justify-between border-t border-gray-100 pt-4 text-[13px] text-gray-400 font-serif">
-                        <div className="flex items-center gap-3">
-                          <span>เขียนโดย: {rev.author}</span>
+                      <div className="flex items-center justify-between border-t border-gray-100 pt-4 text-[13px] text-gray-400 font-serif flex-wrap gap-2">
+                        <div className="flex items-center gap-3 flex-wrap">
+                          <span>{t('articles.written_by_author', { author: t(rev.authorKey) })}</span>
                           <span>•</span>
-                          <span>โพสต์เมื่อ: {rev.date}</span>
+                          <span>{t('articles.published_at', { date: rev.date })}</span>
                         </div>
-                        <a href="#" onClick={(e) => e.preventDefault()} className="text-[#DE5D8F] font-bold flex items-center gap-1">
-                          อ่านรีวิวฉบับเต็ม
+                        <a href="#" onClick={(e) => e.preventDefault()} className="text-[#DE5D8F] font-bold flex items-center gap-1 shrink-0">
+                          {t('articles.read_full_review')}
                           <ArrowRight size={14} />
                         </a>
                       </div>
@@ -570,18 +573,19 @@ export default function ArticlesPage() {
 
             {/* Bottom CTA to redirect back to standard Articles view */}
             <div className="flex justify-end w-full max-w-[1056px] mx-auto mt-6">
-              <button
+              <Button
                 onClick={() => {
                   setSearchParams((prev) => {
                     prev.delete('tab');
                     return prev;
                   });
                 }}
-                className="flex items-center justify-center gap-2.5 px-8 h-[58px] rounded-xl bg-[#E992B4] hover:bg-[#DE5D8F] text-white font-bold font-serif text-[16px] shadow-md hover:shadow-lg transition-all active:scale-97 select-none cursor-pointer"
+                variant="primary"
+                className="px-8 h-[58px] rounded-xl font-serif text-[16px]"
               >
-                ไปที่หน้าบทความ
+                {t('articles.go_to_articles')}
                 <ArrowRight size={18} />
-              </button>
+              </Button>
             </div>
 
           </div>
@@ -599,8 +603,8 @@ export default function ArticlesPage() {
 
           {/* Page Title */}
           <SectionHeading
-            title="บทความจากชมรมสาราณียกร"
-            description="อ่านข่าวสาร วารสาร และบทความที่รวบรวมจากชมรมสาราณียกร"
+            title={t('articles.section_title')}
+            description={t('articles.section_desc')}
           />
 
           {/* Search + Category Filter */}
@@ -608,7 +612,7 @@ export default function ArticlesPage() {
             {/* Full-content-width lg search bar */}
             <SearchInput
               size="lg"
-              placeholder="ค้นหาบทความ"
+              placeholder={t('articles.search_placeholder')}
               value={searchQuery}
               onChange={handleSearchChange}
             />
@@ -649,18 +653,19 @@ export default function ArticlesPage() {
             <div className="flex flex-col items-center justify-center py-20 px-4 text-center bg-[#F7F8F9] rounded-[24px] border border-dashed border-gray-300 w-full">
               <Search size={64} className="text-gray-300 mb-4" />
               <h3 className="text-[20px] font-bold text-gray-700 font-serif mb-2">
-                ไม่พบผลลัพธ์การค้นหา
+                {t('articles.no_results_title')}
               </h3>
-              <p className="text-gray-500 max-w-md text-[16px] font-serif">
-                ไม่พบบทความที่ตรงกับ &ldquo;{searchQuery || selectedCategory}&rdquo; กรุณาลองใช้คำค้นหาอื่นหรือเปลี่ยนหมวดหมู่
+              <p className="text-gray-500 max-w-md text-[16px] font-serif break-words">
+                {t('articles.no_results_desc', { query: searchQuery || t(selectedCategory) })}
               </p>
-              {(searchQuery || selectedCategory !== 'ทั้งหมด') && (
-                <button
+              {(searchQuery || selectedCategory !== 'articles.categories.all') && (
+                <Button
                   onClick={handleClearFilters}
-                  className="mt-6 px-6 py-2.5 bg-[#E992B4] hover:bg-[#DE5D8F] text-white font-bold rounded-[9999px] transition-all cursor-pointer active:scale-95 font-serif text-[14px]"
+                  variant="primary"
+                  className="mt-6 px-6 py-2.5 h-[42px] rounded-[9999px] font-serif text-[14px]"
                 >
-                  ล้างตัวกรองทั้งหมด
-                </button>
+                  {t('articles.clear_filters')}
+                </Button>
               )}
             </div>
           )}

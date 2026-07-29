@@ -1,3 +1,4 @@
+import { useTranslation, Trans } from 'react-i18next';
 import { ExternalLink } from 'lucide-react';
 import { SystemBanner } from '../../../components/SystemBanner/index.js';
 
@@ -6,21 +7,28 @@ interface YellowCardWarningBannerProps {
 }
 
 export function YellowCardWarningBanner({ onClose }: YellowCardWarningBannerProps) {
+  useTranslation();
+
   return (
     <SystemBanner
       type="warning"
       emphasis="outlined"
       message={
-        <span className="text-black font-bold">
-          หมายเหตุ: เพื่อการกรอกข้อมูลที่ถูกต้อง สามารถตรวจสอบข้อมูลการลงทะเบียนได้ที่เว็บไซต์{' '}
-          <a
-            href="https://www.reg.chula.ac.th"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="text-[#DE5D8F] hover:underline font-bold inline-flex items-center gap-0.5"
-          >
-            reg chula <ExternalLink size={12} />
-          </a>
+        <span className="text-black font-bold break-words">
+          <Trans
+            i18nKey="yellow_card.warning_banner.message"
+            components={{
+              a: (
+                <a
+                  href="https://www.reg.chula.ac.th"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-[#DE5D8F] hover:underline font-bold inline-flex items-center gap-0.5"
+                />
+              ),
+              icon: <ExternalLink size={12} className="inline-block shrink-0" />,
+            }}
+          />
         </span>
       }
       onClose={onClose}

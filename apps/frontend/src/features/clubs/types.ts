@@ -1,30 +1,29 @@
 export interface ClubActivity {
-  title: string;
-  description: string;
+  titleKey: string;
+  descriptionKey: string;
   imageUrl: string;
 }
 
 export interface ClubAchievement {
-  title: string;
-  subtitle: string;
-  description: string;
+  titleKey: string;
+  subtitleKey: string;
+  descriptionKey: string;
   imageUrl: string;
 }
 
 export interface Club {
   id: string;
-  name: string;
-  category: string;
-  description: string;
+  nameKey: string;
+  categoryKey: string;
+  descriptionKey: string;
   imageUrl: string;
   instagram?: string;
   facebook?: string;
   tiktok?: string;
   email?: string;
-  aboutText?: string;
-  activitiesText?: string;
+  aboutTextKey?: string;
+  activitiesTextKey?: string;
   galleryImages?: string[];
   activities?: ClubActivity[];
   achievements?: ClubAchievement[];
 }
-

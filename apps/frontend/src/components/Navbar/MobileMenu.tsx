@@ -1,7 +1,10 @@
 import { useNavigate, useLocation } from 'react-router';
+import { useTranslation } from 'react-i18next';
 import { Menu, X, Folder, Hand, Briefcase, Building2, User } from 'lucide-react';
 import { Button, MobileSidebar } from '@org/design-system';
 import { NAV_ITEMS } from './navConfig.js';
+import { LanguageSwitcher } from '../LanguageSwitcher/index.js';
+import { PATHS } from '../../routes/paths.js';
 
 interface MobileMenuToggleProps {
   isOpen: boolean;
@@ -39,20 +42,21 @@ export function MobileMenuPanel({
 }: MobileMenuPanelProps) {
   const navigate = useNavigate();
   const location = useLocation();
+  const { t } = useTranslation();
   const isActive = (path: string) => location.pathname === path;
 
-  // Map icons based on NavItem label/path
-  const getIcon = (label: string) => {
-    switch (label) {
-      case 'หน้าหลัก':
+  // Map icons based on nav item path (stable key — not the label which is now a translation key)
+  const getIconByPath = (path: string) => {
+    switch (path) {
+      case PATHS.ROOT:
         return <Folder size={20} className="text-gray-400 shrink-0" />;
-      case 'บริการนิสิต':
+      case PATHS.STUDENT_SERVICES:
         return <Hand size={20} className="text-gray-400 shrink-0" />;
-      case 'ช่วยเหลือ':
+      case PATHS.HELP:
         return <Briefcase size={20} className="text-gray-400 shrink-0" />;
-      case 'ฝึกงาน':
+      case PATHS.INTERNSHIPS:
         return <Building2 size={20} className="text-gray-400 shrink-0" />;
-      case 'บัญชี':
+      case '#':
         return <User size={20} className="text-gray-400 shrink-0" />;
       default:
         return <Folder size={20} className="text-gray-400 shrink-0" />;
@@ -62,15 +66,15 @@ export function MobileMenuPanel({
   // Generate dynamic items based on login status
   const currentMenuItems = [...NAV_ITEMS];
   if (isLoggedIn) {
-    currentMenuItems.push({ label: 'บัญชี', path: '#' });
+    currentMenuItems.push({ label: 'navbar.account', path: '#' });
   }
 
   const mappedMenuItems = currentMenuItems.map((item) => ({
-    label: item.label,
+    label: t(item.label),
     active: isActive(item.path),
-    icon: getIcon(item.label),
+    icon: getIconByPath(item.path),
     onClick: () => {
-      if (item.label === 'บัญชี' && onAccountClick) {
+      if (item.label === 'navbar.account' && onAccountClick) {
         onAccountClick();
       } else {
         navigate(item.path);
@@ -80,13 +84,21 @@ export function MobileMenuPanel({
   }));
 
   return (
-    <MobileSidebar
-      isOpen={isOpen}
-      onClose={onClose}
-      isLoggedIn={isLoggedIn}
-      onLogin={onLogin}
-      onLogout={onLogout}
-      menuItems={mappedMenuItems}
-    />
+    <>
+      <MobileSidebar
+        isOpen={isOpen}
+        onClose={onClose}
+        isLoggedIn={isLoggedIn}
+        onLogin={onLogin}
+        onLogout={onLogout}
+        menuItems={mappedMenuItems}
+      />
+      {/* Language switcher within mobile panel — rendered below menu items */}
+      {isOpen && (
+        <div className="fixed bottom-6 left-1/2 -translate-x-1/2 z-[60]">
+          <LanguageSwitcher compact />
+        </div>
+      )}
+    </>
   );
 }

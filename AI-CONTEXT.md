@@ -64,6 +64,11 @@ Available components include:
 * `SearchInput`
 * `SectionHeading`
 
+### 4. Internationalization (i18n) Rules
+- **Nesting Structure**: Do not use flat keys at the top-level of translation files if they have children paths (e.g. `"student_services": "..."` blocks children like `"student_services.bento.title"`). Keep namespaces as fully nested JSON trees.
+- **Dynamic Keys**: Store raw translation keys in mock data configurations (e.g., `constants.ts`) and dynamically translate them using `t(key)` at the rendering component level.
+- **Dual Languages**: Always add translation keys to both [th/translation.json](file:///c:/Users/Lenovo/artsgoz-monorepo/apps/frontend/public/locales/th/translation.json) and [en/translation.json](file:///c:/Users/Lenovo/artsgoz-monorepo/apps/frontend/public/locales/en/translation.json) simultaneously to prevent missing keys/fallbacks.
+
 ---
 
 ## ⚙️ Development Commands

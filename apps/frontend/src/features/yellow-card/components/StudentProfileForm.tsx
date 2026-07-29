@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import type { StudentProfile } from '../types.js';
 
 interface StudentProfileFormProps {
@@ -7,6 +8,7 @@ interface StudentProfileFormProps {
 }
 
 export function StudentProfileForm({ profile, onChange }: StudentProfileFormProps) {
+  const { t } = useTranslation();
   const [isEditing, setIsEditing] = useState(false);
   const [editedProfile, setEditedProfile] = useState<StudentProfile>(profile);
 
@@ -21,7 +23,7 @@ export function StudentProfileForm({ profile, onChange }: StudentProfileFormProp
   };
 
   return (
-    <div className="w-full bg-white border border-[#D0D0D1]/30 rounded-[16px] p-6 shadow-sm font-[ChulaCharasNew] mb-8 relative select-none">
+    <div className="w-full bg-white border border-[#D0D0D1]/30 rounded-[16px] p-6 shadow-sm font-[ChulaCharasNew] mb-8 relative select-none min-w-0">
       {/* Absolute Edit Trigger Button on Top Right */}
       <div className="absolute top-6 right-6 z-10">
         {!isEditing ? (
@@ -30,7 +32,7 @@ export function StudentProfileForm({ profile, onChange }: StudentProfileFormProp
             onClick={() => setIsEditing(true)}
             className="text-[14px] font-bold text-[#DE5D8F] hover:text-[#ca5582] transition-colors cursor-pointer border border-[#DE5D8F]/20 hover:border-[#DE5D8F] rounded-[8px] py-1.5 px-3.5 bg-white"
           >
-            แก้ไข
+            {t('yellow_card.profile_form.edit')}
           </button>
         ) : (
           <div className="flex items-center gap-2">
@@ -39,23 +41,23 @@ export function StudentProfileForm({ profile, onChange }: StudentProfileFormProp
               onClick={handleCancel}
               className="text-[14px] font-bold text-[#6D6D6D] hover:text-[#545455] transition-colors cursor-pointer border border-[#D0D0D1] rounded-[8px] py-1 px-3 bg-white"
             >
-              ยกเลิก
+              {t('credit_tracking.planner.cancel')}
             </button>
             <button
               type="button"
               onClick={handleSave}
-              className="text-[14px] font-bold text-white bg-[#E992B4] hover:bg-[#DE5D8F] transition-colors cursor-pointer rounded-[8px] py-1 px-3"
+              className="text-[14px] font-bold text-white bg-[#E992B4] hover:bg-[#DE5D8F] transition-colors cursor-pointer rounded-[8px] py-1 px-3 border-none"
             >
-              บันทึก
+              {t('credit_tracking.planner.save')}
             </button>
           </div>
         )}
       </div>
 
       {isEditing ? (
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 pt-4">
-          <div className="flex flex-col gap-1.5">
-            <label className="text-[14px] font-bold text-[#6D6D6D]">ชื่อ-นามสกุล</label>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 pt-4 min-w-0">
+          <div className="flex flex-col gap-1.5 min-w-0">
+            <label className="text-[14px] font-bold text-[#6D6D6D] truncate">{t('yellow_card.profile_form.name_label')}</label>
             <input
               type="text"
               value={editedProfile.name}
@@ -64,8 +66,8 @@ export function StudentProfileForm({ profile, onChange }: StudentProfileFormProp
             />
           </div>
 
-          <div className="flex flex-col gap-1.5">
-            <label className="text-[14px] font-bold text-[#6D6D6D]">เลขประจำตัวนิสิต</label>
+          <div className="flex flex-col gap-1.5 min-w-0">
+            <label className="text-[14px] font-bold text-[#6D6D6D] truncate">{t('yellow_card.profile_form.student_id_label')}</label>
             <input
               type="text"
               value={editedProfile.studentId}
@@ -74,8 +76,8 @@ export function StudentProfileForm({ profile, onChange }: StudentProfileFormProp
             />
           </div>
 
-          <div className="flex flex-col gap-1.5">
-            <label className="text-[14px] font-bold text-[#6D6D6D]">วิชาเอก (เอก)</label>
+          <div className="flex flex-col gap-1.5 min-w-0">
+            <label className="text-[14px] font-bold text-[#6D6D6D] truncate">{t('credit_tracking.profile.major_label')}</label>
             <input
               type="text"
               value={editedProfile.major}
@@ -84,8 +86,8 @@ export function StudentProfileForm({ profile, onChange }: StudentProfileFormProp
             />
           </div>
 
-          <div className="flex flex-col gap-1.5">
-            <label className="text-[14px] font-bold text-[#6D6D6D]">วิชาโท (โท)</label>
+          <div className="flex flex-col gap-1.5 min-w-0">
+            <label className="text-[14px] font-bold text-[#6D6D6D] truncate">{t('credit_tracking.profile.minor_label')}</label>
             <input
               type="text"
               value={editedProfile.minor}
@@ -94,8 +96,8 @@ export function StudentProfileForm({ profile, onChange }: StudentProfileFormProp
             />
           </div>
 
-          <div className="flex flex-col gap-1.5">
-            <label className="text-[14px] font-bold text-[#6D6D6D]">หลักสูตรการศึกษา</label>
+          <div className="flex flex-col gap-1.5 min-w-0">
+            <label className="text-[14px] font-bold text-[#6D6D6D] truncate">{t('credit_tracking.profile.curriculum_label')}</label>
             <input
               type="text"
               value={editedProfile.curriculum}
@@ -104,8 +106,8 @@ export function StudentProfileForm({ profile, onChange }: StudentProfileFormProp
             />
           </div>
 
-          <div className="flex flex-col gap-1.5">
-            <label className="text-[14px] font-bold text-[#6D6D6D]">อาจารย์ที่ปรึกษา</label>
+          <div className="flex flex-col gap-1.5 min-w-0">
+            <label className="text-[14px] font-bold text-[#6D6D6D] truncate">{t('yellow_card.profile_form.advisor_label')}</label>
             <input
               type="text"
               value={editedProfile.advisor}
@@ -114,8 +116,8 @@ export function StudentProfileForm({ profile, onChange }: StudentProfileFormProp
             />
           </div>
 
-          <div className="flex flex-col gap-1.5 md:col-span-2">
-            <label className="text-[14px] font-bold text-[#6D6D6D]">สถานที่ติดต่อ</label>
+          <div className="flex flex-col gap-1.5 md:col-span-2 min-w-0">
+            <label className="text-[14px] font-bold text-[#6D6D6D] truncate">{t('yellow_card.profile_form.address_label')}</label>
             <textarea
               value={editedProfile.address}
               onChange={(e) => setEditedProfile({ ...editedProfile, address: e.target.value })}
@@ -124,8 +126,8 @@ export function StudentProfileForm({ profile, onChange }: StudentProfileFormProp
             />
           </div>
 
-          <div className="flex flex-col gap-1.5">
-            <label className="text-[14px] font-bold text-[#6D6D6D]">หมายเลขโทรศัพท์</label>
+          <div className="flex flex-col gap-1.5 min-w-0">
+            <label className="text-[14px] font-bold text-[#6D6D6D] truncate">{t('yellow_card.profile_form.phone_label')}</label>
             <input
               type="text"
               value={editedProfile.phone}
@@ -135,56 +137,56 @@ export function StudentProfileForm({ profile, onChange }: StudentProfileFormProp
           </div>
         </div>
       ) : (
-        <div className="flex flex-col gap-5 text-[16px] text-black pr-16 md:pr-0">
+        <div className="flex flex-col gap-5 text-[16px] text-black pr-16 md:pr-0 min-w-0">
           {/* Row 1 */}
-          <div className="flex flex-col md:flex-row md:items-center gap-y-2">
-            <div className="flex items-center flex-1">
-              <span className="w-[109px] font-bold shrink-0 text-black">ข้อมูลนิสิต</span>
-              <span className="text-[#404041]">{profile.name}</span>
+          <div className="flex flex-col md:flex-row md:items-center gap-y-2 min-w-0">
+            <div className="flex items-center flex-1 min-w-0">
+              <span className="w-[109px] font-bold shrink-0 text-black truncate">{t('yellow_card.profile_form.student_info_label')}</span>
+              <span className="text-[#404041] truncate">{profile.name}</span>
             </div>
-            <div className="flex items-center flex-1 md:pl-8">
-              <span className="w-[100px] font-bold shrink-0 text-black">เลขประจำตัว</span>
-              <span className="text-[#404041] font-mono">{profile.studentId}</span>
+            <div className="flex items-center flex-1 md:pl-8 min-w-0">
+              <span className="w-[100px] font-bold shrink-0 text-black truncate">{t('yellow_card.profile_form.student_id_short')}</span>
+              <span className="text-[#404041] font-mono truncate">{profile.studentId}</span>
             </div>
           </div>
 
           {/* Row 2 */}
-          <div className="flex flex-col md:flex-row md:items-center gap-y-2">
-            <div className="flex items-center flex-1">
-              <span className="w-[109px] font-bold shrink-0 text-black">เอก</span>
-              <span className="text-[#404041]">{profile.major}</span>
+          <div className="flex flex-col md:flex-row md:items-center gap-y-2 min-w-0">
+            <div className="flex items-center flex-1 min-w-0">
+              <span className="w-[109px] font-bold shrink-0 text-black truncate">{t('credit_tracking.profile.major_label')}</span>
+              <span className="text-[#404041] truncate">{profile.major}</span>
             </div>
-            <div className="flex items-center flex-1 md:pl-8">
-              <span className="w-[100px] font-bold shrink-0 text-black">โท</span>
-              <span className="text-[#404041]">{profile.minor || 'ไม่มี'}</span>
+            <div className="flex items-center flex-1 md:pl-8 min-w-0">
+              <span className="w-[100px] font-bold shrink-0 text-black truncate">{t('credit_tracking.profile.minor_label')}</span>
+              <span className="text-[#404041] truncate">{profile.minor || t('yellow_card.profile_form.no_minor')}</span>
             </div>
           </div>
 
           {/* Row 3 */}
-          <div className="flex flex-col md:flex-row md:items-center gap-y-2">
-            <div className="flex items-center flex-1">
-              <span className="w-[109px] font-bold shrink-0 text-black">หลักสูตรการศึกษา</span>
-              <span className="text-[#404041]">{profile.curriculum}</span>
+          <div className="flex flex-col md:flex-row md:items-center gap-y-2 min-w-0">
+            <div className="flex items-center flex-1 min-w-0">
+              <span className="w-[109px] font-bold shrink-0 text-black truncate">{t('credit_tracking.profile.curriculum_label')}</span>
+              <span className="text-[#404041] truncate">{profile.curriculum}</span>
             </div>
-            <div className="flex items-center flex-1 md:pl-8">
-              <span className="w-[100px] font-bold shrink-0 text-black">อาจารย์ที่ปรึกษา</span>
-              <span className="text-[#404041]">{profile.advisor}</span>
+            <div className="flex items-center flex-1 md:pl-8 min-w-0">
+              <span className="w-[100px] font-bold shrink-0 text-black truncate">{t('yellow_card.profile_form.advisor_label')}</span>
+              <span className="text-[#404041] truncate">{profile.advisor}</span>
             </div>
           </div>
 
           {/* Row 4 */}
-          <div className="flex flex-col md:flex-row md:items-start gap-y-2">
-            <div className="flex items-start w-full">
-              <span className="w-[109px] font-bold shrink-0 text-black pt-0.5">สถานที่ติดต่อ</span>
-              <span className="text-[#404041] leading-relaxed">{profile.address || '-'}</span>
+          <div className="flex flex-col md:flex-row md:items-start gap-y-2 min-w-0">
+            <div className="flex items-start w-full min-w-0">
+              <span className="w-[109px] font-bold shrink-0 text-black pt-0.5 truncate">{t('yellow_card.profile_form.address_label')}</span>
+              <span className="text-[#404041] leading-relaxed break-words">{profile.address || '-'}</span>
             </div>
           </div>
 
           {/* Row 5 */}
-          <div className="flex flex-col md:flex-row md:items-center gap-y-2">
-            <div className="flex items-center w-full">
-              <span className="w-[109px] font-bold shrink-0 text-black">หมายเลขโทรศัพท์</span>
-              <span className="text-[#404041] font-mono">{profile.phone || '-'}</span>
+          <div className="flex flex-col md:flex-row md:items-center gap-y-2 min-w-0">
+            <div className="flex items-center w-full min-w-0">
+              <span className="w-[109px] font-bold shrink-0 text-black truncate">{t('yellow_card.profile_form.phone_label')}</span>
+              <span className="text-[#404041] font-mono truncate">{profile.phone || '-'}</span>
             </div>
           </div>
         </div>

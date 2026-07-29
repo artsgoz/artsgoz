@@ -1,9 +1,11 @@
 import { useSearchParams } from 'react-router';
+import { useTranslation } from 'react-i18next';
 import { SectionHeading } from '@org/design-system';
 import { ClubSelector, ClubDetail } from '../../../features/clubs/index.js';
 import { Footer } from '../../../components/Footer/index.js';
 
 export default function ClubsPage() {
+  const { t } = useTranslation();
   const [searchParams] = useSearchParams();
   const activeClubId = searchParams.get('id') || 'club-04';
 
@@ -13,8 +15,8 @@ export default function ClubsPage() {
         <div className="max-w-[1282px] mx-auto px-4 lg:px-6 w-full py-12 md:py-16 flex flex-col gap-10">
           {/* Page Title */}
           <SectionHeading
-            title="ชมรมทั้งหมดในคณะ"
-            description="ทำความรู้จักและเข้าร่วมกิจกรรมกับชมรมต่างๆ ของชาวอักษรศาสตร์"
+            title={t('clubs.page_title')}
+            description={t('clubs.page_desc')}
           />
 
           {/* Club Selector Badge Bar */}
@@ -30,4 +32,3 @@ export default function ClubsPage() {
     </>
   );
 }
-

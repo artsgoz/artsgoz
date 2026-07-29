@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router';
 import { Bookmark } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 import mockImage from '../../../assets/ArticleBannerMock.jpg';
 
 interface ArticleCardProps {
@@ -22,6 +23,7 @@ export function ArticleCard({
   imageUrl,
   onBookmarkChange,
 }: ArticleCardProps) {
+  const { t } = useTranslation();
   const navigate = useNavigate();
   const [isBookmarked, setIsBookmarked] = useState(() => {
     try {
@@ -60,6 +62,10 @@ export function ArticleCard({
     }
   };
 
+  const translatedTitle = t(title);
+  const translatedAuthor = t(author);
+  const translatedCategory = t(category);
+
   return (
     <div
       onClick={() => navigate(`/articles/${id}`)}
@@ -83,7 +89,7 @@ export function ArticleCard({
       ">
         <img
           src={imageUrl || mockImage}
-          alt={title}
+          alt={translatedTitle}
           className="w-full h-full object-cover pointer-events-none"
         />
       </div>
@@ -98,14 +104,14 @@ export function ArticleCard({
           font-serif text-[16px] font-bold leading-[24px]
           text-black line-clamp-2 overflow-hidden text-ellipsis break-words w-full
         ">
-          {title}
+          {translatedTitle}
         </h3>
         <div className="flex flex-col gap-[4px]">
           <span className="font-serif text-[14px] font-bold leading-[20px] text-[#6D6D6D] whitespace-nowrap overflow-hidden text-ellipsis">
-            {'เขียนโดย ' + author}
+            {t('articles.written_by', { author: translatedAuthor })}
           </span>
           <span className="font-serif text-[14px] font-bold leading-[20px] text-[#99999A] whitespace-nowrap">
-            {'เผยแพร่ ' + date}
+            {t('articles.published', { date })}
           </span>
         </div>
       </div>
@@ -128,7 +134,7 @@ export function ArticleCard({
             alignItems: 'center',
           }}
         >
-          {category}
+          {translatedCategory}
         </span>
         {/* Bookmark button: bg #F8C135, 32×32, borderRadius 8px */}
         <button
@@ -167,7 +173,7 @@ export function ArticleCard({
       ">
         <img
           src={imageUrl || mockImage}
-          alt={title}
+          alt={translatedTitle}
           className="w-full h-full object-cover pointer-events-none"
         />
       </div>
@@ -185,7 +191,7 @@ export function ArticleCard({
             alignItems: 'center',
           }}
         >
-          {category}
+          {translatedCategory}
         </span>
         <button
           type="button"
@@ -223,18 +229,17 @@ export function ArticleCard({
           font-serif text-[20px] font-bold leading-[28px]
           text-black break-words w-full h-[84px]
         ">
-          {title}
+          {translatedTitle}
         </h3>
-        <div className="bg-[rgba(255,255,255,0.26)] flex flex-col gap-[4px] items-start justify-center py-[4px] px-[12px] w-full rounded-[8px]">
-          <span className="font-serif text-[14px] text-[#6D6D6D] font-bold leading-[20px] whitespace-nowrap">
-            {'เขียนโดย ' + author}
+        <div className="bg-[rgba(255,255,255,0.26)] flex flex-col gap-[4px] items-start justify-center py-[4px] px-[12px] w-full rounded-[8px] overflow-hidden text-ellipsis">
+          <span className="font-serif text-[14px] text-[#6D6D6D] font-bold leading-[20px] whitespace-nowrap overflow-hidden text-ellipsis w-full">
+            {t('articles.written_by', { author: translatedAuthor })}
           </span>
-          <span className="font-serif text-[14px] text-[#99999A] font-bold leading-[20px] whitespace-nowrap">
-            {'เผยแพร่ ' + date}
+          <span className="font-serif text-[14px] text-[#99999A] font-bold leading-[20px] whitespace-nowrap overflow-hidden text-ellipsis w-full">
+            {t('articles.published', { date })}
           </span>
         </div>
       </div>
     </div>
   );
 }
-

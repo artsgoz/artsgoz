@@ -20,18 +20,21 @@ export function AgendaBadge({ variant, children, className = '' }: AgendaBadgePr
     else if (text === 'ห้ามลืม') resolvedVariant = 'dont-forget';
   }
 
-  // Premium outline design styling classes (colorless background with colored borders/text)
+  // Solid borderless chip-like fills matching Chula design system visual weights
   const variantClasses: Record<AgendaBadgeVariant, string> = {
-    today: 'bg-transparent text-[#DE5D8F] border border-[#DE5D8F]',
-    tomorrow: 'bg-transparent text-indigo-600 border border-indigo-500',
-    important: 'bg-transparent text-red-600 border border-red-500',
-    'dont-forget': 'bg-transparent text-amber-600 border border-amber-500',
-    default: 'bg-transparent text-gray-500 border border-gray-300',
+    today: 'bg-[#E992B4] text-white', 
+    tomorrow: 'bg-[#EEF2FF] text-[#4338CA]', 
+    important: 'bg-[#FEF2F2] text-[#B91C1C]', 
+    'dont-forget': 'bg-[#FFFBEB] text-[#B45309]', 
+    default: 'bg-[#F7F8F9] text-[#6D6D6D]', 
   };
 
   return (
     <span
-      className={`inline-flex items-center justify-center font-serif text-[11px] md:text-[12px] font-bold px-3 py-1.5 rounded-full uppercase tracking-wider select-none transition-all duration-200 ${variantClasses[resolvedVariant]} ${className}`}
+      className={`inline-flex items-center justify-center font-serif text-[12px] font-bold px-3 h-[24px] rounded-full uppercase select-none transition-all duration-200 border-none ${variantClasses[resolvedVariant]} ${className}`}
+      style={{
+        lineHeight: '18px',
+      }}
     >
       {children}
     </span>

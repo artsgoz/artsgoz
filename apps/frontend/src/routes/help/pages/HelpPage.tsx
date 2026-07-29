@@ -1,63 +1,43 @@
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Search, X, Plus, Minus, Send } from 'lucide-react';
-import { Chip, SearchInput, Button } from '@org/design-system';
+import { Search, X, Send } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
+import { Chip, SearchInput, Button, AccordionItem } from '@org/design-system';
+
+// Assets
+import linkTreeImg from '../../../assets/link_tree.png';
 
 interface FAQItem {
   id: string;
   category: 'general' | 'registration' | 'tracker' | 'website';
-  question: string;
-  answer: string;
+  /** Translation key for the question */
+  questionKey: string;
+  /** Translation key for the answer */
+  answerKey: string;
 }
 
+/**
+ * FAQ data stores translation keys, not raw text.
+ * Components must call t(faq.questionKey) and t(faq.answerKey) to render.
+ */
 const FAQ_DATA: FAQItem[] = [
-  {
-    id: 'faq-1',
-    category: 'general',
-    question: 'บริการนิสิตของ ก.อศ. มีอะไรบ้าง และสามารถเข้าใช้บริการได้ที่ไหน?',
-    answer:
-      'ก.อศ. มีบริการยืมร่ม กล่องผ้าอนามัยฉุกเฉินฟรี และยาสามัญประจำบ้านปฐมพยาบาลเบื้องต้น นิสิตสามารถติดต่อขอรับบริการได้ที่ ห้อง ก.อศ. ชั้น M1 อาคารมหาจักรีสิรินธร คณะอักษรศาสตร์ ในวันจันทร์-ศุกร์ เวลา 09:00 - 17:00 น.',
-  },
-  {
-    id: 'faq-2',
-    category: 'registration',
-    question: 'หากต้องการตรวจสอบรายวิชาในหลักสูตรอักษรศาสตร์ ต้องตรวจสอบอย่างไร?',
-    answer:
-      'นิสิตสามารถเข้าไปที่แท็บ "หลักสูตร" บนแถบเมนูหลักของเว็บไซต์ เพื่อดูวิชาบังคับ วิชาเลือก และรายละเอียดหน่วยกิตของกลุ่มวิชาต่าง ๆ ในหลักสูตรอักษรศาสตรบัณฑิตฉบับล่าสุดได้โดยตรง',
-  },
-  {
-    id: 'faq-3',
-    category: 'tracker',
-    question: 'ฟังก์ชัน Academic Tracker คืออะไร และช่วยคำนวณหน่วยกิตอย่างไร?',
-    answer:
-      'Academic Tracker เป็นเครื่องมือส่วนตัวที่ช่วยให้นิสิตบันทึกรายวิชาที่เรียนผ่านแล้ว ระบบจะคำนวณหน่วยกิตสะสม แยกระดับวิชาบังคับคณะ วิชาบังคับเอก และวิชาเลือกเสรีโดยอัตโนมัติ เพื่อตรวจสอบว่านิสิตเรียนครบตามเกณฑ์สำเร็จการศึกษาหรือไม่',
-  },
-  {
-    id: 'faq-4',
-    category: 'website',
-    question: 'เมื่อพบปัญหาระบบหรือต้องการแจ้งข้อผิดพลาดบนเว็บไซต์ ต้องทำอย่างไร?',
-    answer:
-      'หากพบบั๊กหรือข้อมูลที่ไม่ถูกต้อง สามารถคลิกที่ปุ่ม "แจ้งปัญหาใช้งานเว็บไซต์" บริเวณด้านล่างของหน้าหลัก หรือกดปุ่ม "ส่งคำถามเพิ่มเติม" เพื่อติดต่อผู้พัฒนาโดยตรง',
-  },
-  {
-    id: 'faq-5',
-    category: 'general',
-    question: 'จะติดตามข่าวสารและตารางกิจกรรมของคณะได้อย่างไร?',
-    answer:
-      'นิสิตสามารถติดตามได้ผ่าน "ปฏิทินกิจกรรมและกำหนดการ" บนหน้าแรก ซึ่งจะมีวันเวลาของกิจกรรมต่าง ๆ พร้อมแถบสถานะ (เช่น วันนี้, พรุ่งนี้, สำคัญ, ห้ามลืม) เพื่อให้นิสิตไม่พลาดกิจกรรมสำคัญ',
-  },
+  { id: 'faq-1', category: 'general',      questionKey: 'help.faq.faq_1_question', answerKey: 'help.faq.faq_1_answer' },
+  { id: 'faq-2', category: 'registration', questionKey: 'help.faq.faq_2_question', answerKey: 'help.faq.faq_2_answer' },
+  { id: 'faq-3', category: 'tracker',      questionKey: 'help.faq.faq_3_question', answerKey: 'help.faq.faq_3_answer' },
+  { id: 'faq-4', category: 'website',      questionKey: 'help.faq.faq_4_question', answerKey: 'help.faq.faq_4_answer' },
+  { id: 'faq-5', category: 'general',      questionKey: 'help.faq.faq_5_question', answerKey: 'help.faq.faq_5_answer' },
 ];
 
-// Figma Chip data — no "ทั้งหมด" prefix in Figma, but we add for convenience
 const CATEGORIES = [
-  { value: 'all',          label: 'ทั้งหมด' },
-  { value: 'general',      label: 'ทั่วไป' },
-  { value: 'registration', label: 'ลงทะเบียนเรียน' },
-  { value: 'tracker',      label: 'Academic Tracker' },
-  { value: 'website',      label: 'เกี่ยวกับเว็บไซต์' },
+  { value: 'all',          labelKey: 'help.categories.all' },
+  { value: 'general',      labelKey: 'help.categories.general' },
+  { value: 'registration', labelKey: 'help.categories.registration' },
+  { value: 'tracker',      labelKey: 'help.categories.tracker' },
+  { value: 'website',      labelKey: 'help.categories.website' },
 ] as const;
 
 export default function HelpPage() {
+  const { t } = useTranslation();
   const [searchQuery, setSearchQuery]     = useState('');
   const [selectedCategory, setSelectedCategory] = useState<string>('all');
   const [expandedId, setExpandedId]       = useState<string | null>(null);
@@ -85,12 +65,15 @@ export default function HelpPage() {
     }, 2000);
   };
 
+  // Filter by category and search — compare against translated text
   const filteredFAQs = FAQ_DATA.filter(faq => {
     const matchesCategory =
       selectedCategory === 'all' || faq.category === selectedCategory;
+    const translatedQ = t(faq.questionKey).toLowerCase();
+    const translatedA = t(faq.answerKey).toLowerCase();
     const matchesSearch =
-      faq.question.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      faq.answer.toLowerCase().includes(searchQuery.toLowerCase());
+      translatedQ.includes(searchQuery.toLowerCase()) ||
+      translatedA.includes(searchQuery.toLowerCase());
     return matchesCategory && matchesSearch;
   });
 
@@ -99,48 +82,41 @@ export default function HelpPage() {
       {/* ── Main content ──────────────────────────────────────────── */}
       <div className="max-w-[1280px] mx-auto px-6 md:px-16 pt-10 pb-16">
 
-        {/* Row: left title "ช่วยเหลือ"  |  right title "คำถามที่พบบ่อย (FAQ)" */}
-        <div className="flex flex-col lg:flex-row lg:items-end gap-0 mb-4">
-          {/* Left title — same x as the image below (Figma x=75) */}
-          <div className="lg:w-[40%] shrink-0">
-            <h1 className="text-[40px] lg:text-[48px] font-bold text-[#404041] leading-[1.2] font-serif">
-              ช่วยเหลือ
-            </h1>
-          </div>
-
-          {/* Right title — Figma x=690 out of 1280 ≈ 54% */}
-          <div className="lg:flex-1">
-            <h2 className="text-[40px] lg:text-[48px] font-bold text-[#404041] leading-[1.2] font-serif mt-6 lg:mt-0">
-              คำถามที่พบบ่อย (FAQ)
-            </h2>
-          </div>
-        </div>
-
         {/* Row: left image  |  right FAQ section */}
         <div className="flex flex-col lg:flex-row lg:items-start gap-8 lg:gap-12">
 
           {/* ── LEFT: Link Tree image ────────────────────────────── */}
-          {/* Figma: width=521, height=679, placed at x=85 in 1280px canvas → ≈44% of content width */}
-          <div className="w-full lg:w-[40%] shrink-0">
-            <div className="w-full aspect-[521/679] rounded-[20px] bg-[#D0D0D1]" />
+          <div className="w-full lg:w-[40%] shrink-0 flex flex-col gap-6">
+            <h1 className="text-[40px] lg:text-[48px] font-bold text-[#404041] leading-[1.2] font-serif">
+              {t('help.title')}
+            </h1>
+            <div className="w-full aspect-[521/679] rounded-[20px] overflow-hidden border border-[#ECECEC] shadow-[0_4px_20px_rgba(0,0,0,0.05)] bg-[#FDF8FA]/10">
+              <img 
+                src={linkTreeImg} 
+                alt={t('help.image_alt')} 
+                className="w-full h-full object-cover select-none" 
+              />
+            </div>
           </div>
 
           {/* ── RIGHT: Search + Chips + FAQ + Button ─────────────── */}
-          {/* Figma: search at x=693, width=485; chips at x=640,w=612; faq at x=709,w=405 */}
           <div className="w-full lg:flex-1 flex flex-col gap-0 pt-0 lg:pt-1">
+            <h2 className="text-[32px] lg:text-[40px] font-bold text-[#404041] leading-[1.2] font-serif mb-6 mt-6 lg:mt-0">
+              {t('help.faq_title')}
+            </h2>
 
             {/* Search Field */}
             <div className="mb-4">
               <SearchInput
                 size="lg"
-                placeholder="ค้นหา"
+                placeholder={t('help.search_placeholder')}
                 value={searchQuery}
                 onChange={e => setSearchQuery(e.target.value)}
               />
             </div>
 
-            {/* Filter Categories — Figma: row, centered, gap=20px, Chip fill=#F7F8F9, text=#6D6D6D bold 16px */}
-            <div className="flex flex-row justify-center items-end gap-5 flex-wrap mb-4">
+            {/* Filter Categories */}
+            <div className="flex flex-row justify-start items-end gap-5 flex-wrap mb-8">
               {CATEGORIES.map(cat => (
                 <Chip
                   key={cat.value}
@@ -152,81 +128,50 @@ export default function HelpPage() {
                   }}
                   className="font-[ChulaCharasNew]"
                 >
-                  {cat.label}
+                  {t(cat.labelKey)}
                 </Chip>
               ))}
             </div>
 
-            {/* FAQ Accordion — Figma node 5752:27756 */}
-            {/* Column, gap=16px, width=405px (we let it fill right panel) */}
-            <div className="flex flex-col gap-4">
+            {/* FAQ Accordion */}
+            <div className="flex flex-col">
               <AnimatePresence initial={false}>
                 {filteredFAQs.length > 0 ? (
                   filteredFAQs.map(faq => {
                     const isExpanded = expandedId === faq.id;
                     return (
-                      <div key={faq.id} className="group">
-                        {/* Question row */}
-                        <button
-                          onClick={() => toggleAccordion(faq.id)}
-                          className="w-full flex items-start justify-between gap-4 py-1 cursor-pointer focus:outline-none text-left"
-                        >
-                          <span
-                            className="text-[18px] md:text-[20px] font-bold text-[#404041] leading-[28px] font-serif"
-                          >
-                            {faq.question} ?
-                          </span>
-                          <span className="shrink-0 mt-1 text-[#404041] transition-transform duration-300">
-                            {isExpanded ? <Minus size={18} /> : <Plus size={18} />}
-                          </span>
-                        </button>
-
-                        {/* Answer */}
-                        <motion.div
-                          initial="collapsed"
-                          animate={isExpanded ? 'open' : 'collapsed'}
-                          exit="collapsed"
-                          variants={{
-                            open:      { opacity: 1, height: 'auto', marginTop: 0 },
-                            collapsed: { opacity: 0, height: 0,    marginTop: 0 },
-                          }}
-                          transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
-                          className="overflow-hidden"
-                        >
-                          {/* Divider */}
-                          <div className="w-full h-px bg-[#ECECEC] mt-[8px] mb-[10px]" />
-                          {/* Answer text */}
-                          <p
-                            className="text-[15px] md:text-[16px] font-normal text-[#6D6D6D] leading-[24px] font-serif"
-                          >
-                            {faq.answer}
-                          </p>
-                        </motion.div>
-
-                        {/* Bottom divider between FAQ items */}
-                        <div className="w-full h-px bg-[#ECECEC] mt-4" />
-                      </div>
+                      <AccordionItem
+                        key={faq.id}
+                        title={`${t(faq.questionKey)} ?`}
+                        isOpen={isExpanded}
+                        onToggle={() => toggleAccordion(faq.id)}
+                        className="first:pt-0"
+                      >
+                        <p className="text-[16px] md:text-[18px] font-normal text-[#6D6D6D] leading-relaxed font-serif">
+                          {t(faq.answerKey)}
+                        </p>
+                      </AccordionItem>
                     );
                   })
                 ) : (
                   <div className="flex flex-col items-center justify-center py-10 text-center">
                     <Search size={36} className="text-gray-300 mb-3" />
                     <p className="text-gray-500 text-[18px]">
-                      ไม่พบคำถามที่ตรงกับการค้นหาของคุณ
+                      {t('help.no_results')}
                     </p>
                   </div>
                 )}
               </AnimatePresence>
             </div>
 
-            {/* ส่งคำถาม Button — directly under FAQ list */}
+            {/* ส่งคำถาม Button */}
             <div className="mt-6 flex justify-center lg:justify-start">
               <Button
                 onClick={() => setIsModalOpen(true)}
                 variant="primary"
                 className="font-serif shadow-[0_4px_4px_rgba(0,0,0,0.25)]"
               >
-                ส่งคำถาม
+                {t('help.send_question_btn')}
                 <Send size={16} />
               </Button>
             </div>
@@ -261,10 +206,10 @@ export default function HelpPage() {
               </button>
 
               <h3 className="text-2xl font-bold text-gray-800 mb-2 font-[ChulaCharasNew]">
-                ส่งคำถามเพิ่มเติม
+                {t('help.modal.title')}
               </h3>
               <p className="text-gray-500 text-[15px] mb-6 font-[ChulaCharasNew]">
-                ระบุชื่อ อีเมล และข้อสงสัยของคุณเพื่อติดต่อรับการช่วยเหลือจาก ก.อศ.
+                {t('help.modal.subtitle')}
               </p>
 
               {submitSuccess ? (
@@ -278,41 +223,41 @@ export default function HelpPage() {
                       <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
                     </svg>
                   </div>
-                  <h4 className="text-xl font-bold text-gray-800 mb-1 font-[ChulaCharasNew]">ส่งข้อความสำเร็จ!</h4>
-                  <p className="text-gray-500 text-[15px] font-[ChulaCharasNew]">เราจะรีบตอบกลับคุณโดยเร็วที่สุด</p>
+                  <h4 className="text-xl font-bold text-gray-800 mb-1 font-[ChulaCharasNew]">{t('help.modal.success_title')}</h4>
+                  <p className="text-gray-500 text-[15px] font-[ChulaCharasNew]">{t('help.modal.success_subtitle')}</p>
                 </motion.div>
               ) : (
                 <form onSubmit={handleModalSubmit} className="space-y-4">
                   <div>
-                    <label className="block text-[15px] font-bold text-gray-700 mb-1.5 font-[ChulaCharasNew]">ชื่อ-นามสกุล</label>
+                    <label className="block text-[15px] font-bold text-gray-700 mb-1.5 font-[ChulaCharasNew]">{t('help.modal.name_label')}</label>
                     <input
                       type="text"
                       required
                       value={name}
                       onChange={e => setName(e.target.value)}
-                      placeholder="สมชาย ใจดี"
+                      placeholder={t('help.modal.name_placeholder')}
                       className="w-full px-4 py-2.5 rounded-xl border border-gray-300 focus:outline-none focus:ring-2 focus:ring-[#DE5D8F]/30 focus:border-[#DE5D8F] transition-all text-[15px] font-[ChulaCharasNew]"
                     />
                   </div>
                   <div>
-                    <label className="block text-[15px] font-bold text-gray-700 mb-1.5 font-[ChulaCharasNew]">อีเมล</label>
+                    <label className="block text-[15px] font-bold text-gray-700 mb-1.5 font-[ChulaCharasNew]">{t('help.modal.email_label')}</label>
                     <input
                       type="email"
                       required
                       value={email}
                       onChange={e => setEmail(e.target.value)}
-                      placeholder="student@chula.ac.th"
+                      placeholder={t('help.modal.email_placeholder')}
                       className="w-full px-4 py-2.5 rounded-xl border border-gray-300 focus:outline-none focus:ring-2 focus:ring-[#DE5D8F]/30 focus:border-[#DE5D8F] transition-all text-[15px] font-[ChulaCharasNew]"
                     />
                   </div>
                   <div>
-                    <label className="block text-[15px] font-bold text-gray-700 mb-1.5 font-[ChulaCharasNew]">ข้อคำถาม / ข้อเสนอแนะ</label>
+                    <label className="block text-[15px] font-bold text-gray-700 mb-1.5 font-[ChulaCharasNew]">{t('help.modal.question_label')}</label>
                     <textarea
                       required
                       rows={4}
                       value={question}
                       onChange={e => setQuestion(e.target.value)}
-                      placeholder="กรอกรายละเอียดความประสงค์หรือข้อคำถามของคุณ..."
+                      placeholder={t('help.modal.question_placeholder')}
                       className="w-full px-4 py-2.5 rounded-xl border border-gray-300 focus:outline-none focus:ring-2 focus:ring-[#DE5D8F]/30 focus:border-[#DE5D8F] transition-all text-[15px] resize-none font-[ChulaCharasNew]"
                     />
                   </div>
@@ -321,7 +266,7 @@ export default function HelpPage() {
                     variant="primary"
                     className="w-full mt-2 font-serif shadow-md"
                   >
-                    ส่งข้อความ
+                    {t('help.modal.submit_btn')}
                   </Button>
                 </form>
               )}

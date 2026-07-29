@@ -9,6 +9,8 @@ export const PATHS = {
   YELLOW_CARD: '/yellow-card',
   CURRICULUM: '/curriculum',
   INTERNSHIPS: '/internships',
+  INTERNSHIPS_OPEN: '/internships/open',
+  INTERNSHIPS_REVIEW: '/internships/review',
   ARTICLES: '/articles',
   CLUBS: '/clubs',
   HELP: '/help',

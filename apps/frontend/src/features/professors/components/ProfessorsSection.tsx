@@ -1,4 +1,5 @@
 import { useState, useMemo } from 'react';
+import { useTranslation } from 'react-i18next';
 import type { Professor } from '../types.js';
 import {
   MOCK_PROFESSORS,
@@ -12,46 +13,34 @@ import { ProfessorSearchBar } from './ProfessorSearchBar.js';
 import { FilterDropdown } from './FilterDropdown.js';
 import { ProfessorPagination } from './ProfessorPagination.js';
 
-/**
- * ProfessorsSection — the main container component.
- *
- * Implements two states from Figma:
- *
- * STATE 1 — No professor selected (node 5120:15553):
- *   Layout: Full-width page (1280px)
- *   - Title "สืบค้นชื่อบุคลากร" at top — 32px w700 #000000
- *   - Full-width search bar (Frame 6175) — 1086px
- *   - Filter dropdowns (Frame 6346) right-aligned — ภาควิชา + สถานภาพบุคลากร
- *   - Professor list (Frame 6390) centered — 784px wide, 13 cards
- *   - Pagination (Component 14) centered
- *
- * STATE 2 — Professor selected (node 5479:14908):
- *   Layout: Split view
- *   - Left column (434px): title + compact search + narrow list + pagination
- *   - Right column (737px): detail panel with back button
- */
 export function ProfessorsSection() {
+  const { t } = useTranslation();
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedProfessor, setSelectedProfessor] = useState<Professor | null>(null);
   const [currentPage, setCurrentPage] = useState(1);
-  const [departmentFilter, setDepartmentFilter] = useState('ทั้งหมด');
-  const [statusFilter, setStatusFilter] = useState('ทั้งหมด');
+  const [departmentFilter, setDepartmentFilter] = useState('professors.departments.all');
+  const [statusFilter, setStatusFilter] = useState('professors.status.all');
 
   // Filter professors based on search and filters
   const filteredProfessors = useMemo(() => {
     return MOCK_PROFESSORS.filter((prof) => {
+      const name = t(prof.nameKey).toLowerCase();
+      const email = prof.email.toLowerCase();
+      const department = t(prof.departmentKey).toLowerCase();
+      const query = searchQuery.toLowerCase();
+
       const matchesSearch =
         !searchQuery ||
-        prof.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        prof.email.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        prof.department.toLowerCase().includes(searchQuery.toLowerCase());
+        name.includes(query) ||
+        email.includes(query) ||
+        department.includes(query);
 
       const matchesDept =
-        departmentFilter === 'ทั้งหมด' || prof.department === departmentFilter;
+        departmentFilter === 'professors.departments.all' || prof.departmentKey === departmentFilter;
 
       return matchesSearch && matchesDept;
     });
-  }, [searchQuery, departmentFilter]);
+  }, [searchQuery, departmentFilter, t]);
 
   const totalPages = Math.max(1, Math.ceil(filteredProfessors.length / PROFESSORS_PER_PAGE));
 
@@ -81,49 +70,30 @@ export function ProfessorsSection() {
   const isDetailOpen = selectedProfessor !== null;
 
   return (
-    /*
-     * Outer page container — max-width 1280px, centered with px padding.
-     * This is the area within the page frame (below navbar, above footer).
-     * The Figma page is 1280px wide. The content starts at x:85 (so ~85px padding each side).
-     */
     <div className="w-full max-w-[1280px] mx-auto px-8">
-      {/*
-       * Title — "สืบค้นชื่อบุคลากร"
-       * Page 1: y:155, width:1086, 32px w700 #000000
-       * Page 2: y:155, width:434, 24px w700 #000000
-       */}
       <h1
-        className="font-[ChulaCharasNew] text-[#000000]"
+        className="font-[ChulaCharasNew] text-[#000000] truncate max-w-full"
         style={{
           fontSize: isDetailOpen ? '24px' : '32px',
           fontWeight: 700,
-          marginTop: '74px', /* navbar is 81px, title y:155, so 155-81=74px margin */
-          marginBottom: '22px', /* gap between title and search: 251-155-40≈56px → ~22px after title */
+          marginTop: '74px',
+          marginBottom: '22px',
           lineHeight: 1.25,
         }}
       >
-        สืบค้นชื่อบุคลากร
+        {t('professors.title')}
       </h1>
 
-      {/*
-       * Main content area — changes layout based on state:
-       * STATE 1: single column
-       * STATE 2: two columns (list left, detail right)
-       */}
-      <div className={`flex gap-0 ${isDetailOpen ? 'items-start' : ''}`}>
+      <div className={`flex gap-0 ${isDetailOpen ? 'items-start flex-col lg:flex-row' : 'flex-col'}`}>
         {/* LEFT COLUMN — search + filters + list + pagination */}
         <div
-          className="flex flex-col"
+          className="flex flex-col min-w-0"
           style={{
             width: isDetailOpen ? '434px' : '100%',
+            maxWidth: '100%',
             flexShrink: 0,
           }}
         >
-          {/*
-           * Frame 6175 — Search bar area
-           * Page 1: 1086×41 (full width)
-           * Page 2: 434×41 (narrow)
-           */}
           <ProfessorSearchBar
             value={searchQuery}
             onChange={setSearchQuery}
@@ -131,50 +101,29 @@ export function ProfessorsSection() {
             mode={isDetailOpen ? 'compact' : 'full'}
           />
 
-          {/*
-           * Frame 6346 — Filter dropdowns
-           * Page 1: 410×192 positioned right-aligned (x:761 from left = 1171-410=761)
-           * Page 2: 410×192 positioned at x:109 relative (from page 2 it's at x:109)
-           * Both cases: HORIZONTAL gap:18 justify:MAX
-           * The height:192 is odd — it may represent the filter section including space below
-           * Actually looking at the data: gap:18 HORIZONTAL with justify:MAX means
-           * the filters are right-aligned within their container
-           */}
           <div
-            className={`flex items-center mt-[16px] ${isDetailOpen ? 'justify-start' : 'justify-end'}`}
-            style={{ gap: '18px' }}
+            className={`flex items-center mt-[16px] flex-wrap gap-[18px] ${isDetailOpen ? 'justify-start' : 'justify-end'}`}
           >
             <FilterDropdown
-              label=" ภาควิชา"
+              label={t('professors.department_label')}
               options={DEPARTMENT_OPTIONS}
               value={departmentFilter}
               onChange={(v) => { setDepartmentFilter(v); setCurrentPage(1); }}
             />
             <FilterDropdown
-              label=" สถานภาพบุคลากร"
+              label={t('professors.status_label')}
               options={STATUS_OPTIONS}
               value={statusFilter}
               onChange={(v) => { setStatusFilter(v); setCurrentPage(1); }}
             />
           </div>
 
-          {/*
-           * Frame 6390 — Professor list
-           * Page 1: x:248,y:382 width:784, gap:12, VERTICAL — centered within 1280px page
-           * Page 2: x:85,y:382 width:434, gap:12, VERTICAL — left-aligned
-           *
-           * In page 1 state, the list is centered (x:248 from left edge means 248px left margin).
-           * The page container is 1280px, content starts at x:85.
-           * So the list sits at x:248-85=163px from the content area edge,
-           * i.e. it's not full width — it's centered in the available 1086px space.
-           * 1086 - 784 = 302px remaining → 151px on each side of the list.
-           * So in full state, the list should be centered in the available width.
-           */}
           <div
-            className={`flex flex-col mt-[16px] ${!isDetailOpen ? 'mx-auto' : 'w-full'}`}
+            className={`flex flex-col mt-[16px] min-w-0 ${!isDetailOpen ? 'mx-auto' : 'w-full'}`}
             style={{
               gap: '12px',
               width: isDetailOpen ? '100%' : '784px',
+              maxWidth: '100%',
             }}
           >
             {paginatedProfessors.map((professor) => (
@@ -188,22 +137,17 @@ export function ProfessorsSection() {
 
             {paginatedProfessors.length === 0 && (
               <div
-                className="flex items-center justify-center py-16 font-[ChulaCharasNew] text-[#6D6D6D]"
+                className="flex items-center justify-center py-16 font-[ChulaCharasNew] text-[#6D6D6D] text-center w-full"
                 style={{ fontSize: '20px' }}
               >
-                ไม่พบผลการค้นหา
+                {t('professors.no_results')}
               </div>
             )}
           </div>
 
-          {/*
-           * Pagination — Component 14/15
-           * Page 1: x:477,y:1595 — centered
-           * Page 2: x:121,y:1595 — left side
-           */}
           {totalPages > 1 && (
             <div
-              className={`mt-8 ${!isDetailOpen ? 'flex justify-center' : 'flex justify-center'}`}
+              className="mt-8 flex justify-center w-full"
             >
               <ProfessorPagination
                 currentPage={currentPage}
@@ -217,15 +161,10 @@ export function ProfessorsSection() {
         {/* RIGHT COLUMN — detail panel (only visible in STATE 2) */}
         {isDetailOpen && (
           <div
-            className="flex-1 ml-0"
+            className="flex-1 ml-0 w-full lg:w-auto"
             style={{
-              /* Frame 6388 starts at x:543 (from page left=0), left col ends at 85+434=519.
-                 So the detail panel has ~24px gap from the left column. */
               paddingLeft: '24px',
-              /* Frame 6388 top: y:80 (absolute from page top), navbar is 81px.
-                 So the panel starts slightly above the content (at the nav level).
-                 In practice, we align it to the top of the page content area. */
-              marginTop: '-74px', /* align to top of page (compensate for title margin) */
+              marginTop: '-74px',
             }}
           >
             {selectedProfessor && (
@@ -235,7 +174,6 @@ export function ProfessorsSection() {
         )}
       </div>
 
-      {/* Bottom spacing to match footer gap */}
       <div style={{ height: '74px' }} />
     </div>
   );

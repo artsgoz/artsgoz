@@ -1,14 +1,14 @@
 // Professor feature types
 export interface Professor {
   id: string;
-  name: string;
+  nameKey: string;
   email: string;
-  abbreviation: string;
-  department: string;
-  location: string;
-  achievements: string[];
-  qualifications: string[];
-  courses: string[];
+  abbreviationKey: string;
+  departmentKey: string;
+  locationKey: string;
+  achievementsKeys: string[];
+  qualificationsKeys: string[];
+  coursesKeys: string[];
 }
 
 export interface ProfessorsFilter {

@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { Link } from 'react-router';
+import { useTranslation } from 'react-i18next';
 import { SectionHeading, Pagination, Button } from '@org/design-system';
 import { ClubCard } from './ClubCard.js';
 import { MOCK_CLUBS } from '../constants.js';
@@ -8,6 +9,7 @@ import { PATHS } from '../../../routes/paths.js';
 const ITEMS_PER_PAGE = 4;
 
 export function ClubsSection() {
+  const { t } = useTranslation();
   const [currentPage, setCurrentPage] = useState(1);
 
   const totalPages = Math.ceil(MOCK_CLUBS.length / ITEMS_PER_PAGE);
@@ -21,9 +23,9 @@ export function ClubsSection() {
   return (
     <section className="w-full flex flex-col gap-10">
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-end gap-4 w-full">
-        <SectionHeading title="ชมรมในคณะอักษรศาสตร์" description="ค้นหาและทำความรู้จักกับชมรมต่างๆ ที่น่าสนใจ" />
+        <SectionHeading title={t('clubs.section_title')} description={t('clubs.section_desc')} />
         <Link to={PATHS.CLUBS} className="shrink-0">
-          <Button variant="outline">ดูชมรมทั้งหมด</Button>
+          <Button variant="outline">{t('clubs.view_all')}</Button>
         </Link>
       </div>
       

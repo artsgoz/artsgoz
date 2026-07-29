@@ -1,11 +1,13 @@
 import { useState, useRef, useEffect } from 'react';
 import { Link } from 'react-router';
+import { useTranslation } from 'react-i18next';
 import { SectionHeading, Button } from '@org/design-system';
 import { ArticleCard } from './ArticleCard.js';
 import { MOCK_ARTICLES } from '../constants.js';
 import { PATHS } from '../../../routes/paths.js';
 
 export function ArticlesSection() {
+  const { t } = useTranslation();
   const containerRef = useRef<HTMLDivElement>(null);
   const dragStartPos = useRef({ x: 0, y: 0 });
   const [isDown, setIsDown] = useState(false);
@@ -122,9 +124,9 @@ export function ArticlesSection() {
   return (
     <section className={`w-full flex flex-col gap-8 relative select-none ${isHovered ? 'lg:cursor-none lg:[&_*]:cursor-none' : ''}`}>
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-end gap-4 w-full">
-        <SectionHeading title="บทความจากชมรมสาราณียกรณ์" description="อัปเดตข่าวสาร บทความ และกิจกรรมล่าสุดจากในรั้วคณะ" />
+        <SectionHeading title={t('articles.section_title')} description={t('articles.section_desc')} />
         <Link to={PATHS.ARTICLES} className="shrink-0">
-          <Button variant="outline">ดูบทความทั้งหมด</Button>
+          <Button variant="outline">{t('articles.view_all')}</Button>
         </Link>
       </div>
 
@@ -178,7 +180,7 @@ export function ArticlesSection() {
           }}
         >
           <span className="font-serif text-[11px] font-bold uppercase tracking-widest select-none">
-            {isDown ? 'dragging' : 'drag'}
+            {isDown ? t('articles.dragging') : t('articles.drag')}
           </span>
         </div>
       )}

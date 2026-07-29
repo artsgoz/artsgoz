@@ -1,9 +1,11 @@
+import { useTranslation } from 'react-i18next';
 import { logoImg } from '@org/design-system';
 import { SOCIAL_LINKS, FOOTER_COLUMNS } from './footerData.js';
 import { FooterColumn } from './FooterColumn.js';
 import { FooterSocialLink } from './FooterSocialLink.js';
 
 export function Footer() {
+  const { t } = useTranslation();
   return (
     <footer className="w-full relative overflow-hidden bg-white border-t-[20px] border-[#E992B4] select-none">
       {/* Background Watermark Logo */}
@@ -22,7 +24,7 @@ export function Footer() {
             className="w-[263px] h-[56px] object-contain mb-8"
           />
           <p className="font-serif text-[16px] leading-[24px] text-black mb-8 whitespace-pre-line">
-            {`ห้อง 148 ชั้น M1 อาคารมหาจักรีสิรินธร\n254 ถนนพญาไท แขวงวังใหม่\nเขตปทุมวัน กรุงเทพมหานคร 10330`}
+            {t('footer.address')}
           </p>
 
           {/* Social Links */}

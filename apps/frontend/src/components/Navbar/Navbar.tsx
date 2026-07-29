@@ -30,9 +30,7 @@ export function Navbar() {
     return () => window.removeEventListener('scroll', handleScroll, true);
   }, []);
 
-  const fadeClassName = `transition-all duration-300 ease-in-out ${
-    isScrolled ? 'opacity-0 pointer-events-none invisible' : 'opacity-100 pointer-events-auto visible'
-  }`;
+
 
   const handleLogin = () => {
     // TODO: เชื่อมต่อ API ล็อกอินจริง (เช่น นำ Token ที่ได้รับหลังการตรวจสอบผ่าน SSO ไปเช็คกับระบบฐานข้อมูล)
@@ -47,17 +45,12 @@ export function Navbar() {
 
   return (
     <nav className="w-full fixed top-0 left-0 z-50 bg-transparent transition-all duration-300">
-      {/* Background layer 1: Solid white with shadow (unscrolled state) */}
+      {/* Background layer: transparent at top, white glassmorphism when scrolled */}
       <div
-        className={`absolute inset-0 bg-white shadow-[0_4px_4px_0_rgba(0,0,0,0.25)] transition-opacity duration-300 ease-in-out z-0 ${
-          isScrolled ? 'opacity-0' : 'opacity-100'
-        }`}
-      />
-
-      {/* Background layer 2: Fading white gradient (scrolled state) */}
-      <div
-        className={`absolute inset-0 bg-gradient-to-b from-white via-white/80 to-transparent transition-opacity duration-300 ease-in-out z-0 ${
-          isScrolled ? 'opacity-100' : 'opacity-0'
+        className={`absolute inset-0 bg-white transition-all duration-300 ease-in-out z-0 ${
+          isScrolled 
+            ? 'bg-opacity-80 backdrop-blur-md shadow-[0_2px_10px_0_rgba(0,0,0,0.05)] border-b border-gray-150/70' 
+            : 'bg-opacity-0 shadow-none border-b border-transparent'
         }`}
       />
 
@@ -73,11 +66,11 @@ export function Navbar() {
           />
         </Link>
 
-        <div className={`hidden lg:block ${fadeClassName}`}>
+        <div className="hidden lg:block transition-all duration-300">
           <DesktopMenu />
         </div>
 
-        <div className={`hidden sm:block ${fadeClassName}`}>
+        <div className="hidden sm:block transition-all duration-300">
           <div className="flex items-center gap-4 lg:gap-[38px]">
             <NavActions
               isLoggedIn={isLoggedIn}
@@ -87,7 +80,7 @@ export function Navbar() {
           </div>
         </div>
 
-        <div className={`lg:hidden ${fadeClassName}`}>
+        <div className="lg:hidden transition-all duration-300">
           <MobileMenuToggle
             isOpen={isMobileMenuOpen}
             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}

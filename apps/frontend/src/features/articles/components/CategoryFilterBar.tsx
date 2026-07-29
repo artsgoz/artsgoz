@@ -1,4 +1,5 @@
 import { Chip } from '@org/design-system';
+import { useTranslation } from 'react-i18next';
 
 interface CategoryFilterBarProps {
   categories: string[];
@@ -11,6 +12,7 @@ export function CategoryFilterBar({
   selectedCategory,
   onSelect,
 }: CategoryFilterBarProps) {
+  const { t } = useTranslation();
   return (
     <div className="flex gap-[12px] overflow-x-auto pb-1 -mx-4 px-4 md:mx-0 md:px-0 md:flex-wrap md:overflow-visible [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden snap-x">
       {categories.map((category) => (
@@ -21,7 +23,7 @@ export function CategoryFilterBar({
           onClick={() => onSelect(category)}
           className="snap-start"
         >
-          {category}
+          {t(category)}
         </Chip>
       ))}
     </div>

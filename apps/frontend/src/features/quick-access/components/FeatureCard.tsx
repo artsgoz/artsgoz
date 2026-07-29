@@ -1,5 +1,5 @@
 import { Link } from 'react-router';
-import { LucideIcon } from 'lucide-react';
+import { LucideIcon, X } from 'lucide-react';
 import { useRef, useCallback } from 'react';
 
 interface FeatureCardProps {
@@ -9,6 +9,8 @@ interface FeatureCardProps {
   href: string;
   size?: 'sm' | 'lg';
   isExternal?: boolean;
+  isManageMode?: boolean;
+  onDelete?: () => void;
 }
 
 export function FeatureCard({
@@ -18,11 +20,14 @@ export function FeatureCard({
   href,
   size = 'sm',
   isExternal = false,
+  isManageMode = false,
+  onDelete,
 }: FeatureCardProps) {
   const isLarge = size === 'lg';
-  const cardRef = useRef<HTMLAnchorElement>(null);
+  const cardRef = useRef<HTMLAnchorElement | HTMLDivElement>(null);
 
-  const handleMouseMove = useCallback((e: React.MouseEvent<HTMLAnchorElement>) => {
+  const handleMouseMove = useCallback((e: React.MouseEvent<HTMLAnchorElement | HTMLDivElement>) => {
+    if (isManageMode) return;
     const card = cardRef.current;
     if (!card) return;
     const rect = card.getBoundingClientRect();
@@ -34,13 +39,14 @@ export function FeatureCard({
     const rotateX = -dy * 10;
     const rotateY = dx * 10;
     card.style.transform = `perspective(600px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale(1.04)`;
-  }, []);
+  }, [isManageMode]);
 
   const handleMouseLeave = useCallback(() => {
+    if (isManageMode) return;
     const card = cardRef.current;
     if (!card) return;
     card.style.transform = 'perspective(600px) rotateX(0deg) rotateY(0deg) scale(1)';
-  }, []);
+  }, [isManageMode]);
 
   const content = (
     <div className="relative z-10 flex flex-col items-center justify-center w-full">
@@ -71,7 +77,7 @@ export function FeatureCard({
   );
 
   const commonProps = {
-    ref: cardRef,
+    ref: cardRef as any,
     onMouseMove: handleMouseMove,
     onMouseLeave: handleMouseLeave,
     className: `group relative flex flex-col items-center justify-center w-full rounded-lg border border-[#D0D0D1]/60 bg-white overflow-hidden p-6 text-center cursor-pointer ${
@@ -82,8 +88,35 @@ export function FeatureCard({
     style: {
       transition: 'transform 0.15s ease-out, box-shadow 0.2s ease, border-color 0.2s ease',
       willChange: 'transform' as const,
+      animation: isManageMode ? 'wiggle 0.28s ease-in-out infinite alternate' : 'none',
     },
   };
+
+  if (isManageMode) {
+    return (
+      <div {...commonProps}>
+        {content}
+        <button
+          type="button"
+          onClick={(e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            onDelete?.();
+          }}
+          className="absolute top-2 right-2 w-7 h-7 bg-[#ea234f] hover:bg-[#d52048] hover:scale-110 text-white rounded-full flex items-center justify-center shadow-md transition-all z-30 cursor-pointer focus:outline-none"
+          aria-label="Delete shortcut"
+        >
+          <X size={14} strokeWidth={2.5} />
+        </button>
+        <style>{`
+          @keyframes wiggle {
+            0% { transform: rotate(0.8deg); }
+            100% { transform: rotate(-0.8deg); }
+          }
+        `}</style>
+      </div>
+    );
+  }
 
   if (isExternal) {
     return (

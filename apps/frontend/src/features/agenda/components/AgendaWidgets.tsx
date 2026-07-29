@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useAgenda } from '../hooks/useAgenda.js';
 import { UpcomingEventsCard } from './UpcomingEventsCard.js';
 import { CalendarCard } from './CalendarCard.js';
@@ -10,6 +11,7 @@ import { CalendarCard } from './CalendarCard.js';
  */
 export function AgendaWidgets() {
   const { daysOfWeek, calendarDays, eventsByDate, upcomingEvents, getDayLabel } = useAgenda();
+  const { t } = useTranslation();
   const [selectedDate, setSelectedDate] = useState<number>(17);
 
   return (
@@ -18,10 +20,10 @@ export function AgendaWidgets() {
       <div className="lg:col-start-2 lg:row-start-1">
         <div className="flex flex-col gap-1 select-none">
           <h2 className="font-serif text-[40px] lg:text-[48px] font-bold leading-[1.2] text-[#404041]">
-            ปฏิทินกิจกรรมและกำหนดการ
+            {t('agenda.title')}
           </h2>
           <p className="font-serif text-[16px] leading-[24px] text-[#6D6D6D]">
-            ติดตามข่าวสาร กิจกรรม และกำหนดการสำคัญต่าง ๆ ของคณะอักษรศาสตร์
+            {t('agenda.description')}
           </p>
         </div>
       </div>
@@ -40,7 +42,7 @@ export function AgendaWidgets() {
           selectedDate={selectedDate}
           onSelectDate={setSelectedDate}
           getDayLabel={getDayLabel}
-          monthLabel="ส.ค. 2026"
+          monthLabel={t('agenda.month_label')}
         />
       </div>
     </div>

@@ -1,6 +1,8 @@
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ChevronDown, FileText, Download, Target, Shield, BookOpen, Layers } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
+import { Button } from '@org/design-system';
 import { Footer } from '../../../components/Footer/index.js';
 
 // Assets
@@ -59,48 +61,38 @@ function AccordionItem({ title, icon, isOpen, onToggle, children }: AccordionIte
 }
 
 export default function AboutPage() {
+  const { t } = useTranslation();
   const [openSection, setOpenSection] = useState<string | null>('vision');
 
   const toggleSection = (section: string) => {
     setOpenSection(prev => (prev === section ? null : section));
   };
 
-  const visionPoints = [
-    'จัดกิจกรรมที่เข้าถึงความสนใจของนิสิตภายในคณะมากขึ้น และเพิ่มกิจกรรมภายนอกที่ร่วมมือกับหลากหลายคณะ แต่ยังคงเอกลักษณ์ความเป็นอักษรศาสตร์ และสร้างประโยชน์ เข้าถึงนิสิตภายในคณะ',
-    'สร้างพื้นที่การทำงานที่เป็น พื้นที่ปลอดภัยและสบายใจที่จะร่วมงานด้วยกัน สามารถพูดคุยและแสดงความคิดเห็นกันได้อย่างเท่าเทียมและเปิดใจรับฟังกัน',
-    'เป็นศูนย์กลางและกระบอกเสียงเพื่อประโยชน์สูงสุดของชาวอักษร'
-  ];
-
-  const policyPoints = [
-    'เปิดโอกาสให้นิสิตได้แสดงความคิดเห็น',
-    'สร้างสภาพแวดล้อมที่ดีในการทำงาน',
-    'เป็นตัวแทนรักษาสิทธิและสวัสดิการของนิสิตในคณะ',
-    'สนับสนุนการจัดกิจกรรมที่เป็นประโยชน์ต่อนิสิตในคณะสำหรับการเตรียมความพร้อมให้นิสิตในอนาคต',
-    'ให้ความสำคัญกับสุขภาพจิตของสมาชิก ก.อศ. และนิสิตอักษรศาสตร์ทุกคน'
-  ];
+  const visionPoints = (t('about.vision_points', { returnObjects: true }) as string[]) || [];
+  const policyPoints = (t('about.policy_points', { returnObjects: true }) as string[]) || [];
 
   const downloadForms = [
     {
-      name: 'แบบฟอร์มขออนุมัติจัดโครงการ (Project Approval Form)',
-      desc: 'ใช้สำหรับเสนอโครงการกิจกรรมต่อสโมสรนิสิต เพื่อขออนุมัติจัดกิจกรรมและของบประมาณ ก.อศ.',
+      name: t('about.download_forms.form1.name'),
+      desc: t('about.download_forms.form1.desc'),
       format: 'PDF / DOCX',
       size: '1.2 MB'
     },
     {
-      name: 'แบบฟอร์มใบเบิกเงิน ก.อศ. (Disbursement Claim Form)',
-      desc: 'ใช้สำหรับยื่นเบิกจ่ายเงินงบประมาณค่าใช้จ่ายตามใบเสร็จรับเงินที่ได้รับการอนุมัติ',
+      name: t('about.download_forms.form2.name'),
+      desc: t('about.download_forms.form2.desc'),
       format: 'PDF / XLSX',
       size: '980 KB'
     },
     {
-      name: 'คู่มือระเบียบการเงินและบัญชีนิสิต (Financial Regulation Handbook)',
-      desc: 'สรุปขั้นตอน กฎเกณฑ์ และเกณฑ์การประเมินราคาในการทำเรื่องเบิกจ่าย ก.อศ.',
+      name: t('about.download_forms.form3.name'),
+      desc: t('about.download_forms.form3.desc'),
       format: 'PDF',
       size: '2.4 MB'
     },
     {
-      name: 'ใบสมัครเข้าร่วมคณะอนุกรรมการ (Subcommittee Application Form)',
-      desc: 'แบบฟอร์มสมัครคัดเลือกเข้าทำงานในตำแหน่งคณะอนุกรรมการฝ่ายต่างๆ',
+      name: t('about.download_forms.form4.name'),
+      desc: t('about.download_forms.form4.desc'),
       format: 'PDF',
       size: '640 KB'
     }
@@ -109,19 +101,6 @@ export default function AboutPage() {
   return (
     <>
       <div className="w-full bg-white min-h-screen">
-        
-        {/* ── Banner Header ── */}
-        <div 
-          className="w-full h-20 flex items-center justify-center relative shadow-xs"
-          style={{
-            background: 'linear-gradient(90deg, rgba(240, 180, 203, 1) 0%, rgba(252, 239, 244, 1) 12%, rgba(255, 255, 255, 1) 23%, rgba(255, 255, 255, 1) 40%, rgba(245, 205, 220, 1) 69%, rgba(239, 175, 200, 1) 88%)'
-          }}
-        >
-          <h1 className="text-[32px] md:text-[40px] font-bold text-black font-serif tracking-wide leading-none select-none">
-            เกี่ยวกับ ก.อศ.
-          </h1>
-        </div>
-
         {/* ── Main Content ── */}
         <div className="max-w-[1097px] mx-auto px-4 md:px-6 py-12 md:py-20 flex flex-col gap-16 md:gap-24">
           
@@ -131,7 +110,7 @@ export default function AboutPage() {
             <div className="w-[220px] md:w-[254px] aspect-[254/239] shrink-0 overflow-hidden">
               <img 
                 src={logoGoz} 
-                alt="GOZ Logo" 
+                alt={t('about.logo_alt')} 
                 className="w-full h-full object-contain drop-shadow-sm select-none"
               />
             </div>
@@ -139,11 +118,10 @@ export default function AboutPage() {
             {/* Description Text */}
             <div className="flex-1 flex flex-col gap-6 text-center lg:text-left">
               <h2 className="text-[32px] md:text-[40px] lg:text-[48px] font-bold text-[#404041] font-serif leading-tight">
-                คณะกรรมการนิสิตอักษรศาสตร์ (ก.อศ.)
+                {t('about.title')}
               </h2>
               <p className="text-[18px] md:text-[20px] font-normal text-[#6D6D6D] font-serif leading-relaxed text-justify">
-                เป็นสโมสรนิสิตที่ช่วยอำนวยความสะดวกด้านวิชาการ สวัสดิการ และกิจกรรมแก่นิสิตอักษรศาสตร์ 
-                โดยในปีการศึกษา 2568 นี้มีวิสัยทัศน์และนโยบาย ดังนี้
+                {t('about.description')}
               </p>
             </div>
           </div>
@@ -153,7 +131,7 @@ export default function AboutPage() {
             
             {/* 1. วิสัยทัศน์ */}
             <AccordionItem
-              title="วิสัยทัศน์"
+              title={t('about.vision_title')}
               icon={<Target size={26} />}
               isOpen={openSection === 'vision'}
               onToggle={() => toggleSection('vision')}
@@ -170,7 +148,7 @@ export default function AboutPage() {
 
             {/* 2. นโยบาย */}
             <AccordionItem
-              title="นโยบาย"
+              title={t('about.policy_title')}
               icon={<Shield size={26} />}
               isOpen={openSection === 'policy'}
               onToggle={() => toggleSection('policy')}
@@ -187,7 +165,7 @@ export default function AboutPage() {
 
             {/* 3. ดาวน์โหลด */}
             <AccordionItem
-              title="ดาวน์โหลดเอกสาร"
+              title={t('about.download_title')}
               icon={<BookOpen size={26} />}
               isOpen={openSection === 'downloads'}
               onToggle={() => toggleSection('downloads')}
@@ -219,7 +197,7 @@ export default function AboutPage() {
                         className="flex items-center gap-1 text-[13px] font-bold text-[#DE5D8F] hover:text-[#CA5582] transition-colors"
                       >
                         <Download size={14} />
-                        ดาวน์โหลด
+                        {t('about.download_btn')}
                       </a>
                     </div>
                   </div>
@@ -229,7 +207,7 @@ export default function AboutPage() {
 
             {/* 4. ระเบียบการเบิกจ่าย ก.อศ. */}
             <AccordionItem
-              title="ระเบียบการเบิกจ่าย ก.อศ."
+              title={t('about.download_flowchart_title')}
               icon={<Layers size={26} />}
               isOpen={openSection === 'regulations'}
               onToggle={() => toggleSection('regulations')}
@@ -239,20 +217,25 @@ export default function AboutPage() {
                 <div className="w-full max-w-[580px] rounded-xl overflow-hidden border border-[#ECECEC] shadow-sm">
                   <img 
                     src={gozDisbursement} 
-                    alt="ระเบียบการเบิกจ่าย ก.อศ." 
+                    alt={t('about.download_flowchart_title')} 
                     className="w-full object-cover select-none"
                   />
                 </div>
                 
                 {/* Download Flowchart Button */}
-                <a
-                  href={gozDisbursement}
-                  download="goz_disbursement_regulations.png"
-                  className="flex items-center gap-2 px-6 h-[46px] rounded-xl border border-[#DE5D8F] bg-white hover:bg-[#FDF8FA] text-[#DE5D8F] font-bold font-serif text-[15px] transition-all active:scale-[0.98] shadow-2xs cursor-pointer select-none"
+                <Button
+                  onClick={() => {
+                    const link = document.createElement('a');
+                    link.href = gozDisbursement;
+                    link.download = 'goz_disbursement_regulations.png';
+                    link.click();
+                  }}
+                  variant="outline"
+                  className="font-serif border-[#DE5D8F] text-[#DE5D8F] hover:bg-[#FDF8FA] h-[46px] rounded-xl font-bold text-[15px]"
                 >
                   <Download size={16} />
-                  ดาวน์โหลดแผนผังขั้นตอนการเบิกจ่าย
-                </a>
+                  {t('about.download_flowchart_btn')}
+                </Button>
               </div>
             </AccordionItem>
 
