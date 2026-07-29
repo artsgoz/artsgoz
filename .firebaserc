@@ -1,0 +1,30 @@
+{
+  "projects": {
+    "default": "chula-artsgoz-website"
+  },
+  "targets": {
+    "chula-artsgoz-website": {
+      "hosting": {
+        "frontend": [
+          "artsgoz-frontend"
+        ],
+        "backoffice": [
+          "artsgoz-backoffice"
+        ],
+        "frontend-staging": [
+          "artsgoz-frontend-staging"
+        ],
+        "backoffice-staging": [
+          "artsgoz-backoffice-staging"
+        ],
+        "kb": [
+          "artsgoz-kb"
+        ],
+        "kb-staging": [
+          "artsgoz-kb-staging"
+        ]
+      }
+    }
+  },
+  "etags": {}
+}

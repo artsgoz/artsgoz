@@ -4,6 +4,7 @@
 dist
 tmp
 out-tsc
+*.tsbuildinfo
 
 # dependencies
 node_modules
@@ -53,3 +54,6 @@ vite.config.*.timestamp*
 .env
 .env.local
 .env.*.local
+# Firebase local cache
+.firebase/
+.vercel
