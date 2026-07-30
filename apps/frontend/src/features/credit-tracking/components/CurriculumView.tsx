@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import { MessageSquareWarning } from 'lucide-react';
 import type { Subject, AcademicProfile } from '../types.js';
 
@@ -7,46 +8,61 @@ interface CurriculumViewProps {
   profile?: AcademicProfile | null;
 }
 
-/**
- * CurriculumView — redesigned to match Figma node 6324-22624.
- * Layout:
- *   - Top section: page title + curriculum image/table
- *   - Information section: major name + description,
- *     then a table with ส่วนประกอบ / หน่วยกิต / รายละเอียด,
- *     then an orange warning banner
- */
 export function CurriculumView({ profile }: CurriculumViewProps) {
-  // Curriculum breakdown data matching Figma (เอกสารสนเทศศึกษา example)
-  const majorName = profile?.major ?? 'เอกสารสนเทศศึกษา';
-  const minorName = profile?.minor ?? '-';
+  const { t } = useTranslation();
+  const majorName = profile?.major ?? 'credit_tracking.majors.default';
+  const minorName = profile?.minor ?? 'credit_tracking.minors.default';
 
-  const curriculumRows: { part: string; credits: number; detail: string; isIndented?: boolean }[] =
-    [
-      { part: 'วิชาเอก (Major)', credits: 48, detail: 'แบ่งเป็น 3 กลุ่มวิชาย่อย' },
-      { part: 'กลุ่มวิชาข้อกำหนดเฉพาะ', credits: 18, detail: '', isIndented: true },
-      { part: 'กลุ่มวิชาพื้นฐาน', credits: 12, detail: '', isIndented: true },
-      { part: 'กลุ่มวิชาเชี่ยวชาญ', credits: 18, detail: '', isIndented: true },
-      { part: 'วิชาโท (Minor)', credits: 18, detail: minorName !== '-' ? `วิชาโท: ${minorName}` : 'เลือกวิชาโทสาขาอื่น (ในหรือนอกคณะ)' },
-    ];
+  const curriculumRows = [
+    {
+      part: t('credit_tracking.curriculum.major_title'),
+      credits: 48,
+      detail: t('credit_tracking.curriculum.major_details'),
+    },
+    {
+      part: t('credit_tracking.curriculum.specific_courses'),
+      credits: 18,
+      detail: '',
+      isIndented: true,
+    },
+    {
+      part: t('credit_tracking.curriculum.basic_courses'),
+      credits: 12,
+      detail: '',
+      isIndented: true,
+    },
+    {
+      part: t('credit_tracking.curriculum.specialized_courses'),
+      credits: 18,
+      detail: '',
+      isIndented: true,
+    },
+    {
+      part: t('credit_tracking.curriculum.minor_title'),
+      credits: 18,
+      detail: minorName !== 'credit_tracking.minors.default' && minorName !== 'credit_tracking.minors.none'
+        ? t('credit_tracking.curriculum.minor_name', { name: t(minorName) })
+        : t('credit_tracking.curriculum.minor_desc_empty'),
+    },
+  ];
 
   return (
     <div
-      className="w-full space-y-10 select-none"
+      className="w-full space-y-10 select-none min-w-0"
       style={{ fontFamily: 'ChulaCharasNew, sans-serif' }}
     >
       {/* ───── Top Section: Title + Curriculum Overview ───── */}
-      <div className="flex flex-col gap-6" style={{ maxWidth: '744px' }}>
-        {/* Title */}
+      <div className="flex flex-col gap-6 w-full max-w-[744px] min-w-0">
         <div>
           <h1
-            className="text-black"
+            className="text-black truncate"
             style={{ fontSize: '28px', fontWeight: 700, lineHeight: '36px' }}
           >
-            หลักสูตรอักษรศาสตร์บัณทิต
+            {t('credit_tracking.curriculum.title')}
           </h1>
         </div>
 
-        {/* Curriculum overview table — styled to match Figma node 6257:21468 image */}
+        {/* Curriculum overview table */}
         <div
           className="w-full overflow-auto rounded-[12px] border border-[#D0D0D1]/30"
           style={{ background: '#F7F8F9' }}
@@ -61,60 +77,53 @@ export function CurriculumView({ profile }: CurriculumViewProps) {
                   className="border border-[#D0D0D1]/40 px-3 py-2 text-center font-bold"
                   colSpan={3}
                 >
-                  หมวดวิชาศึกษาทั่วไป
+                  {t('credit_tracking.curriculum.general_ed')}
                   <br />
-                  <span style={{ fontWeight: 400 }}>30 หน่วยกิต</span>
+                  <span style={{ fontWeight: 400 }}>{t('credit_tracking.curriculum.credits_val', { count: 30 })}</span>
                 </th>
                 <th
                   className="border border-[#D0D0D1]/40 px-3 py-2 text-center font-bold"
                   colSpan={4}
                 >
-                  หมวดวิชาเฉพาะ
+                  {t('credit_tracking.curriculum.specific_ed')}
                   <br />
-                  <span style={{ fontWeight: 400 }}>93–117, 111* หน่วยกิต</span>
+                  <span style={{ fontWeight: 400 }}>{t('credit_tracking.curriculum.specific_credits_detail')}</span>
                 </th>
                 <th className="border border-[#D0D0D1]/40 px-3 py-2 text-center font-bold">
-                  หมวดวิชา
+                  {t('credit_tracking.curriculum.free_choice')}
                   <br />
-                  เลือกเสรี
-                  <br />
-                  <span style={{ fontWeight: 400 }}>6 หน่วยกิต</span>
+                  <span style={{ fontWeight: 400 }}>{t('credit_tracking.curriculum.credits_val', { count: 6 })}</span>
                 </th>
               </tr>
               <tr style={{ backgroundColor: '#F0F0F0', fontSize: '13px' }}>
-                <th className="border border-[#D0D0D1]/40 px-2 py-2 text-center align-top">
-                  วิชาศึกษาทั่วไปทั่วไป
+                <th className="border border-[#D0D0D1]/40 px-2 py-2 text-center align-top whitespace-normal">
+                  {t('credit_tracking.curriculum.general_sub1')}
                   <br />
-                  12 หน่วยกิต
+                  {t('credit_tracking.curriculum.credits_val', { count: 12 })}
                 </th>
-                <th className="border border-[#D0D0D1]/40 px-2 py-2 text-center align-top">
-                  วิชาศึกษาทั่วไป
+                <th className="border border-[#D0D0D1]/40 px-2 py-2 text-center align-top whitespace-normal">
+                  {t('credit_tracking.curriculum.general_sub2')}
                   <br />
-                  กลุ่มต่างประเทศ
-                  <br />
-                  12 หน่วยกิต
+                  {t('credit_tracking.curriculum.credits_val', { count: 12 })}
                 </th>
-                <th className="border border-[#D0D0D1]/40 px-2 py-2 text-center align-top">
-                  วิชาศึกษาทั่วไป
+                <th className="border border-[#D0D0D1]/40 px-2 py-2 text-center align-top whitespace-normal">
+                  {t('credit_tracking.curriculum.general_sub3')}
                   <br />
-                  กลุ่มพิเศษ
-                  <br />6 หน่วยกิต
+                  {t('credit_tracking.curriculum.credits_val', { count: 6 })}
                 </th>
-                <th className="border border-[#D0D0D1]/40 px-2 py-2 text-center align-top">
-                  วิชาพื้นฐาน
+                <th className="border border-[#D0D0D1]/40 px-2 py-2 text-center align-top whitespace-normal">
+                  {t('credit_tracking.curriculum.basic_arts')}
                   <br />
-                  อักษรศาสตร์
-                  <br />
-                  27 หน่วยกิต
+                  {t('credit_tracking.curriculum.credits_val', { count: 27 })}
                 </th>
                 <th
-                  className="border border-[#D0D0D1]/40 px-2 py-2 text-center align-top"
+                  className="border border-[#D0D0D1]/40 px-2 py-2 text-center align-top whitespace-normal"
                   colSpan={2}
                 >
-                  สาขาวิชาภาษาอังกฤษ
+                  {t('credit_tracking.curriculum.english_major_detail')}
                 </th>
-                <th className="border border-[#D0D0D1]/40 px-2 py-2 text-center align-top">
-                  สาขาวิชาอื่น ๆ
+                <th className="border border-[#D0D0D1]/40 px-2 py-2 text-center align-top whitespace-normal">
+                  {t('credit_tracking.curriculum.other_majors_detail')}
                 </th>
                 <th className="border border-[#D0D0D1]/40 px-2 py-2 text-center" rowSpan={2} />
               </tr>
@@ -122,25 +131,19 @@ export function CurriculumView({ profile }: CurriculumViewProps) {
             <tbody style={{ fontSize: '13px' }}>
               <tr>
                 <td className="border border-[#D0D0D1]/40 px-2 py-2 align-top text-center" colSpan={3}>
-                  วิชาทั่วไปทั้ง 12 หน่วยกิต
+                  {t('credit_tracking.curriculum.general_12_credits')}
                 </td>
-                <td className="border border-[#D0D0D1]/40 px-2 py-2 align-top text-center">
-                  1. วิชาพื้นฐานอักษรศาสตร์ 27 หน่วยกิต
+                <td className="border border-[#D0D0D1]/40 px-2 py-2 align-top text-center whitespace-normal">
+                  {t('credit_tracking.curriculum.basic_arts_detail')}
                 </td>
-                <td className="border border-[#D0D0D1]/40 px-2 py-2 align-top text-center">
-                  วิชาเอก (Major)
-                  <br />
-                  48–60 หน่วยกิต
+                <td className="border border-[#D0D0D1]/40 px-2 py-2 align-top text-center whitespace-normal">
+                  {t('credit_tracking.curriculum.major_range_detail')}
                 </td>
-                <td className="border border-[#D0D0D1]/40 px-2 py-2 align-top text-center">
-                  วิชาโท (Minor)
-                  <br />
-                  18 หน่วยกิต
+                <td className="border border-[#D0D0D1]/40 px-2 py-2 align-top text-center whitespace-normal">
+                  {t('credit_tracking.curriculum.minor_18_credits')}
                 </td>
-                <td className="border border-[#D0D0D1]/40 px-2 py-2 align-top text-center">
-                  วิชาเอกสาขาอื่น
-                  <br />
-                  45 หน่วยกิต
+                <td className="border border-[#D0D0D1]/40 px-2 py-2 align-top text-center whitespace-normal">
+                  {t('credit_tracking.curriculum.other_major_credits')}
                 </td>
               </tr>
             </tbody>
@@ -149,47 +152,47 @@ export function CurriculumView({ profile }: CurriculumViewProps) {
       </div>
 
       {/* ───── Information Section ───── */}
-      <div className="flex flex-col gap-6 w-full">
+      <div className="flex flex-col gap-6 w-full min-w-0">
         {/* Info Header */}
-        <div className="flex flex-col gap-3">
+        <div className="flex flex-col gap-3 min-w-0">
           <h2
-            className="text-black"
+            className="text-black truncate"
             style={{ fontSize: '28px', fontWeight: 700, lineHeight: '36px' }}
           >
-            {majorName}
+            {t(majorName)}
           </h2>
           <p
-            className="text-black"
+            className="text-black break-words"
             style={{ fontSize: '16px', fontWeight: 400, lineHeight: '24px' }}
           >
-            ต้องเก็บหน่วยกิตในส่วนวิชาเอกและวิชาโท รวม 66 หน่วยกิต ดังนี้:
+            {t('credit_tracking.curriculum.req_details_desc')}
           </p>
         </div>
 
         {/* Curriculum Breakdown Table */}
-        <div style={{ maxWidth: '649px' }}>
+        <div style={{ maxWidth: '649px' }} className="w-full min-w-0 overflow-auto">
           {/* Header row */}
           <div
-            className="flex items-center justify-between pb-2 mb-1"
+            className="flex items-center justify-between pb-2 mb-1 min-w-[500px]"
             style={{ borderBottom: '1px solid #D0D0D1' }}
           >
             <span
               className="flex-1 text-black"
               style={{ fontSize: '18px', fontWeight: 700, lineHeight: '24px' }}
             >
-              ส่วนประกอบหลักสูตร
+              {t('credit_tracking.curriculum.col_component')}
             </span>
             <span
               className="w-[100px] text-center text-black"
               style={{ fontSize: '18px', fontWeight: 700, lineHeight: '24px' }}
             >
-              หน่วยกิต
+              {t('credit_tracking.curriculum.col_credits')}
             </span>
             <span
               className="flex-1 text-black text-right"
               style={{ fontSize: '18px', fontWeight: 700, lineHeight: '24px' }}
             >
-              รายละเอียดเพิ่มเติม
+              {t('credit_tracking.curriculum.col_details')}
             </span>
           </div>
 
@@ -197,16 +200,16 @@ export function CurriculumView({ profile }: CurriculumViewProps) {
           {curriculumRows.map((row, idx) => (
             <div
               key={idx}
-              className="flex items-center justify-between py-3"
+              className="flex items-center justify-between py-3 min-w-[500px]"
               style={{
                 borderBottom: idx < curriculumRows.length - 1 ? '1px solid #F0F0F0' : 'none',
               }}
             >
               <span
-                className="flex-1 text-black"
+                className="flex-1 text-black truncate pr-2"
                 style={{
                   fontSize: '16px',
-                  fontWeight: row.isIndented ? 400 : 400,
+                  fontWeight: 400,
                   lineHeight: '24px',
                   paddingLeft: row.isIndented ? '32px' : '0',
                   color: row.isIndented ? '#6D6D6D' : '#000000',
@@ -226,12 +229,11 @@ export function CurriculumView({ profile }: CurriculumViewProps) {
                 {row.credits}
               </span>
               <span
-                className="flex-1 text-right"
+                className="flex-1 text-right text-black truncate pl-2"
                 style={{
                   fontSize: '16px',
                   fontWeight: 400,
                   lineHeight: '24px',
-                  color: '#000000',
                 }}
               >
                 {row.detail}
@@ -240,7 +242,7 @@ export function CurriculumView({ profile }: CurriculumViewProps) {
           ))}
         </div>
 
-        {/* Orange Warning Banner — matches Figma node 4479:9357 */}
+        {/* Orange Warning Banner */}
         <div
           className="flex items-center gap-3 w-full"
           style={{
@@ -249,7 +251,6 @@ export function CurriculumView({ profile }: CurriculumViewProps) {
             padding: '12px 24px',
           }}
         >
-          {/* Icon badge */}
           <div
             className="flex items-center justify-center shrink-0"
             style={{
@@ -262,11 +263,10 @@ export function CurriculumView({ profile }: CurriculumViewProps) {
             <MessageSquareWarning size={16} style={{ color: '#EE8A50' }} />
           </div>
           <span
-            className="text-white"
+            className="text-white break-words"
             style={{ fontSize: '18px', fontWeight: 700, lineHeight: '24px' }}
           >
-            หมายเหตุสำคัญ: กรณีเลือกวิชาโท มนุษย์ศาสตร์ดิจิทัล หรือ บรรณาธิการศึกษา
-            ต้องได้รับการอนุมัติจากคณะกรรมการบริหารหลักสูตรก่อน
+            {t('credit_tracking.curriculum.warning_note')}
           </span>
         </div>
       </div>

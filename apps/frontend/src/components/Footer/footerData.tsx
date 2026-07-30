@@ -1,18 +1,22 @@
 import React from 'react';
+import { PATHS } from '../../routes/paths.js';
 
 export interface LinkItem {
+  /** Translation key — call t(link.label) in the component. */
   label: string;
   path: string;
   isExternal?: boolean;
 }
 
 export interface FooterColumnData {
+  /** Translation key — call t(column.title) in the component. */
   title: string;
   links: LinkItem[];
 }
 
 export interface SocialLinkData {
   href: string;
+  /** Translation key — call t(link.label) in the component. */
   label: string;
   isExternal?: boolean;
   icon: React.ReactNode;
@@ -21,7 +25,7 @@ export interface SocialLinkData {
 export const SOCIAL_LINKS: SocialLinkData[] = [
   {
     href: 'mailto:artgoz@gmail.com',
-    label: 'artgoz@gmail.com',
+    label: 'footer.social.email',
     isExternal: false,
     icon: (
       <svg className="w-6 h-6 shrink-0" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -31,7 +35,7 @@ export const SOCIAL_LINKS: SocialLinkData[] = [
   },
   {
     href: 'https://www.facebook.com/artsgozcu/?locale=th_TH',
-    label: 'คณะกรรมการนิสิตอักษรศาสตร์ จุฬาฯ ก.อศ.',
+    label: 'footer.social.facebook',
     isExternal: true,
     icon: (
       <svg className="w-6 h-6 shrink-0" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -41,7 +45,7 @@ export const SOCIAL_LINKS: SocialLinkData[] = [
   },
   {
     href: 'https://www.instagram.com/arts_goz?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw==',
-    label: 'arts_goz',
+    label: 'footer.social.instagram',
     isExternal: true,
     icon: (
       <svg className="w-6 h-6 shrink-0" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -51,7 +55,7 @@ export const SOCIAL_LINKS: SocialLinkData[] = [
   },
   {
     href: 'https://www.tiktok.com/@artsgoz?is_from_webapp=1&sender_device=pc',
-    label: 'artsgoz',
+    label: 'footer.social.tiktok',
     isExternal: true,
     icon: (
       <svg className="w-5 h-6 shrink-0" viewBox="0 0 20 23" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -63,53 +67,53 @@ export const SOCIAL_LINKS: SocialLinkData[] = [
 
 export const FOOTER_COLUMNS: FooterColumnData[] = [
   {
-    title: 'เกี่ยวกับ ก.อศ.',
+    title: 'footer.columns.about_title',
     links: [
-      { label: 'เกี่ยวกับ ก.อศ.', path: '#' },
-      { label: 'คณะกรรมการและสมาชิก', path: '#' },
+      { label: 'footer.columns.about_link',     path: '#' },
+      { label: 'footer.columns.committee_link', path: '#' },
     ],
   },
   {
-    title: 'บริการนิสิต',
+    title: 'footer.columns.services_title',
     links: [
-      { label: 'บริการสำหรับนิสิต', path: '#' },
-      { label: 'งานกิจการนิสิต', path: 'https://www.arts.chula.ac.th/student_affairs/?page_id=778', isExternal: true },
-      { label: 'สุขภาพจิต', path: 'https://chula.wellness.in.th/', isExternal: true },
+      { label: 'footer.columns.services_link',        path: '#' },
+      { label: 'footer.columns.student_affairs_link', path: 'https://www.arts.chula.ac.th/student_affairs/?page_id=778', isExternal: true },
+      { label: 'footer.columns.mental_health_link',   path: 'https://chula.wellness.in.th/', isExternal: true },
     ],
   },
   {
-    title: 'ฝ่ายประชาสัมพันธ์',
+    title: 'footer.columns.pr_title',
     links: [
-      { label: 'ตารางงานประชาสัมพันธ์', path: '#' },
-      { label: 'ติดต่องานประชาสัมพันธ์ ก.อศ.', path: '#' },
+      { label: 'footer.columns.pr_schedule_link', path: '#' },
+      { label: 'footer.columns.pr_contact_link',  path: '#' },
     ],
   },
   {
-    title: 'ช่วยเหลือ/ร้องเรียน',
+    title: 'footer.columns.help_title',
     links: [
-      { label: 'ช่วยเหลือ/FAQ', path: '#' },
-      { label: 'ร้องเรียนปัญหา', path: '#' },
+      { label: 'footer.columns.help_faq_link', path: PATHS.HELP },
+      { label: 'footer.columns.complaint_link', path: '#' },
     ],
   },
   {
-    title: 'กิจกรรม',
+    title: 'footer.columns.activities_title',
     links: [
-      { label: 'ข่าวสาร/กิจกรรม', path: '#' },
-      { label: 'บทความสาราณียกร', path: '#' },
-      { label: 'ชมรมในคณะอักษรศาสตร์', path: '#' },
+      { label: 'footer.columns.news_link',     path: '#' },
+      { label: 'footer.columns.articles_link', path: '#' },
+      { label: 'footer.columns.clubs_link',    path: '#' },
     ],
   },
   {
-    title: 'เกี่ยวกับเว็บไซต์',
+    title: 'footer.columns.website_title',
     links: [
-      { label: 'ข้อกำหนดและนโยบายความเป็นส่วนตัว', path: '#' },
-      { label: 'แจ้งปัญหาใช้งานเว็บไซต์', path: '#' },
+      { label: 'footer.columns.privacy_link', path: '#' },
+      { label: 'footer.columns.report_link',  path: '#' },
     ],
   },
   {
-    title: 'อื่น ๆ',
+    title: 'footer.columns.other_title',
     links: [
-      { label: 'เข้าสู่เว็บไซต์หลัก', path: 'https://www.arts.chula.ac.th/th/', isExternal: true },
+      { label: 'footer.columns.main_website_link', path: 'https://www.arts.chula.ac.th/th/', isExternal: true },
     ],
   },
 ];

@@ -68,7 +68,7 @@ export function MobileSidebar({
                 onClick={item.onClick}
                 className={`flex items-center gap-4 px-4 py-3 rounded-[12px] font-serif text-[18px] font-normal transition-all cursor-pointer ${
                   item.active
-                    ? 'bg-[#FFF] text-[#111827] shadow-[0px_4px_10px_rgba(0,0,0,0.05)]'
+                    ? 'bg-[#FFF] text-[#111827]'
                     : 'text-gray-600 hover:bg-white/40'
                 }`}
               >
@@ -86,7 +86,7 @@ export function MobileSidebar({
                     onLogout();
                     onClose();
                   }}
-                  className="flex items-center justify-center bg-white border border-[#E5E7EB] cursor-pointer hover:bg-gray-50 active:scale-95 transition-all shadow-sm text-gray-800 text-[16px] font-bold w-full shrink-0 whitespace-nowrap"
+                  className="flex items-center justify-center bg-white border border-[#E5E7EB] cursor-pointer hover:bg-gray-50 active:scale-95 transition-all text-gray-800 text-[16px] font-bold w-full shrink-0 whitespace-nowrap"
                   style={{
                     height: '42px',
                     borderRadius: '8px',

@@ -1,4 +1,5 @@
 import { useState, useRef, useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 
 interface FilterDropdownProps {
   label: string;
@@ -7,18 +8,8 @@ interface FilterDropdownProps {
   onChange: (value: string) => void;
 }
 
-/**
- * Filter dropdown — matches Figma Frame 6128 / Frame 6338:
- *  - 170×37
- *  - bg: #FFFFFF
- *  - border: ~1px solid #E992B4 (actually #F5CDDC from design)
- *  - border-radius: 16px (r:16)
- *  - padding: ~7px top/bottom, 20px left/right
- *  - gap: 47px (space-between-ish)
- *  - Label text: 16.76px w700 #DE5D8F
- *  - Chevron-down icon: stroke #DE5D8F
- */
 export function FilterDropdown({ label, options, value, onChange }: FilterDropdownProps) {
+  const { t } = useTranslation();
   const [isOpen, setIsOpen] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
 
@@ -34,11 +25,10 @@ export function FilterDropdown({ label, options, value, onChange }: FilterDropdo
 
   return (
     <div ref={containerRef} className="relative">
-      {/* Frame 6128 / Frame 6338 — the dropdown trigger button */}
       <button
         type="button"
         onClick={() => setIsOpen(!isOpen)}
-        className="flex items-center justify-between bg-white border border-[#F5CDDC] rounded-2xl"
+        className="flex items-center justify-between bg-white border border-[#F5CDDC] rounded-2xl cursor-pointer"
         style={{
           width: '170px',
           height: '37px',
@@ -46,19 +36,16 @@ export function FilterDropdown({ label, options, value, onChange }: FilterDropdo
           paddingBottom: '7px',
           paddingLeft: '20px',
           paddingRight: '20px',
-          gap: '47px',
+          gap: '10px',
         }}
       >
-        {/* Frame 6137 — label + chevron row */}
-        <div className="flex items-center justify-between w-full">
-          {/* Label text — 16.76px w700 #DE5D8F */}
+        <div className="flex items-center justify-between w-full min-w-0">
           <span
-            className="font-[ChulaCharasNew] text-[#DE5D8F] whitespace-nowrap overflow-hidden"
+            className="font-[ChulaCharasNew] text-[#DE5D8F] whitespace-nowrap overflow-hidden text-ellipsis mr-1"
             style={{ fontSize: '16.76px', fontWeight: 700 }}
           >
             {label}
           </span>
-          {/* chevron-down icon — Vector 5×10 stroke #DE5D8F */}
           <svg
             width="10"
             height="6"
@@ -78,9 +65,8 @@ export function FilterDropdown({ label, options, value, onChange }: FilterDropdo
         </div>
       </button>
 
-      {/* Dropdown menu */}
       {isOpen && (
-        <div className="absolute top-[calc(100%+4px)] left-0 z-50 bg-white border border-[#F5CDDC] rounded-xl shadow-md min-w-full overflow-hidden">
+        <div className="absolute top-[calc(100%+4px)] right-0 z-50 bg-white border border-[#F5CDDC] rounded-xl shadow-md min-w-[200px] overflow-hidden">
           {options.map((option) => (
             <button
               key={option}
@@ -89,7 +75,7 @@ export function FilterDropdown({ label, options, value, onChange }: FilterDropdo
                 onChange(option);
                 setIsOpen(false);
               }}
-              className="w-full text-left px-4 py-2 hover:bg-[#FCF0F4] transition-colors"
+              className="w-full text-left px-4 py-2 hover:bg-[#FCF0F4] transition-colors border-none bg-transparent cursor-pointer whitespace-nowrap truncate"
               style={{
                 fontFamily: 'ChulaCharasNew, sans-serif',
                 fontSize: '16px',
@@ -97,7 +83,7 @@ export function FilterDropdown({ label, options, value, onChange }: FilterDropdo
                 color: value === option ? '#DE5D8F' : '#000000',
               }}
             >
-              {option}
+              {t(option)}
             </button>
           ))}
         </div>

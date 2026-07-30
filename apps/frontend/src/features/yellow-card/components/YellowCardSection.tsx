@@ -42,7 +42,7 @@ export function YellowCardSection() {
   }
 
   return (
-    <div className="w-full max-w-[1280px] mx-auto px-4 md:px-[85px] py-10 md:py-16 font-[ChulaCharasNew] select-none">
+    <div className="w-full max-w-[1280px] mx-auto px-4 md:px-8 py-10 md:py-16 font-[ChulaCharasNew] select-none">
       
       {/* Dynamic Success Alert Banner */}
       {successMessage && (

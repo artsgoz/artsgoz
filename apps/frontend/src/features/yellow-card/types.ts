@@ -10,21 +10,21 @@ export interface StudentProfile {
 }
 
 export type YellowCardCategory =
-  | 'หมวดวิชาพื้นฐานอักษรศาสตร์'
-  | 'หมวดการศึกษาทั่วไป'
-  | 'หมวดวิชาเลือกเสรี'
-  | 'หมวดวิชาเอก'
-  | 'หมวดวิชาโท';
+  | 'credit_tracking.categories.basic'
+  | 'credit_tracking.categories.general'
+  | 'credit_tracking.categories.free'
+  | 'credit_tracking.categories.major'
+  | 'credit_tracking.categories.minor';
 
 export interface YellowCardSubject {
   id: string;
   code: string;
-  name: string;
+  nameKey: string;
   semester: string;
   credits: string; // Keep as string for easy form input editing, parse to float for calculations
   grade: string;   // A, B+, B, C+, C, D+, D, F, S, U, etc.
   category: YellowCardCategory;
-  group: string;   // e.g. "กลุ่มที่ 1 ทักษะการแสวงหาความรู้...", "หมวดเลือกเสรี"
+  group: string;   // e.g. "credit_tracking.planner.groups.basic.g1", etc.
 }
 
 export interface GPATermData {
@@ -40,13 +40,11 @@ export interface GPATermData {
 export interface TrackerSubject {
   id: string;
   code: string;
-  nameTh: string;
-  nameEn: string;
+  nameKey: string;
   credits: number;
-  category: 'หมวดวิชาพื้นฐานอักษร' | 'หมวดการศึกษาทั่วไป' | 'หมวดวิชาเลือกเสรี' | 'หมวดวิชาเอก' | 'หมวดวิชาโท';
+  category: YellowCardCategory;
   semester: number;
   completed: boolean;
   group?: string;
   isCustom?: boolean;
 }
-

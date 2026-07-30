@@ -1,5 +1,6 @@
 import { useState, useCallback, useRef, useEffect } from 'react';
 import { useNavigate } from 'react-router';
+import { useTranslation } from 'react-i18next';
 import { useLocalStorage } from './useLocalStorage.js';
 import type { StudentProfile, YellowCardSubject, YellowCardCategory, TrackerSubject } from '../types.js';
 import { DEFAULT_PROFILE, INITIAL_SUBJECTS, LOCAL_STORAGE_KEYS, CATEGORIES_CONFIG } from '../constants.js';
@@ -10,6 +11,7 @@ import {
 
 export function useYellowCardState() {
   const navigate = useNavigate();
+  const { t } = useTranslation();
 
   // App step: pdpa agreed or not
   const [pdpaAgreed, setPdpaAgreed] = useLocalStorage<boolean>(
@@ -76,16 +78,16 @@ export function useYellowCardState() {
 
   const handleAddSubject = useCallback(
     (groupName: string) => {
-      let category: YellowCardCategory = 'หมวดวิชาพื้นฐานอักษรศาสตร์';
+      let category: YellowCardCategory = 'credit_tracking.categories.basic';
       const catConfig = CATEGORIES_CONFIG.find((c) => c.groups.includes(groupName));
       if (catConfig) {
-        category = catConfig.category;
+        category = catConfig.category as YellowCardCategory;
       }
 
       const newSubject: YellowCardSubject = {
         id: `custom-${Date.now()}-${Math.random().toString(36).substring(2, 11)}`,
         code: '',
-        name: '',
+        nameKey: '',
         semester: '',
         credits: '3',
         grade: '',
@@ -109,9 +111,7 @@ export function useYellowCardState() {
     try {
       const savedTrackerSubjects = localStorage.getItem(LOCAL_STORAGE_KEYS.TRACKER_SUBJECTS);
       if (!savedTrackerSubjects) {
-        alert(
-          'ไม่พบข้อมูลแผนการลงทะเบียนในระบบ Credit Tracking กรุณาไปจัดตารางเรียนในระบบ Credit Tracking ก่อน'
-        );
+        alert(t('yellow_card.state.no_tracker_data'));
         return;
       }
 
@@ -121,12 +121,12 @@ export function useYellowCardState() {
       );
 
       setSubjects((prev) => mergeImportedSubjects(prev, imported));
-      triggerSuccessMessage('ดึงข้อมูลการลงทะเบียนจาก Credit Tracking สำเร็จแล้ว!', 3000);
+      triggerSuccessMessage(t('yellow_card.state.import_success'), 3000);
     } catch (e) {
       console.error('Failed to import tracker subjects', e);
-      alert('เกิดข้อผิดพลาดในการดึงข้อมูล');
+      alert(t('yellow_card.state.import_error'));
     }
-  }, [profile.studentId, setSubjects, triggerSuccessMessage]);
+  }, [profile.studentId, setSubjects, triggerSuccessMessage, t]);
 
   const handleSaveYellowCard = useCallback(() => {
     setShowAdvisorModal(true);
@@ -134,8 +134,8 @@ export function useYellowCardState() {
 
   const handleConfirmSubmit = useCallback(() => {
     setShowAdvisorModal(false);
-    triggerSuccessMessage('บันทึกข้อมูลและส่งใบเหลืองให้อาจารย์ที่ปรึกษาเรียบร้อยแล้ว!', 4000);
-  }, [triggerSuccessMessage]);
+    triggerSuccessMessage(t('yellow_card.state.save_success'), 4000);
+  }, [triggerSuccessMessage, t]);
 
   const handleDismissAdvisorModal = useCallback(() => {
     setShowAdvisorModal(false);

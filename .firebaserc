@@ -16,8 +16,15 @@
         ],
         "backoffice-staging": [
           "artsgoz-backoffice-staging"
+        ],
+        "kb": [
+          "artsgoz-kb"
+        ],
+        "kb-staging": [
+          "artsgoz-kb-staging"
         ]
       }
     }
-  }
+  },
+  "etags": {}
 }

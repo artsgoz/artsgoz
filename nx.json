@@ -45,7 +45,8 @@
       "plugin": "@nx/jest/plugin",
       "options": {
         "targetName": "test"
-      }
+      },
+      "exclude": ["apps/kb-api-e2e/**/*"]
     },
     {
       "plugin": "@nx/vite/plugin",
@@ -60,9 +61,26 @@
         "buildDepsTargetName": "build-deps",
         "watchDepsTargetName": "watch-deps"
       }
+    },
+    {
+      "plugin": "@nx/webpack/plugin",
+      "options": {
+        "buildTargetName": "build",
+        "serveTargetName": "serve",
+        "previewTargetName": "preview",
+        "buildDepsTargetName": "build-deps",
+        "watchDepsTargetName": "watch-deps",
+        "serveStaticTargetName": "serve-static"
+      }
     }
   ],
   "targetDefaults": {
+    "build": {
+      "syncGenerators": ["@juristr/nx-tailwind-sync:source-directives"]
+    },
+    "dev": {
+      "syncGenerators": ["@juristr/nx-tailwind-sync:source-directives"]
+    },
     "test": {
       "dependsOn": ["^build"]
     }
@@ -71,15 +89,15 @@
     "@nx/react": {
       "application": {
         "babel": true,
-        "style": "tailwind",
+        "style": "css",
         "linter": "eslint",
         "bundler": "vite"
       },
       "component": {
-        "style": "tailwind"
+        "style": "css"
       },
       "library": {
-        "style": "tailwind",
+        "style": "css",
         "linter": "eslint"
       }
     }

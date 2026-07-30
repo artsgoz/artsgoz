@@ -27,7 +27,7 @@ const MOCK_BANNERS: BannerItem[] = [
 
 export function HomeBanner() {
   return (
-    <section className="w-full mt-4">
+    <section className="w-full h-full">
       <BannerCarousel banners={MOCK_BANNERS} autoPlayInterval={6000} />
     </section>
   );

@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import type { Professor } from '../types.js';
 
 interface ProfessorDetailPanelProps {
@@ -5,30 +6,15 @@ interface ProfessorDetailPanelProps {
   onBack: () => void;
 }
 
-/**
- * Professor detail panel — matches Figma Frame 6388:
- *  - 737×1538 (responsive: full height)
- *  - bg: #FFFFFF
- *  - border: 1px solid #D0D0D1
- *  - border-radius: 12px
- *  - gap: 10px between sections
- *
- * Sections:
- *  1. Frame 6387 — back button header, 120px tall, border-bottom #BBBBBB
- *  2. Frame 6381 — professor photo + name
- *  3. Frame 6379 — info table (abbreviation, department, location)
- *  4. Frame 6386 — achievements section
- *  5. Frame 6389 — qualifications section
- *  6. Frame 6392 — courses section
- */
 export function ProfessorDetailPanel({ professor, onBack }: ProfessorDetailPanelProps) {
+  const { t } = useTranslation();
+
   return (
-    /* Frame 6388 */
     <div
-      className="bg-white border border-[#D0D0D1] rounded-xl flex flex-col overflow-y-auto"
+      className="bg-white border border-[#D0D0D1] rounded-xl flex flex-col overflow-y-auto w-full min-w-0"
       style={{ gap: '10px' }}
     >
-      {/* Frame 6387 — Back button header: 120px tall, border-bottom #BBBBBB, padding 36px top/bottom 37px left/right */}
+      {/* Back button header */}
       <div
         className="flex items-center border-b border-[#BBBBBB] shrink-0"
         style={{ padding: '36px 37px', minHeight: '120px' }}
@@ -36,11 +22,10 @@ export function ProfessorDetailPanel({ professor, onBack }: ProfessorDetailPanel
         <button
           type="button"
           onClick={onBack}
-          className="flex items-center justify-center"
-          aria-label="กลับ"
+          className="flex items-center justify-center border-none bg-transparent cursor-pointer"
+          aria-label={t('professors.back')}
           style={{ width: '48px', height: '48px' }}
         >
-          {/* chevron-left icon — 12×24, stroke #DE5D8F, strokeWidth 2 */}
           <svg
             width="12"
             height="24"
@@ -59,59 +44,48 @@ export function ProfessorDetailPanel({ professor, onBack }: ProfessorDetailPanel
         </button>
       </div>
 
-      {/* Content area — padding matches design layout */}
-      <div className="flex flex-col px-[37px] pb-8" style={{ gap: '10px' }}>
-        {/* Frame 6381 — Professor photo + name: 192px circle avatar, name 32px w700 #DE5D8F */}
+      {/* Content area */}
+      <div className="flex flex-col px-[37px] pb-8 min-w-0" style={{ gap: '10px' }}>
+        {/* Photo + name */}
         <div
-          className="flex items-center"
-          style={{ gap: '94px', minHeight: '192px', paddingTop: '10px' }}
+          className="flex items-center flex-wrap md:flex-nowrap gap-4 md:gap-[94px]"
+          style={{ minHeight: '192px', paddingTop: '10px' }}
         >
-          {/* Ellipse 126 — 192×192 avatar circle, bg #D9D9D9 */}
           <div
             className="rounded-full shrink-0 bg-[#D9D9D9]"
             style={{ width: '192px', height: '192px' }}
           />
-          {/* Professor name — 32px w700 #DE5D8F */}
           <span
-            className="font-[ChulaCharasNew] text-[#DE5D8F]"
-            style={{ fontSize: '32px', fontWeight: 700, maxWidth: '281px' }}
+            className="font-[ChulaCharasNew] text-[#DE5D8F] break-words"
+            style={{ fontSize: '32px', fontWeight: 700, maxWidth: '100%' }}
           >
-            {professor.name}
+            {t(professor.nameKey)}
           </span>
         </div>
 
-        {/* Frame 6379 — Info table rows: 567×140, gap:16 */}
-        <div className="flex flex-col" style={{ gap: '16px' }}>
-          {/* Row: ตัวอักษรย่อ */}
-          <InfoRow label="ตัวอักษรย่อ" value={professor.abbreviation} />
-          {/* Row: ภาควิชา/หน่วยงาน */}
-          <InfoRow label="ภาควิชา/หน่วยงาน" value={professor.department} />
-          {/* Row: สถานที่ */}
-          <InfoRow label="สถานที่" value={professor.location} />
+        {/* Info table rows */}
+        <div className="flex flex-col mt-4 min-w-0" style={{ gap: '16px' }}>
+          <InfoRow label={t('professors.abbreviation_label')} value={t(professor.abbreviationKey)} />
+          <InfoRow label={t('professors.department_agency_label')} value={t(professor.departmentKey)} />
+          <InfoRow label={t('professors.location_label')} value={t(professor.locationKey)} />
         </div>
 
-        {/* Frame 6386 — Achievements section */}
+        {/* Achievements section */}
         <InfoSection
-          title="ใส่อะไรก็แล้วแต่ วุฒิ/ผลงาน"
-          items={professor.achievements}
+          title={t('professors.achievements_label')}
+          items={professor.achievementsKeys}
         />
 
-        {/* Frame 6389 — Qualifications section */}
-        <InfoSection title="คุณวุฒิ" items={professor.qualifications} />
+        {/* Qualifications section */}
+        <InfoSection title={t('professors.qualifications_label')} items={professor.qualificationsKeys} />
 
-        {/* Frame 6392 — Courses section */}
-        <InfoSection title="รายวิชาที่รับผิดชอบ" items={professor.courses} />
+        {/* Courses section */}
+        <InfoSection title={t('professors.courses_label')} items={professor.coursesKeys} />
       </div>
     </div>
   );
 }
 
-/**
- * Info row — matches Frame 6379 row structure:
- *   - Horizontal layout, gap:35
- *   - Left label column: justify:CENTER, 28px w700 #DE5D8F
- *   - Right value column: justify:MAX, 20px w400 #000000
- */
 interface InfoRowProps {
   label: string;
   value: string;
@@ -119,20 +93,18 @@ interface InfoRowProps {
 
 function InfoRow({ label, value }: InfoRowProps) {
   return (
-    <div className="flex items-center" style={{ gap: '35px', minHeight: '36px' }}>
-      {/* Label — 28px w700 #DE5D8F */}
-      <div className="flex items-center justify-center shrink-0" style={{ minWidth: '189px' }}>
+    <div className="flex items-start md:items-center flex-col md:flex-row gap-2 md:gap-[35px]" style={{ minHeight: '36px' }}>
+      <div className="flex items-center justify-start md:justify-center shrink-0" style={{ minWidth: '189px' }}>
         <span
-          className="font-[ChulaCharasNew] text-[#DE5D8F]"
-          style={{ fontSize: '28px', fontWeight: 700 }}
+          className="font-[ChulaCharasNew] text-[#DE5D8F] font-bold break-words"
+          style={{ fontSize: '24px' }}
         >
           {label}
         </span>
       </div>
-      {/* Value — 20px w400 #000000 */}
-      <div className="flex items-center flex-1">
+      <div className="flex items-center flex-1 min-w-0">
         <span
-          className="font-[ChulaCharasNew] text-[#000000]"
+          className="font-[ChulaCharasNew] text-[#000000] break-words"
           style={{ fontSize: '20px', fontWeight: 400 }}
         >
           {value}
@@ -142,40 +114,32 @@ function InfoRow({ label, value }: InfoRowProps) {
   );
 }
 
-/**
- * Info section — matches Frame 6386/6389/6392:
- *   - Vertical layout, gap:12
- *   - Section label header: 24px w700 #E57DA5
- *   - Items list: gap:6, 20px w400 #000000
- */
 interface InfoSectionProps {
   title: string;
   items: string[];
 }
 
 function InfoSection({ title, items }: InfoSectionProps) {
+  const { t } = useTranslation();
+
   return (
-    /* Frame 6386/6389/6392 — VERTICAL, gap:12 */
-    <div className="flex flex-col" style={{ gap: '12px', marginTop: '10px' }}>
-      {/* Frame 6383 — section header row */}
+    <div className="flex flex-col min-w-0" style={{ gap: '12px', marginTop: '10px' }}>
       <div className="flex items-center" style={{ minHeight: '30px' }}>
         <span
-          className="font-[ChulaCharasNew] text-[#E57DA5]"
+          className="font-[ChulaCharasNew] text-[#E57DA5] break-words"
           style={{ fontSize: '24px', fontWeight: 700 }}
         >
           {title}
         </span>
       </div>
-      {/* Frame 6385 — items list, VERTICAL gap:6 */}
-      <div className="flex flex-col" style={{ gap: '6px' }}>
-        {items.map((item, index) => (
-          /* Frame 6382/6384/6385 — each item row */
-          <div key={index} className="flex items-center" style={{ minHeight: '28px' }}>
+      <div className="flex flex-col min-w-0" style={{ gap: '6px' }}>
+        {items.map((itemKey, index) => (
+          <div key={index} className="flex items-start" style={{ minHeight: '28px' }}>
             <span
-              className="font-[ChulaCharasNew] text-[#000000]"
+              className="font-[ChulaCharasNew] text-[#000000] break-words"
               style={{ fontSize: '20px', fontWeight: 400 }}
             >
-              {item}
+              {t(itemKey)}
             </span>
           </div>
         ))}

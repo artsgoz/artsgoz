@@ -1,65 +1,78 @@
+import { useTranslation } from 'react-i18next';
 import { UpcomingEvent } from '../types.js';
+import { AgendaBadge } from './AgendaBadge.js';
 
 interface UpcomingEventsCardProps {
   events: UpcomingEvent[];
 }
 
 export function UpcomingEventsCard({ events }: UpcomingEventsCardProps) {
+  const { t } = useTranslation();
   return (
-    <div className="bg-white rounded-xl border border-gray-200 shadow-sm overflow-hidden">
+    <div className="bg-white rounded-2xl border border-gray-100 shadow-[0_4px_20px_-4px_rgba(0,0,0,0.05)] p-6 md:p-8 w-full">
       {/* Card Header */}
-      <div className="flex items-center justify-between px-5 py-3.5 border-b border-gray-100 bg-[var(--color-background-subtler,#F7F8F9)]">
-        <span className="font-serif text-[18px] font-bold text-gray-800">กิจกรรมใกล้มาถึง</span>
-        <span className="font-serif text-[13px] font-bold text-[var(--Color-Pink-500,#DE5D8F)]">ดูทั้งหมด</span>
+      <div className="flex items-center justify-between mb-6">
+        <span className="font-serif text-xl md:text-2xl font-bold text-gray-900 tracking-tight">{t('agenda.upcoming_title')}</span>
+        <button
+          type="button"
+          className="font-serif text-[15px] md:text-[16px] font-bold text-[#DE5D8F] hover:text-[#DE5D8F]/80 transition-colors duration-200 cursor-pointer focus:outline-none bg-transparent border-none"
+        >
+          {t('agenda.view_all')}
+        </button>
       </div>
 
       {/* Event Rows */}
-      {events.map((event, idx) => {
-        const isLast = idx === events.length - 1;
-        return (
-          <div
-            key={`${event.month}-${event.day}`}
-            className={`flex items-stretch ${!isLast ? 'border-b border-gray-100' : ''} ${
-              event.isToday ? 'hover:bg-pink-50/40' : 'hover:bg-gray-50/60'
-            } transition-colors`}
-          >
-            {/* Left accent bar */}
-            <div className={`w-1 shrink-0 ${event.isToday ? 'bg-[#E992B4]' : 'bg-gray-200'}`} />
+      <div className="flex flex-col gap-4">
+        {events.map((event, idx) => {
+          return (
+            <div
+              key={`${event.month}-${event.day}-${idx}`}
+              className={`group flex items-center justify-between p-3.5 md:p-4 rounded-xl transition-all duration-200 cursor-pointer ${
+                event.isToday 
+                  ? 'bg-pink-50/10 hover:bg-pink-100/30 active:bg-pink-200/40 border border-dashed border-pink-100/50' 
+                  : 'hover:bg-gray-100 active:bg-gray-200/70 border border-transparent'
+              }`}
+            >
+              <div className="flex items-center min-w-0 flex-1">
+                {/* Minimalist Date Chip */}
+                <div 
+                  className={`flex flex-col items-center justify-center w-14 h-14 md:w-16 md:h-16 rounded-xl shrink-0 select-none transition-colors ${
+                    event.isToday 
+                      ? 'text-pink-500' 
+                      : 'text-gray-600'
+                  }`}
+                >
+                  <span className="font-serif text-[20px] md:text-[22px] font-bold leading-none">
+                    {event.day}
+                  </span>
+                  <span className="font-serif text-[10px] md:text-[11px] font-semibold uppercase tracking-wider mt-0.5 opacity-80">
+                    {t(event.month)}
+                  </span>
+                </div>
 
-            {/* Date chip */}
-            <div className="flex flex-col items-center justify-center w-[58px] shrink-0 px-2 py-4 border-r border-gray-100">
-              <span className={`font-serif text-[10px] font-bold uppercase leading-none ${event.isToday ? 'text-[#DE5D8F]' : 'text-gray-400'}`}>
-                {event.month}
-              </span>
-              <span className="font-serif text-[26px] font-bold text-gray-900 leading-tight">{event.day}</span>
-              <span className="font-serif text-[9px] text-gray-400 leading-none">{event.dayLabel}</span>
-            </div>
+                {/* Event Info */}
+                <div className="flex flex-col ml-4 md:ml-5 min-w-0 flex-1 justify-center">
+                  <h4 className="font-serif text-[16px] md:text-[18px] font-bold text-gray-800 leading-snug line-clamp-1 group-hover:text-pink-500 transition-colors">
+                    {t(event.title)}
+                  </h4>
+                  <span className="text-[12px] md:text-[13px] font-medium leading-none text-gray-400 mt-1">{event.time}</span>
+                </div>
+              </div>
 
-            {/* Event info */}
-            <div className="flex flex-col justify-center px-4 py-3 flex-1 min-w-0">
-              <h4 className="font-serif text-[14px] font-bold text-gray-900 leading-snug line-clamp-1">
-                {event.title}
-              </h4>
-              <span className="text-[12px] text-gray-400 mt-0.5">{event.time}</span>
+              {/* Action Button / Badge */}
+              <div className="flex items-center gap-1.5 pl-3 shrink-0 flex-wrap justify-end">
+                {event.dayLabels && event.dayLabels.length > 0 ? (
+                  event.dayLabels.map((label, idx) => (
+                    <AgendaBadge key={`${label}-${idx}`}>{t(label)}</AgendaBadge>
+                  ))
+                ) : event.dayLabel ? (
+                  <AgendaBadge>{t(event.dayLabel)}</AgendaBadge>
+                ) : null}
+              </div>
             </div>
-
-            {/* Badge */}
-            <div className="flex items-center pr-4">
-              {event.isToday ? (
-                <span className="font-serif text-[10px] font-bold px-2 py-0.5 rounded-full bg-pink-100 text-[#DE5D8F]">
-                  {event.dayLabel}
-                </span>
-              ) : event.dayLabel === 'พรุ่งนี้' ? (
-                <span className="font-serif text-[10px] font-bold px-2 py-0.5 rounded-full bg-gray-100 text-gray-500">
-                  {event.dayLabel}
-                </span>
-              ) : (
-                <span className="font-serif text-[10px] font-semibold text-gray-400">{event.dayLabel}</span>
-              )}
-            </div>
-          </div>
-        );
-      })}
+          );
+        })}
+      </div>
     </div>
   );
 }

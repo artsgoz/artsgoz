@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import { ChevronDown } from 'lucide-react';
 
 interface DropdownMenuContainerProps {
@@ -9,12 +10,6 @@ interface DropdownMenuContainerProps {
   id?: string;
 }
 
-/**
- * DropdownMenuContainer — matches Figma node 4634-9178
- * White background, 2px gray (#8B8B8C) border, 8px border-radius,
- * gray placeholder text, chevron-down icon on the right.
- * Width: 180px (desktop); stretches on mobile.
- */
 export function DropdownMenuContainer({
   label,
   value,
@@ -23,13 +18,14 @@ export function DropdownMenuContainer({
   onChange,
   id,
 }: DropdownMenuContainerProps) {
+  const { t } = useTranslation();
   const isEmpty = !value || value === placeholder;
 
   return (
     <div className="flex flex-col gap-[6px]" style={{ minWidth: '180px' }}>
       {/* Label */}
       <span
-        className="text-black leading-[24px]"
+        className="text-black leading-[24px] truncate"
         style={{ fontFamily: 'ChulaCharasNew, sans-serif', fontSize: '18px', fontWeight: 400 }}
       >
         {label}
@@ -41,7 +37,7 @@ export function DropdownMenuContainer({
           id={id}
           value={value}
           onChange={(e) => onChange(e.target.value)}
-          className="w-full h-[40px] pl-[18px] pr-10 bg-white appearance-none outline-none cursor-pointer transition-colors focus:border-[#DE5D8F]"
+          className="w-full h-[40px] pl-[18px] pr-10 bg-white appearance-none outline-none cursor-pointer transition-colors focus:border-[#DE5D8F] truncate"
           style={{
             border: '2px solid #8B8B8C',
             borderRadius: '8px',
@@ -53,13 +49,13 @@ export function DropdownMenuContainer({
           }}
         >
           <option value={placeholder} style={{ color: '#99999A' }}>
-            {placeholder}
+            {t(placeholder)}
           </option>
           {options
             .filter((opt) => opt !== placeholder)
             .map((opt) => (
               <option key={opt} value={opt} style={{ color: '#000000' }}>
-                {opt}
+                {t(opt)}
               </option>
             ))}
         </select>

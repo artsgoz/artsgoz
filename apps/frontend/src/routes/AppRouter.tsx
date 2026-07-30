@@ -10,6 +10,7 @@ import { curriculumRoutes } from './curriculum/curriculumRoutes';
 import { internshipsRoutes } from './internships/internshipsRoutes';
 import { articlesRoutes } from './articles/articlesRoutes';
 import { clubsRoutes } from './clubs/clubsRoutes';
+import { helpRoutes } from './help/helpRoutes';
 import { PATHS } from './paths';
 
 const router = createBrowserRouter([
@@ -27,6 +28,7 @@ const router = createBrowserRouter([
       ...internshipsRoutes,
       ...articlesRoutes,
       ...clubsRoutes,
+      ...helpRoutes,
     ],
   },
 ]);

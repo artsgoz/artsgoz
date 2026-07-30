@@ -1,4 +1,5 @@
 import { useState, useMemo } from 'react';
+import { useTranslation } from 'react-i18next';
 import type { AcademicProfile, Subject, CategoryProgress } from '../types.js';
 import { MOCK_SUBJECTS, CATEGORIES_CONFIG, MAJOR_OPTIONS, MINOR_OPTIONS, CURRICULUM_OPTIONS } from '../constants.js';
 import { DropdownMenuContainer } from './DropdownMenuContainer.js';
@@ -9,11 +10,11 @@ import { CurriculumView } from './CurriculumView.js';
 import { PlannerView } from './PlannerView.js';
 import { AcademicTrackerNavBar, type ActiveTab } from './AcademicTrackerNavBar.js';
 import { SummaryView } from './SummaryView.js';
-import { ScrollToTopButton } from '../../../components/ScrollToTopButton/index.js';
 
 type AppStep = 'pdpa' | 'setup' | 'dashboard';
 
 export function CreditTrackingSection() {
+  const { t } = useTranslation();
   const [step, setStep] = useState<AppStep>(() => {
     if (typeof window !== 'undefined') {
       try {
@@ -199,55 +200,55 @@ export function CreditTrackingSection() {
   }
 
   return (
-    <div className="w-full max-w-[1280px] mx-auto px-4 md:px-[85px] py-10 md:py-16 font-[ChulaCharasNew] select-none">
-      {/* Top Header Section with profile display & selector filters (Figma Frame 6429 / 6079) */}
-      <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-6 mb-24">
-        <div>
-          <h1 className="text-black text-[36px] font-bold leading-none mb-2">Academic Tracker</h1>
-          <h2 className="text-[#6D6D6D] text-[20px] font-medium">ตารางรวมหน่วยกิต</h2>
+    <div className="w-full max-w-[1280px] mx-auto px-4 md:px-8 py-10 md:py-16 font-[ChulaCharasNew] select-none min-w-0">
+      {/* Top Header Section with profile display */}
+      <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-6 mb-24 min-w-0">
+        <div className="min-w-0">
+          <h1 className="text-black text-[36px] font-bold leading-none mb-2 truncate">{t('credit_tracking.title')}</h1>
+          <h2 className="text-[#6D6D6D] text-[20px] font-medium truncate">{t('credit_tracking.subtitle')}</h2>
         </div>
 
-        {/* Selected Major/Minor/Curriculum details (Figma Frame 5942) */}
-        <div className="flex flex-col sm:flex-row flex-wrap gap-8 items-end">
+        {/* Selected Major/Minor/Curriculum details */}
+        <div className="flex flex-col sm:flex-row flex-wrap gap-8 items-end min-w-0">
           <DropdownMenuContainer
             id="select-major"
-            label="เอก"
+            label={t('credit_tracking.profile.major_label')}
             value={profile.major}
             options={MAJOR_OPTIONS}
-            placeholder="เลือกวิชาเอก"
+            placeholder="credit_tracking.profile.select_major"
             onChange={handleUpdateMajor}
           />
           <DropdownMenuContainer
             id="select-minor"
-            label="โท"
+            label={t('credit_tracking.profile.minor_label')}
             value={profile.minor}
             options={MINOR_OPTIONS}
-            placeholder="เลือกวิชาโท"
+            placeholder="credit_tracking.profile.select_minor"
             onChange={handleUpdateMinor}
           />
           <DropdownMenuContainer
             id="select-curriculum"
-            label="หลักสูตร"
+            label={t('credit_tracking.profile.curriculum_label')}
             value={profile.curriculum}
             options={CURRICULUM_OPTIONS}
-            placeholder="เลือกหลักสูตร"
+            placeholder="credit_tracking.profile.select_curriculum"
             onChange={handleUpdateCurriculum}
           />
         </div>
       </div>
 
-      {/* Credit Summary — shown above the tab switcher */}
+      {/* Credit Summary */}
       <div className="w-full flex justify-center mt-[54px] mb-[78px]">
         <CreditsSummaryCard progressList={progressList} />
       </div>
 
-      {/* Navigation Tabs Bar — matches Figma node 4903-12381 */}
-      <div className="w-full max-w-[1062px] mb-10">
+      {/* Navigation Tabs Bar */}
+      <div className="w-full max-w-[1062px] mb-10 overflow-hidden">
         <AcademicTrackerNavBar activeTab={activeTab} onTabChange={setActiveTab} showSummary={showSummaryTab} />
       </div>
 
       {/* Main Tab Views Switch */}
-      <div className="mt-8">
+      <div className="mt-8 min-w-0">
         {activeTab === 'curriculum' && (
           <CurriculumView subjects={subjects} onToggleSubject={handleToggleSubject} profile={profile} />
         )}
@@ -269,8 +270,6 @@ export function CreditTrackingSection() {
           />
         )}
       </div>
-
-      <ScrollToTopButton />
     </div>
   );
 }

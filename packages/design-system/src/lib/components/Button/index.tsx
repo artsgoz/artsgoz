@@ -1,6 +1,7 @@
-import { ButtonHTMLAttributes, ReactNode } from 'react';
+import { ReactNode } from 'react';
+import { motion, HTMLMotionProps } from 'framer-motion';
 
-export interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
+export interface ButtonProps extends HTMLMotionProps<'button'> {
   variant?: 'primary' | 'secondary' | 'error' | 'outline';
   size?: 'default' | 'icon';
   children: ReactNode;
@@ -13,26 +14,70 @@ export function Button({
   className = '',
   ...props
 }: ButtonProps) {
-  // Select style based on size prop (icon vs default)
   const baseStyle =
     size === 'icon'
-      ? 'flex items-center justify-center rounded-[8px] cursor-pointer transition-all duration-200 hover:scale-105 active:scale-95 shadow-sm shrink-0'
-      : 'flex items-center justify-center gap-2 h-[42px] px-4 rounded-[8px] font-serif text-[14px] font-bold transition-all duration-200 active:scale-95 cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed disabled:active:scale-100 shadow-sm';
+      ? 'flex items-center justify-center rounded-[10px] cursor-pointer transition-colors duration-200 shrink-0'
+      : 'relative overflow-hidden flex items-center justify-center gap-2 h-[52px] px-7 rounded-[10px] font-serif text-[16px] font-bold tracking-wide cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed';
 
-  const variants = {
-    primary:
-      'bg-[var(--color-background-primary-default,#E992B4)] hover:bg-[var(--color-background-primary-dark,#DE5D8F)] text-white border border-transparent',
-    secondary:
-      'bg-[var(--color-background-secondary-default,#F8C135)] hover:bg-[var(--color-background-secondary-dark,#B08926)] text-white border border-transparent',
-    error:
-      'bg-[var(--color-background-error-default,#EE4F72)] hover:bg-[var(--color-background-error-dark,#EA234F)] text-white border border-transparent',
-    outline:
-      'bg-white hover:bg-gray-50 text-[var(--color-grey-900,#404041)] border border-[var(--color-border-subtle,#D0D0D1)]',
+  const motionProps = {
+    whileHover: { scale: size === 'icon' ? 1.05 : 1.02 },
+    whileTap: { scale: 0.95 },
+    transition: { type: 'spring' as const, stiffness: 400, damping: 15 },
   };
 
+  // Icon buttons — no wipe animation
+  if (size === 'icon') {
+    return (
+      <motion.button
+        className={`${baseStyle} ${className}`}
+        {...motionProps}
+        {...props}
+      >
+        {children}
+      </motion.button>
+    );
+  }
+
+  // Variant config — all share the same white wipe animation on hover
+  const variantConfig: Record<string, { wrapper: string; wipe: string }> = {
+    primary: {
+      wrapper:
+        'group bg-[var(--color-background-primary-default,#E992B4)] border-2 border-[var(--color-background-primary-default,#E992B4)] text-white hover:text-[var(--color-background-primary-dark,#DE5D8F)] transition-colors duration-300',
+      wipe: 'bg-white',
+    },
+    secondary: {
+      wrapper:
+        'group bg-[var(--color-background-secondary-default,#F8C135)] border-2 border-[var(--color-background-secondary-default,#F8C135)] text-white hover:text-[var(--color-background-secondary-dark,#B08926)] transition-colors duration-300',
+      wipe: 'bg-white',
+    },
+    error: {
+      wrapper:
+        'group bg-[var(--color-background-error-default,#EE4F72)] border-2 border-[var(--color-background-error-default,#EE4F72)] text-white hover:text-[var(--color-background-error-dark,#EA234F)] transition-colors duration-300',
+      wipe: 'bg-white',
+    },
+    outline: {
+      wrapper:
+        'group bg-[#E992B4] text-white border-2 border-[#E992B4] hover:text-[#DE5D8F] transition-colors duration-300',
+      wipe: 'bg-white',
+    },
+  };
+
+  const config = variantConfig[variant] ?? variantConfig.primary;
+
   return (
-    <button className={`${baseStyle} ${variants[variant]} ${className}`} {...props}>
-      {children}
-    </button>
+    <motion.button
+      className={`${baseStyle} ${config.wrapper} ${className}`}
+      {...motionProps}
+      {...props}
+    >
+      {/* Unified left-to-right white wipe on hover — same for ALL variants */}
+      <span
+        className={`absolute inset-0 ${config.wipe} -translate-x-full group-hover:translate-x-0 transition-transform duration-300 ease-in-out z-0`}
+        aria-hidden="true"
+      />
+      <span className="relative z-10 flex items-center gap-2">
+        {children}
+      </span>
+    </motion.button>
   );
 }

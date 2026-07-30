@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import type { YellowCardSubject, YellowCardCategory } from '../types.js';
 import { GradeReportInteractive } from './GradeReportInteractive.js';
 import { GradeReportPaperAction } from './GradeReportPaperAction.js';
@@ -21,7 +22,7 @@ export function CurriculumTable({
   onAddSubject,
   onDeleteSubject,
 }: CurriculumTableProps) {
-  
+  const { t } = useTranslation();
 
   const getCategoryCompletedCredits = () => {
     return subjects
@@ -32,43 +33,43 @@ export function CurriculumTable({
   const completedCredits = getCategoryCompletedCredits();
 
   return (
-    <div className="w-full flex flex-col gap-6 select-none font-[ChulaCharasNew] mb-8">
-      {/* Category Header Bar (matches Planner page) */}
-      <div className="w-full h-[60px] bg-[#F5CDDC] rounded-[8px] px-5 flex items-end justify-between pb-3">
-        <span className="text-black text-[18px] font-bold">{category}</span>
-        <span className="text-black text-[18px] font-bold">
-          เรียนแล้ว {completedCredits} / {requiredCredits} หน่วยกิต
+    <div className="w-full flex flex-col gap-6 select-none font-[ChulaCharasNew] mb-8 min-w-0">
+      {/* Category Header Bar */}
+      <div className="w-full h-[60px] bg-[#F5CDDC] rounded-[8px] px-5 flex items-end justify-between pb-3 min-w-0 gap-4">
+        <span className="text-black text-[18px] font-bold truncate">{t(category)}</span>
+        <span className="text-black text-[18px] font-bold shrink-0">
+          {t('yellow_card.curriculum_table.completed_progress', { completed: completedCredits, required: requiredCredits })}
         </span>
       </div>
 
       {/* Description / Instructions under the category header bar */}
-      {category === 'หมวดวิชาพื้นฐานอักษรศาสตร์' && (
+      {category === 'credit_tracking.categories.basic' && (
         <div className="text-[16px] text-[#404041] flex flex-col gap-1.5 px-5 font-bold leading-relaxed mt-1">
-          <p>1. ให้เลือกเรียนจากกลุ่มวิชาต่อไปนี้อย่างน้อยกลุ่มละ 1 รายวิชา รวมเป็น 5 วิชา</p>
-          <p>2. เลือกอิสระตามความสนใจอีกจำนวน 4 รายวิชา (เลือกเรียนซ้ำกลุ่มรายวิชาได้)</p>
+          <p>{t('credit_tracking.planner.instructions.basic1')}</p>
+          <p>{t('credit_tracking.planner.instructions.basic2')}</p>
         </div>
       )}
 
       {/* Table Headers Row aligned with sub-items columns */}
-      <div className="grid grid-cols-[20px_80px_1fr_100px_52px_52px_32px] gap-2 items-center text-black font-bold text-[16px] px-5 mb-1">
+      <div className="grid grid-cols-[20px_80px_1fr_100px_52px_52px_32px] gap-2 items-center text-black font-bold text-[16px] px-5 mb-1 min-w-[320px]">
         <span></span>
-        <span className="text-left">รหัสวิชา</span>
-        <span className="text-left">ชื่อรายวิชา</span>
-        <span className="text-center">ภาค/ปีการศึกษา</span>
-        <span className="text-center">หน่วยกิต</span>
-        <span className="text-center">เกรด</span>
+        <span className="text-left">{t('credit_tracking.planner.col_code')}</span>
+        <span className="text-left">{t('credit_tracking.planner.col_name')}</span>
+        <span className="text-center">{t('yellow_card.grade_report.term_year')}</span>
+        <span className="text-center">{t('credit_tracking.planner.col_credits')}</span>
+        <span className="text-center">{t('yellow_card.grade_report.grade')}</span>
         <span></span>
       </div>
 
       {/* Render each sub-group under this category using interactive accordions */}
-      <div className="flex flex-col gap-4">
+      <div className="flex flex-col gap-4 min-w-0">
         {groups.map((groupName) => {
           const groupSubjects = subjects.filter((s) => s.group === groupName);
 
           return (
             <GradeReportInteractive
               key={groupName}
-              topicName={groupName}
+              topicName={t(groupName)}
               onAddSubject={() => onAddSubject(groupName)}
             >
               {groupSubjects.map((subject) => (
@@ -81,8 +82,8 @@ export function CurriculumTable({
               ))}
 
               {groupSubjects.length === 0 && (
-                <p className="text-center text-[#99999A] py-3 text-[14px] italic">
-                  ไม่มีวิชาลงทะเบียน (คลิกเพิ่มรายวิชาเพื่อเริ่มกรอก)
+                <p className="text-center text-[#99999A] py-3 text-[14px] italic break-words px-4">
+                  {t('yellow_card.curriculum_table.empty_group')}
                 </p>
               )}
             </GradeReportInteractive>

@@ -1,4 +1,6 @@
+import { useTranslation } from 'react-i18next';
 import { Sparkles } from 'lucide-react';
+import { Button } from '@org/design-system';
 
 interface YellowCardActionBarProps {
   onImport: () => void;
@@ -6,26 +8,30 @@ interface YellowCardActionBarProps {
 }
 
 export function YellowCardActionBar({ onImport, onProcess }: YellowCardActionBarProps) {
+  const { t } = useTranslation();
+
   return (
-    <div className="flex flex-col sm:flex-row justify-between items-center gap-4 mb-8">
+    <div className="flex flex-col sm:flex-row justify-between items-center gap-4 mb-8 min-w-0 w-full">
       {/* Import Button */}
-      <button
+      <Button
         type="button"
         onClick={onImport}
-        className="flex items-center gap-2 bg-[#F5BC9A] hover:bg-[#f3a87f] text-black font-bold text-[16px] px-5 py-3 rounded-[8px] cursor-pointer transition-colors shadow-2xs"
+        variant="secondary"
+        className="font-[ChulaCharasNew] text-[16px] px-5 h-[48px] rounded-[8px]"
       >
         <Sparkles size={18} />
-        <span>ดึงข้อมูลจากการทดลองจัดตารางเรียน</span>
-      </button>
+        {t('yellow_card.action_bar.import_btn')}
+      </Button>
 
       {/* Process Button */}
-      <button
+      <Button
         type="button"
         onClick={onProcess}
-        className="bg-[#E992B4] hover:bg-[#DE5D8F] text-white font-bold text-[17px] px-8 h-[48px] rounded-[8px] cursor-pointer shadow-xs transition-colors"
+        variant="primary"
+        className="font-[ChulaCharasNew] text-[17px] px-8 h-[48px] rounded-[8px] shrink-0"
       >
-        <span>ประมวลผลข้อมูล</span>
-      </button>
+        {t('yellow_card.action_bar.process_btn')}
+      </Button>
     </div>
   );
 }

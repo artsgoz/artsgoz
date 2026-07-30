@@ -5,17 +5,16 @@ export interface AcademicProfile {
 }
 
 export type SubjectCategory =
-  | 'หมวดวิชาพื้นฐานอักษร'
-  | 'หมวดการศึกษาทั่วไป'
-  | 'หมวดวิชาเลือกเสรี'
-  | 'หมวดวิชาเอก'
-  | 'หมวดวิชาโท';
+  | 'credit_tracking.categories.basic'
+  | 'credit_tracking.categories.general'
+  | 'credit_tracking.categories.free'
+  | 'credit_tracking.categories.major'
+  | 'credit_tracking.categories.minor';
 
 export interface Subject {
   id: string;
   code: string;
-  nameTh: string;
-  nameEn: string;
+  nameKey: string;
   credits: number;
   category: SubjectCategory;
   semester: number; // 1-8 (Year 1 Sem 1 = 1, Year 4 Sem 2 = 8)
