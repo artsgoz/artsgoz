@@ -1,17 +1,12 @@
+import { useTranslation } from 'react-i18next';
 import type { CategoryProgress } from '../types.js';
 
 interface CreditsSummaryCardProps {
   progressList: CategoryProgress[];
 }
 
-/**
- * CreditsSummaryCard — matches Figma node 4786-5447.
- * Table layout: pink header row, white body row.
- * Completed credits in pink (#DE5D8F), total in black.
- * Gray "Total" column on the right.
- * 6px border-radius on the outer wrapper, shrinks to content width.
- */
 export function CreditsSummaryCard({ progressList }: CreditsSummaryCardProps) {
+  const { t } = useTranslation();
   const totalCompleted = progressList.reduce((sum, item) => sum + item.completed, 0);
   const totalRequired = progressList.reduce((sum, item) => sum + item.required, 0);
 
@@ -53,22 +48,22 @@ export function CreditsSummaryCard({ progressList }: CreditsSummaryCardProps) {
 
   return (
     <div
-      className="select-none"
-      style={{ fontFamily: 'ChulaCharasNew, sans-serif', display: 'inline-block' }}
+      className="select-none max-w-full overflow-x-auto"
+      style={{ fontFamily: 'ChulaCharasNew, sans-serif' }}
     >
       {/* Rounded wrapper clips the table corners */}
-      <div style={{ borderRadius: '0px', overflow: 'hidden', border: BORDER }}>
-        <table style={{ borderCollapse: 'collapse', width: 'max-content' }}>
+      <div style={{ borderRadius: '0px', overflow: 'hidden', border: BORDER }} className="max-w-full">
+        <table style={{ borderCollapse: 'collapse', width: 'max-content' }} className="max-w-full">
           {/* Header Row */}
           <thead>
             <tr>
               {progressList.map((item) => (
                 <th key={item.category} style={{ ...cellHeaderStyle, borderRight: BORDER }}>
-                  {item.category}
+                  {t(item.category)}
                 </th>
               ))}
               {/* Total header */}
-              <th style={{ ...totalHeaderStyle }}>Total</th>
+              <th style={{ ...totalHeaderStyle }}>{t('credit_tracking.total')}</th>
             </tr>
           </thead>
 

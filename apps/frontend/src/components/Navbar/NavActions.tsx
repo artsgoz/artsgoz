@@ -1,4 +1,6 @@
 import { useState, useRef } from 'react';
+import { useNavigate } from 'react-router';
+import { useTranslation } from 'react-i18next';
 import {
   CULoginButton,
   SearchInput,
@@ -7,6 +9,7 @@ import {
   ManageAccountCard,
 } from '@org/design-system';
 import { useClickOutside } from './useClickOutside.js';
+import { LanguageSwitcher } from '../LanguageSwitcher/index.js';
 
 interface NavActionsProps {
   isLoggedIn: boolean;
@@ -15,6 +18,8 @@ interface NavActionsProps {
 }
 
 export function NavActions({ isLoggedIn, onLogin, onLogout }: NavActionsProps) {
+  const navigate = useNavigate();
+  const { t } = useTranslation();
   const [isLoginOpen, setIsLoginOpen] = useState(false);
   const [isProfileOpen, setIsProfileOpen] = useState(false);
   const [profileView, setProfileView] = useState<'profile' | 'manage'>('profile');
@@ -40,7 +45,10 @@ export function NavActions({ isLoggedIn, onLogin, onLogout }: NavActionsProps) {
   return (
     <>
       <div className="hidden md:block">
-        <SearchInput placeholder="ค้นหา" />
+        <SearchInput placeholder={t('navbar.search_placeholder')} />
+      </div>
+      <div className="hidden md:block">
+        <LanguageSwitcher />
       </div>
       <div className="hidden sm:block relative" ref={containerRef}>
         {isLoggedIn ? (
@@ -61,7 +69,7 @@ export function NavActions({ isLoggedIn, onLogin, onLogout }: NavActionsProps) {
                     onLogout={handleLogoutClick}
                     onManageClick={() => setProfileView('manage')}
                     onSavedClick={() => {
-                      console.log('เมนูที่บันทึกไว้ถูกคลิก');
+                      navigate('/articles?tab=saved');
                       setIsProfileOpen(false);
                     }}
                     onHistoryClick={() => {

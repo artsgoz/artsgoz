@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import { SocialLinkData } from './footerData.js';
 
 interface FooterSocialLinkProps {
@@ -5,6 +6,7 @@ interface FooterSocialLinkProps {
 }
 
 export function FooterSocialLink({ link }: FooterSocialLinkProps) {
+  const { t } = useTranslation();
   const linkProps = link.isExternal
     ? { target: '_blank', rel: 'noopener noreferrer' }
     : {};
@@ -16,7 +18,7 @@ export function FooterSocialLink({ link }: FooterSocialLinkProps) {
       {...linkProps}
     >
       {link.icon}
-      <span className="underline decoration-1 underline-offset-4">{link.label}</span>
+      <span className="underline decoration-1 underline-offset-4">{t(link.label)}</span>
     </a>
   );
 }

@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { ChevronDown, Plus, Trash2, Check, X, Sparkles } from 'lucide-react';
 import type { Subject, SubjectCategory, AcademicProfile } from '../types.js';
 import { SystemBanner } from '../../../components/SystemBanner/index.js';
@@ -21,6 +22,8 @@ export function PlannerView({
   profile,
   onConfirmPlan,
 }: PlannerViewProps) {
+  const { t } = useTranslation();
+
   // Collapse/Expand state for sub-groups (defaults to expanded unless false)
   const [expandedGroups, setExpandedGroups] = useState<Record<string, boolean>>(() => {
     if (typeof window !== 'undefined') {
@@ -37,14 +40,12 @@ export function PlannerView({
   // Active custom subject deletion confirmation ID state
   const [deletingId, setDeletingId] = useState<string | null>(null);
 
-
   // Add custom subject modal states
   const [showAddModal, setShowAddModal] = useState(false);
-  const [targetCategory, setTargetCategory] = useState<SubjectCategory>('หมวดการศึกษาทั่วไป');
+  const [targetCategory, setTargetCategory] = useState<SubjectCategory>('credit_tracking.categories.general');
   const [targetGroup, setTargetGroup] = useState('');
   const [courseCode, setCourseCode] = useState('');
   const [courseNameTh, setCourseNameTh] = useState('');
-  const [courseNameEn, setCourseNameEn] = useState('');
   const [courseCredits, setCourseCredits] = useState('3');
   const [courseSemester, setCourseSemester] = useState('1');
 
@@ -56,51 +57,51 @@ export function PlannerView({
   const getSubjectGroup = (subject: Subject): string => {
     if (subject.group) return subject.group;
 
-    if (subject.category === 'หมวดวิชาพื้นฐานอักษร') {
+    if (subject.category === 'credit_tracking.categories.basic') {
       if (subject.code === '2201111' || subject.code === '2201121') {
-        return 'กลุ่มที่ 1 ทักษะการแสวงหาความรู้และการจัดการในโลกดิจิทัล';
+        return 'credit_tracking.planner.groups.basic.g1';
       }
       if (subject.code === '2201112' || subject.code === '2201122') {
-        return 'กลุ่มที่ 2 วิจารณญาณเพื่อการดำรงตนในโลกร่วมสมัย';
+        return 'credit_tracking.planner.groups.basic.g2';
       }
       if (subject.code === '2201211') {
-        return 'กลุ่มที่ 3 การเรียนรู้และการตระหนักความเป็นไทย';
+        return 'credit_tracking.planner.groups.basic.g3';
       }
       if (subject.code === '2201221') {
-        return 'กลุ่มที่ 4 ความรู้เรื่องโลก/การเสริมสร้างความเป็นพลเมืองโลก';
+        return 'credit_tracking.planner.groups.basic.g4';
       }
-      return 'กลุ่มที่ 5 ภูมิปัญญาและการแสดงออกของมนุษย์';
+      return 'credit_tracking.planner.groups.basic.g5';
     }
-    if (subject.category === 'หมวดการศึกษาทั่วไป') {
-      return '1. วิชาการศึกษาทั่วไป 12 หน่วยกิต (จากกลุ่มวิชาสังคมศาสตร์ มนุษยศาสตร์ วิทยาศาสตร์และคณิตศาสตร์ และสหศาสตร์)';
+    if (subject.category === 'credit_tracking.categories.general') {
+      return 'credit_tracking.planner.groups.general.g1';
     }
-    if (subject.category === 'หมวดวิชาเลือกเสรี') {
-      return 'วิชาเลือกเสรี';
+    if (subject.category === 'credit_tracking.categories.free') {
+      return 'credit_tracking.planner.groups.free.g1';
     }
-    if (subject.category === 'หมวดวิชาเอก') {
+    if (subject.category === 'credit_tracking.categories.major') {
       if (subject.code === '2202231' || subject.code === '2202232') {
-        return '1. กลุ่มวิชาพื้นฐาน (บังคับ) 18 หน่วยกิต';
+        return 'credit_tracking.planner.groups.major.g1';
       }
       if (subject.code === '2202311' || subject.code === '2202312') {
-        return '2. กลุ่มวิชาข้อกำหนดเฉพาะ (วิชาเลือก) 12 หน่วยกิต';
+        return 'credit_tracking.planner.groups.major.g2';
       }
-      return '3. กลุ่มวิชาเชี่ยวชาญ (วิชาเลือก) 18 หน่วยกิต';
+      return 'credit_tracking.planner.groups.major.g3';
     }
-    if (subject.category === 'หมวดวิชาโท') {
+    if (subject.category === 'credit_tracking.categories.minor') {
       if (subject.code === '2209111' || subject.code === '2209211') {
-        return '1. วิชาบังคับ 12 หน่วยกิต';
+        return 'credit_tracking.planner.groups.minor.g1';
       }
-      return '2. วิชาเลือก 6 หน่วยกิต';
+      return 'credit_tracking.planner.groups.minor.g2';
     }
     return '';
   };
 
   const getGroupSubhead = (groupName: string): string => {
-    if (groupName.includes('วิชาการศึกษาทั่วไป')) {
-      return 'ให้เลือกเรียนรายวิชาการศึกษาทั่วไปในหมวดใดก็ได้ จำนวน 12 หน่วยกิต กรณีเลือกเรียนรายวิชากลุ่มมนุษยศาสตร์ของคณะฯ ต้องเป็นไปตามประกาศ ข้อกำหนดการลงทะเบียนเรียนรายวิชาการศึกษาทั่วไปสำหรับนิสิตคณะอักษรศาสตร์';
+    if (groupName === 'credit_tracking.planner.groups.general.g1') {
+      return 'credit_tracking.planner.subheads.general';
     }
-    if (groupName.includes('วิชาเลือกเสรี')) {
-      return 'ให้นิสิตสังกัดเอกวิชาเอกภาษาอังกฤษ เลือกเรียนรายวิชาภาษาต่างประเทศอื่น ๆ ที่ไม่ใช่ภาษาอังกฤษ จำนวน 4 รายวิชา';
+    if (groupName === 'credit_tracking.planner.groups.free.g1') {
+      return 'credit_tracking.planner.subheads.free';
     }
     return '';
   };
@@ -124,13 +125,11 @@ export function PlannerView({
     return expandedGroups[groupName] !== false; // defaults to true (open)
   };
 
-
   const openAddCourse = (category: SubjectCategory, groupName: string) => {
     setTargetCategory(category);
     setTargetGroup(groupName);
     setCourseCode('');
     setCourseNameTh('');
-    setCourseNameEn('');
     setCourseCredits('3');
     setCourseSemester('1');
     setShowAddModal(true);
@@ -139,15 +138,14 @@ export function PlannerView({
   const handleSaveCourse = (e: React.FormEvent) => {
     e.preventDefault();
     if (!courseCode.trim() || !courseNameTh.trim()) {
-      alert('กรุณากรอกรหัสวิชาและชื่อวิชาภาษาไทย');
+      alert(t('credit_tracking.planner.fill_alert'));
       return;
     }
 
     const newSubject: Subject = {
       id: `custom-${Date.now()}`,
       code: courseCode.trim(),
-      nameTh: courseNameTh.trim(),
-      nameEn: courseNameEn.trim() || 'Custom Course',
+      nameKey: courseNameTh.trim(), // custom subject input serves directly as the name key
       credits: Number(courseCredits) || 3,
       category: targetCategory,
       group: targetGroup,
@@ -162,7 +160,7 @@ export function PlannerView({
 
   const handleConfirmAction = () => {
     setShowConfirmModal(false);
-    setSuccessBanner('บันทึกแผนการลงทะเบียนและจัดตารางเรียนสำเร็จแล้ว!');
+    setSuccessBanner(t('credit_tracking.planner.success_banner'));
     setTimeout(() => setSuccessBanner(null), 4000);
     if (onConfirmPlan) {
       setTimeout(() => {
@@ -171,82 +169,79 @@ export function PlannerView({
     }
   };
 
-  // Categories requirements config matching columns
   const getCategoryCredits = (cat: SubjectCategory): string => {
-    if (cat === 'หมวดวิชาพื้นฐานอักษร') return '27 หน่วยกิต';
-    if (cat === 'หมวดการศึกษาทั่วไป') return '30 หน่วยกิต';
-    if (cat === 'หมวดวิชาเลือกเสรี') return '6 หน่วยกิต';
-    if (cat === 'หมวดวิชาเอก') return '48 หน่วยกิต';
-    if (cat === 'หมวดวิชาโท') return '18 หน่วยกิต';
+    if (cat === 'credit_tracking.categories.basic') return t('credit_tracking.curriculum.credits_val', { count: 27 });
+    if (cat === 'credit_tracking.categories.general') return t('credit_tracking.curriculum.credits_val', { count: 30 });
+    if (cat === 'credit_tracking.categories.free') return t('credit_tracking.curriculum.credits_val', { count: 6 });
+    if (cat === 'credit_tracking.categories.major') return t('credit_tracking.curriculum.credits_val', { count: 48 });
+    if (cat === 'credit_tracking.categories.minor') return t('credit_tracking.curriculum.credits_val', { count: 18 });
     return '';
   };
 
-  // Sub-sections definition for left & right columns
-  const leftSections: { category: SubjectCategory; instructions?: string[]; groups: string[] }[] = [
+  const leftSections: { category: SubjectCategory; instructionsKeys?: string[]; groups: string[] }[] = [
     {
-      category: 'หมวดวิชาพื้นฐานอักษร',
-      instructions: [
-        '1. ให้เลือกเรียนจากกลุ่มวิชาต่อไปนี้อย่างน้อยกลุ่มละ 1 รายวิชา รวมเป็น 5 วิชา',
-        '2. เลือกอิสระตามความสนใจอีกจำนวน 4 รายวิชา (เลือกเรียนซ้ำกลุ่มรายวิชาได้)',
+      category: 'credit_tracking.categories.basic',
+      instructionsKeys: [
+        'credit_tracking.planner.instructions.basic1',
+        'credit_tracking.planner.instructions.basic2',
       ],
       groups: [
-        'กลุ่มที่ 1 ทักษะการแสวงหาความรู้และการจัดการในโลกดิจิทัล',
-        'กลุ่มที่ 2 วิจารณญาณเพื่อการดำรงตนในโลกร่วมสมัย',
-        'กลุ่มที่ 3 การเรียนรู้และการตระหนักความเป็นไทย',
-        'กลุ่มที่ 4 ความรู้เรื่องโลก/การเสริมสร้างความเป็นพลเมืองโลก',
-        'กลุ่มที่ 5 ภูมิปัญญาและการแสดงออกของมนุษย์',
+        'credit_tracking.planner.groups.basic.g1',
+        'credit_tracking.planner.groups.basic.g2',
+        'credit_tracking.planner.groups.basic.g3',
+        'credit_tracking.planner.groups.basic.g4',
+        'credit_tracking.planner.groups.basic.g5',
       ],
     },
     {
-      category: 'หมวดการศึกษาทั่วไป',
+      category: 'credit_tracking.categories.general',
       groups: [
-        '1. วิชาการศึกษาทั่วไป 12 หน่วยกิต (จากกลุ่มวิชาสังคมศาสตร์ มนุษยศาสตร์ วิทยาศาสตร์และคณิตศาสตร์ และสหศาสตร์)',
+        'credit_tracking.planner.groups.general.g1',
       ],
     },
     {
-      category: 'หมวดวิชาเลือกเสรี',
-      groups: ['วิชาเลือกเสรี'],
+      category: 'credit_tracking.categories.free',
+      groups: ['credit_tracking.planner.groups.free.g1'],
     },
   ];
 
   const rightSections: { category: SubjectCategory; groups: string[] }[] = [
     {
-      category: 'หมวดวิชาเอก',
+      category: 'credit_tracking.categories.major',
       groups: [
-        '1. กลุ่มวิชาพื้นฐาน (บังคับ) 18 หน่วยกิต',
-        '2. กลุ่มวิชาข้อกำหนดเฉพาะ (วิชาเลือก) 12 หน่วยกิต',
-        '3. กลุ่มวิชาเชี่ยวชาญ (วิชาเลือก) 18 หน่วยกิต',
+        'credit_tracking.planner.groups.major.g1',
+        'credit_tracking.planner.groups.major.g2',
+        'credit_tracking.planner.groups.major.g3',
       ],
     },
     {
-      category: 'หมวดวิชาโท',
-      groups: ['1. วิชาบังคับ 12 หน่วยกิต', '2. วิชาเลือก 6 หน่วยกิต'],
+      category: 'credit_tracking.categories.minor',
+      groups: [
+        'credit_tracking.planner.groups.minor.g1',
+        'credit_tracking.planner.groups.minor.g2',
+      ],
     },
   ];
 
-  // Helper to determine if a group supports custom additions
   const canAddCustom = (category: SubjectCategory, group: string): boolean => {
-    if (category === 'หมวดการศึกษาทั่วไป') return true;
-    if (category === 'หมวดวิชาเลือกเสรี') return true;
-    if (category === 'หมวดวิชาเอก' && (group.includes('เลือก') || group.includes('เชี่ยวชาญ'))) return true;
-    if (category === 'หมวดวิชาโท' && group.includes('เลือก')) return true;
+    if (category === 'credit_tracking.categories.general') return true;
+    if (category === 'credit_tracking.categories.free') return true;
+    if (category === 'credit_tracking.categories.major' && (group.includes('g2') || group.includes('g3'))) return true;
+    if (category === 'credit_tracking.categories.minor' && group.includes('g2')) return true;
     return false;
   };
 
-  // Helper to calculate total credits for column headers
   const getColTotalCredits = (categoriesList: SubjectCategory[]): number => {
     return subjects
       .filter((s) => categoriesList.includes(s.category))
       .reduce((sum, s) => sum + s.credits, 0);
   };
 
-  // Helper to resolve dynamic remark strings based on user's image
   const getSubjectRemark = (sub: Subject): string => {
-    if (sub.isCustom) return 'วิชาเลือกที่เพิ่มเอง';
+    if (sub.isCustom) return t('credit_tracking.planner.custom_remark');
     return '';
   };
 
-  // Render subject row with Checked, Unchecked, and Inline Deleting states in CSS Grid
   const renderSubjectRow = (sub: Subject) => {
     const isDeleting = deletingId === sub.id;
 
@@ -254,26 +249,18 @@ export function PlannerView({
       return (
         <div
           key={sub.id}
-          className="grid grid-cols-[20px_90px_1fr] gap-x-6 items-start py-3.5 bg-[#FFF5F7] rounded-[6px] px-2 border border-[#D52048]/10 animate-fade-in"
+          className="grid grid-cols-[20px_90px_1fr] gap-x-6 items-start py-3.5 bg-[#FFF5F7] rounded-[6px] px-2 border border-[#D52048]/10 animate-fade-in min-w-0"
         >
-          {/* Column 1: Spacer */}
           <span></span>
-
-          {/* Column 2: Code */}
           <span className="font-mono text-[#D52048] text-[16px] font-bold pt-0.5">
             {sub.code}
           </span>
-
-          {/* Column 3: Names + Cancel/Delete Buttons */}
-          <div className="flex flex-col md:flex-row justify-between items-start gap-4">
-            <div className="flex flex-col">
-              <span className="text-[#D52048] text-[16px] font-bold leading-snug">
-                {sub.nameTh}
+          <div className="flex flex-col md:flex-row justify-between items-start gap-4 min-w-0 flex-1">
+            <div className="flex flex-col min-w-0">
+              <span className="text-[#D52048] text-[16px] font-bold leading-snug break-words">
+                {t(sub.nameKey)}
               </span>
-              <span className="text-[#D52048]/85 text-[15px] leading-snug">
-                {sub.nameEn}
-              </span>
-              <span className="text-[#EA6D24] text-[14px] italic mt-0.5 font-bold">
+              <span className="text-[#EA6D24] text-[14px] italic mt-0.5 font-bold truncate">
                 {getSubjectRemark(sub)}
               </span>
             </div>
@@ -282,9 +269,9 @@ export function PlannerView({
               <button
                 type="button"
                 onClick={() => setDeletingId(null)}
-                className="flex items-center justify-center bg-[#A6CE8F] hover:bg-[#92b87c] text-[#000000] rounded-[8px] h-[36px] px-4 text-[14px] font-bold transition-colors cursor-pointer"
+                className="flex items-center justify-center bg-[#A6CE8F] hover:bg-[#92b87c] text-[#000000] rounded-[8px] h-[36px] px-4 text-[14px] font-bold transition-colors cursor-pointer border-none"
               >
-                cancel
+                {t('credit_tracking.planner.btn_cancel')}
               </button>
               <button
                 type="button"
@@ -292,10 +279,10 @@ export function PlannerView({
                   onDeleteSubject(sub.id);
                   setDeletingId(null);
                 }}
-                className="flex items-center justify-center bg-[#EE4F72] hover:bg-[#d94363] text-white rounded-[8px] h-[36px] px-4 gap-1.5 text-[14px] font-bold transition-colors cursor-pointer"
+                className="flex items-center justify-center bg-[#EE4F72] hover:bg-[#d94363] text-white rounded-[8px] h-[36px] px-4 gap-1.5 text-[14px] font-bold transition-colors cursor-pointer border-none"
               >
                 <Trash2 size={14} />
-                <span>Delete</span>
+                <span>{t('credit_tracking.planner.btn_delete')}</span>
               </button>
             </div>
           </div>
@@ -306,9 +293,8 @@ export function PlannerView({
     return (
       <div
         key={sub.id}
-        className="grid grid-cols-[20px_90px_1fr_60px] gap-x-6 items-start py-3.5 hover:bg-black/[0.02] rounded-[6px] px-1 transition-colors text-[16px]"
+        className="grid grid-cols-[20px_90px_1fr_60px] gap-x-6 items-start py-3.5 hover:bg-black/[0.02] rounded-[6px] px-1 transition-colors text-[16px] min-w-0"
       >
-        {/* Column 1: Checkbox */}
         <button
           type="button"
           onClick={() => onToggleSubject(sub.id)}
@@ -321,26 +307,20 @@ export function PlannerView({
           {sub.completed && <Check size={12} strokeWidth={3} className="text-black" />}
         </button>
 
-        {/* Column 2: Code */}
-        <span className="font-mono text-[#000000] text-[16px] pt-0.5">
+        <span className="font-mono text-[#000000] text-[16px] pt-0.5 shrink-0">
           {sub.code}
         </span>
 
-        {/* Column 3: Names */}
         <div className="flex flex-col min-w-0">
-          <span className="text-black text-[16px] font-normal leading-snug">
-            {sub.nameTh}
+          <span className="text-black text-[16px] font-normal leading-snug break-words">
+            {t(sub.nameKey)}
           </span>
-          <span className="text-[#6D6D6D] text-[15px] leading-snug">
-            {sub.nameEn}
-          </span>
-          <span className="text-[#EA6D24] text-[15px] italic mt-0.5">
+          <span className="text-[#EA6D24] text-[15px] italic mt-0.5 truncate">
             {getSubjectRemark(sub)}
           </span>
         </div>
 
-        {/* Column 4: Credits & Custom actions */}
-        <div className="flex items-start justify-end gap-2 text-right">
+        <div className="flex items-start justify-end gap-2 text-right shrink-0">
           <span className="font-mono text-black text-[16px] pt-0.5 pr-1">
             {sub.credits}
           </span>
@@ -348,8 +328,8 @@ export function PlannerView({
             <button
               type="button"
               onClick={() => setDeletingId(sub.id)}
-              className="text-[#6D6D6D] hover:text-[#EE4F72] cursor-pointer transition-colors p-0.5 mt-0.5"
-              aria-label="ลบวิชานี้"
+              className="text-[#6D6D6D] hover:text-[#EE4F72] cursor-pointer transition-colors p-0.5 mt-0.5 border-none bg-transparent"
+              aria-label={t('credit_tracking.planner.btn_delete')}
             >
               <Trash2 size={16} />
             </button>
@@ -359,9 +339,8 @@ export function PlannerView({
     );
   };
 
-
   return (
-    <div className="w-full font-[ChulaCharasNew] select-none pb-20 text-black">
+    <div className="w-full font-[ChulaCharasNew] select-none pb-20 text-black min-w-0">
       {/* Success Banner Notification */}
       {successBanner && (
         <div className="fixed top-24 left-1/2 transform -translate-x-1/2 z-50 shadow-lg animate-fade-in min-w-[320px] md:min-w-[480px]">
@@ -373,51 +352,50 @@ export function PlannerView({
         </div>
       )}
 
-      {/* Top Controller Row with green confirm button */}
-      <div className="w-full flex items-center justify-between border-b border-[#D0D0D1]/30 pb-6 mb-8">
-        <div>
-          <h3 className="text-black text-[28px] font-bold">แผนการเรียนส่วนบุคคล</h3>
-          <p className="text-[#6D6D6D] text-[18px]">เลือกรายวิชาเพื่อจัดทำตารางเรียนหลักสูตร</p>
+      {/* Top Controller Row */}
+      <div className="w-full flex flex-col md:flex-row md:items-center justify-between border-b border-[#D0D0D1]/30 pb-6 mb-8 gap-4 min-w-0">
+        <div className="min-w-0">
+          <h3 className="text-black text-[28px] font-bold truncate">{t('credit_tracking.planner.title')}</h3>
+          <p className="text-[#6D6D6D] text-[18px] break-words">{t('credit_tracking.planner.desc')}</p>
         </div>
 
         <button
           type="button"
           onClick={() => setShowConfirmModal(true)}
-          className="flex items-center justify-center bg-[#64A93C] hover:bg-[#528f2e] text-white rounded-[8px] h-[52px] px-8 gap-2 text-[16px] font-bold shadow-md cursor-pointer transition-all shrink-0"
+          className="flex items-center justify-center bg-[#64A93C] hover:bg-[#528f2e] text-white rounded-[8px] h-[52px] px-8 gap-2 text-[16px] font-bold shadow-md cursor-pointer transition-all shrink-0 border-none"
         >
-          <span>ยืนยันข้อมูล</span>
+          <span>{t('credit_tracking.planner.confirm_info')}</span>
         </button>
       </div>
 
       {/* Dropdown 2-Column Columns Workspace Container */}
-      <div className="w-full flex flex-col xl:flex-row gap-8 justify-center items-start">
-        {/* Left Column (หลักสูตรอักษรศาสตร์บัณฑิต) */}
-        <div className="w-full xl:w-[518px] flex flex-col gap-8 shrink-0">
-          {/* Main Dark Pink Column Header */}
+      <div className="w-full flex flex-col xl:flex-row gap-8 justify-center items-start min-w-0">
+        {/* Left Column */}
+        <div className="w-full xl:w-[518px] flex flex-col gap-8 shrink-0 min-w-0">
           <div className="w-full h-[60px] bg-[#E992B4] rounded-[8px] px-5 flex items-end justify-between pb-3">
-            <span className="text-[#000000] text-[18px] font-bold">หลักสูตรอักษรศาสตร์บัณฑิต</span>
-            <span className="text-[#000000] text-[16px] font-bold">
-              รวม {getColTotalCredits(['หมวดวิชาพื้นฐานอักษร', 'หมวดการศึกษาทั่วไป', 'หมวดวิชาเลือกเสรี'])} นก.
+            <span className="text-[#000000] text-[18px] font-bold truncate pr-2">{t('credit_tracking.curriculum.title')}</span>
+            <span className="text-[#000000] text-[16px] font-bold shrink-0">
+              {t('credit_tracking.planner.total_credits', { credits: getColTotalCredits(['credit_tracking.categories.basic', 'credit_tracking.categories.general', 'credit_tracking.categories.free']) })}
             </span>
           </div>
 
           {/* Left Column Sections */}
           {leftSections.map((sec) => (
-            <div key={sec.category} className="w-full flex flex-col gap-6">
+            <div key={sec.category} className="w-full flex flex-col gap-6 min-w-0">
               {/* Soft Pink Header */}
               <div className="w-full h-[60px] bg-[#F5CDDC] rounded-[8px] px-5 flex items-end justify-between pb-3">
-                <span className="text-black text-[18px] font-bold">{sec.category}</span>
-                <span className="text-black text-[18px] font-bold">
+                <span className="text-black text-[18px] font-bold truncate pr-2">{t(sec.category)}</span>
+                <span className="text-black text-[18px] font-bold shrink-0">
                   {getCategoryCredits(sec.category)}
                 </span>
               </div>
 
-              {/* Detail Content (Instructions + Accordions) */}
-              <div className="flex flex-col gap-6 mt-2">
-                {sec.instructions && (
+              {/* Detail Content */}
+              <div className="flex flex-col gap-6 mt-2 min-w-0">
+                {sec.instructionsKeys && (
                   <div className="flex flex-col gap-2 text-black text-[16px] leading-relaxed">
-                    {sec.instructions.map((inst, idx) => (
-                      <p key={idx}>{inst}</p>
+                    {sec.instructionsKeys.map((instKey) => (
+                      <p key={instKey} className="break-words">{t(instKey)}</p>
                     ))}
                   </div>
                 )}
@@ -430,14 +408,13 @@ export function PlannerView({
                   const isExpanded = isGroupExpanded(group);
 
                   return (
-                    <div key={group} className="w-full flex flex-col">
-                      {/* Accordion Toggle Bar */}
+                    <div key={group} className="w-full flex flex-col min-w-0 border-b border-[#D0D0D1]/20 pb-2">
                       <div
                         onClick={() => toggleGroup(group)}
                         className="flex items-center justify-between cursor-pointer py-3 hover:opacity-80 transition-opacity"
                       >
-                        <span className="text-[16px] font-bold text-black flex-1 pr-4">
-                          {group}
+                        <span className="text-[16px] font-bold text-black flex-1 pr-4 break-words">
+                          {t(group)}
                         </span>
                         <ChevronDown
                           size={20}
@@ -446,7 +423,6 @@ export function PlannerView({
                         />
                       </div>
 
-                      {/* Accordion Content (Subjects Table) */}
                       <AnimatePresence initial={false}>
                         {isExpanded && (
                           <motion.div
@@ -456,43 +432,43 @@ export function PlannerView({
                             transition={{ duration: 0.25, ease: 'easeInOut' }}
                             className="w-full overflow-hidden"
                           >
-                            <div className="w-full mt-2 flex flex-col pb-3">
+                            <div className="w-full mt-2 flex flex-col pb-3 min-w-0">
                               {getGroupSubhead(group) && (
-                                <p className="text-[#000000] text-[16px] leading-relaxed mb-4 pr-2">
-                                  {getGroupSubhead(group)}
+                                <p className="text-[#000000] text-[16px] leading-relaxed mb-4 pr-2 break-words">
+                                  {t(getGroupSubhead(group))}
                                 </p>
                               )}
 
                               {groupSubjects.length > 0 && (
-                                <div className="w-full flex flex-col">
+                                <div className="w-full flex flex-col min-w-0 overflow-auto">
                                   {/* Header row */}
-                                  <div className="grid grid-cols-[20px_90px_1fr_60px] gap-x-6 items-center text-black font-bold text-[16px] pb-2 border-b border-[#D0D0D1]/30">
+                                  <div className="grid grid-cols-[20px_90px_1fr_60px] gap-x-6 items-center text-black font-bold text-[16px] pb-2 border-b border-[#D0D0D1]/30 min-w-[320px]">
                                     <span></span>
-                                    <span className="text-left">รหัสวิชา</span>
-                                    <span className="text-left">ชื่อรายวิชา</span>
-                                    <span className="text-right">หน่วยกิต</span>
+                                    <span className="text-left">{t('credit_tracking.planner.col_code')}</span>
+                                    <span className="text-left">{t('credit_tracking.planner.col_name')}</span>
+                                    <span className="text-right">{t('credit_tracking.planner.col_credits')}</span>
                                   </div>
 
                                   {/* Subject Rows */}
-                                  <div className="flex flex-col gap-0.5 mt-2">
+                                  <div className="flex flex-col gap-0.5 mt-2 min-w-[320px]">
                                     {groupSubjects.map((sub) => renderSubjectRow(sub))}
                                   </div>
                                 </div>
                               )}
 
                               {groupSubjects.length === 0 && (
-                                <p className="text-center text-[#99999A] py-3 text-[14px] italic">
-                                  ยังไม่มีรายวิชาลงทะเบียนในกลุ่มนี้
+                                <p className="text-center text-[#99999A] py-3 text-[14px] italic break-words">
+                                  {t('credit_tracking.planner.empty_group')}
                                 </p>
                               )}
 
-                              {/* Plus Add Custom Course Button */}
+                              {/* Plus Add Button */}
                               {canAddCustom(sec.category, group) && (
                                 <button
                                   type="button"
                                   onClick={() => openAddCourse(sec.category, group)}
-                                  className="w-[48px] h-[48px] bg-[#E992B4] hover:bg-[#DE5D8F] text-white rounded-full flex items-center justify-center cursor-pointer transition-all shadow-md mx-auto mt-4"
-                                  title="เพิ่มรายวิชาเพิ่มเติม"
+                                  className="w-[48px] h-[48px] bg-[#E992B4] hover:bg-[#DE5D8F] text-white rounded-full flex items-center justify-center cursor-pointer transition-all shadow-md mx-auto mt-4 border-none"
+                                  title={t('credit_tracking.planner.add_course_title')}
                                 >
                                   <Plus size={24} />
                                 </button>
@@ -509,32 +485,29 @@ export function PlannerView({
           ))}
         </div>
 
-        {/* Right Column (วิชาเอก + วิชาโท) */}
-        <div className="w-full xl:w-[518px] flex flex-col gap-8 shrink-0">
-          {/* Main Dark Pink Column Header */}
+        {/* Right Column */}
+        <div className="w-full xl:w-[518px] flex flex-col gap-8 shrink-0 min-w-0">
           <div className="w-full h-[60px] bg-[#E992B4] rounded-[8px] px-5 flex items-end justify-between pb-3">
-            <span className="text-[#000000] text-[18px] font-bold truncate max-w-[320px]">
-              วิชาเอก: {profile.major && profile.major !== 'เลือกวิชาเอก' ? profile.major : 'สารสนเทศศึกษา'}
+            <span className="text-[#000000] text-[18px] font-bold truncate pr-2">
+              {t('credit_tracking.profile.major_label')}: {profile.major && profile.major !== 'credit_tracking.profile.select_major' ? t(profile.major) : t('credit_tracking.majors.default')}
             </span>
             <span className="text-[#000000] text-[16px] font-bold shrink-0">
-              รวม {getColTotalCredits(['หมวดวิชาเอก', 'หมวดวิชาโท'])} นก.
+              {t('credit_tracking.planner.total_credits', { credits: getColTotalCredits(['credit_tracking.categories.major', 'credit_tracking.categories.minor']) })}
             </span>
           </div>
 
           {/* Right Column Sections */}
           {rightSections.map((sec) => (
-            <div key={sec.category} className="w-full flex flex-col gap-6">
-              {/* Soft Pink Header */}
+            <div key={sec.category} className="w-full flex flex-col gap-6 min-w-0">
               <div className="w-full h-[60px] bg-[#F5CDDC] rounded-[8px] px-5 flex items-end justify-between pb-3">
-                <span className="text-black text-[18px] font-bold">{sec.category}</span>
-                <span className="text-black text-[18px] font-bold">
+                <span className="text-black text-[18px] font-bold truncate pr-2">{t(sec.category)}</span>
+                <span className="text-black text-[18px] font-bold shrink-0">
                   {getCategoryCredits(sec.category)}
                 </span>
               </div>
 
-              {/* Detail Content (Accordions) */}
-              <div className="flex flex-col gap-6 mt-2">
-                {/* Collapsible Accordion Groups */}
+              {/* Detail Content */}
+              <div className="flex flex-col gap-6 mt-2 min-w-0">
                 {sec.groups.map((group) => {
                   const groupSubjects = subjects.filter(
                     (s) => s.category === sec.category && getSubjectGroup(s) === group
@@ -542,14 +515,13 @@ export function PlannerView({
                   const isExpanded = isGroupExpanded(group);
 
                   return (
-                    <div key={group} className="w-full flex flex-col">
-                      {/* Accordion Toggle Bar */}
+                    <div key={group} className="w-full flex flex-col min-w-0 border-b border-[#D0D0D1]/20 pb-2">
                       <div
                         onClick={() => toggleGroup(group)}
                         className="flex items-center justify-between cursor-pointer py-3 hover:opacity-80 transition-opacity"
                       >
-                        <span className="text-[16px] font-bold text-black flex-1 pr-4">
-                          {group}
+                        <span className="text-[16px] font-bold text-black flex-1 pr-4 break-words">
+                          {t(group)}
                         </span>
                         <ChevronDown
                           size={20}
@@ -558,7 +530,6 @@ export function PlannerView({
                         />
                       </div>
 
-                      {/* Accordion Content (Subjects Table) */}
                       <AnimatePresence initial={false}>
                         {isExpanded && (
                           <motion.div
@@ -568,43 +539,43 @@ export function PlannerView({
                             transition={{ duration: 0.25, ease: 'easeInOut' }}
                             className="w-full overflow-hidden"
                           >
-                            <div className="w-full mt-2 flex flex-col pb-3">
+                            <div className="w-full mt-2 flex flex-col pb-3 min-w-0">
                               {getGroupSubhead(group) && (
-                                <p className="text-[#000000] text-[16px] leading-relaxed mb-4 pr-2">
-                                  {getGroupSubhead(group)}
+                                <p className="text-[#000000] text-[16px] leading-relaxed mb-4 pr-2 break-words">
+                                  {t(getGroupSubhead(group))}
                                 </p>
                               )}
 
                               {groupSubjects.length > 0 && (
-                                <div className="w-full flex flex-col">
+                                <div className="w-full flex flex-col min-w-0 overflow-auto">
                                   {/* Header row */}
-                                  <div className="grid grid-cols-[20px_90px_1fr_60px] gap-x-6 items-center text-black font-bold text-[16px] pb-2 border-b border-[#D0D0D1]/30">
+                                  <div className="grid grid-cols-[20px_90px_1fr_60px] gap-x-6 items-center text-black font-bold text-[16px] pb-2 border-b border-[#D0D0D1]/30 min-w-[320px]">
                                     <span></span>
-                                    <span className="text-left">รหัสวิชา</span>
-                                    <span className="text-left">ชื่อรายวิชา</span>
-                                    <span className="text-right">หน่วยกิต</span>
+                                    <span className="text-left">{t('credit_tracking.planner.col_code')}</span>
+                                    <span className="text-left">{t('credit_tracking.planner.col_name')}</span>
+                                    <span className="text-right">{t('credit_tracking.planner.col_credits')}</span>
                                   </div>
 
                                   {/* Subject Rows */}
-                                  <div className="flex flex-col gap-0.5 mt-2">
+                                  <div className="flex flex-col gap-0.5 mt-2 min-w-[320px]">
                                     {groupSubjects.map((sub) => renderSubjectRow(sub))}
                                   </div>
                                 </div>
                               )}
 
                               {groupSubjects.length === 0 && (
-                                <p className="text-center text-[#99999A] py-3 text-[14px] italic">
-                                  ยังไม่มีรายวิชาลงทะเบียนในกลุ่มนี้
+                                <p className="text-center text-[#99999A] py-3 text-[14px] italic break-words">
+                                  {t('credit_tracking.planner.empty_group')}
                                 </p>
                               )}
 
-                              {/* Plus Add Custom Course Button */}
+                              {/* Plus Add Button */}
                               {canAddCustom(sec.category, group) && (
                                 <button
                                   type="button"
                                   onClick={() => openAddCourse(sec.category, group)}
-                                  className="w-[48px] h-[48px] bg-[#E992B4] hover:bg-[#DE5D8F] text-white rounded-full flex items-center justify-center cursor-pointer transition-all shadow-md mx-auto mt-4"
-                                  title="เพิ่มรายวิชาเพิ่มเติม"
+                                  className="w-[48px] h-[48px] bg-[#E992B4] hover:bg-[#DE5D8F] text-white rounded-full flex items-center justify-center cursor-pointer transition-all shadow-md mx-auto mt-4 border-none"
+                                  title={t('credit_tracking.planner.add_course_title')}
                                 >
                                   <Plus size={24} />
                                 </button>
@@ -622,74 +593,61 @@ export function PlannerView({
         </div>
       </div>
 
-
       {/* Add Custom Subject Overlay Modal */}
       {showAddModal && (
         <div className="fixed inset-0 bg-black/60 z-50 flex items-center justify-center p-4 backdrop-blur-xs font-[ChulaCharasNew]">
           <div className="bg-white border border-[#D0D0D1]/30 rounded-[16px] shadow-2xl p-6 md:p-8 max-w-[500px] w-full select-none text-black">
             <div className="flex items-center justify-between border-b border-[#D0D0D1]/20 pb-4 mb-6">
-              <h3 className="text-[22px] font-bold flex items-center gap-2 text-[#DE5D8F]">
+              <h3 className="text-[22px] font-bold flex items-center gap-2 text-[#DE5D8F] truncate">
                 <Sparkles size={20} />
-                <span>เพิ่มรายวิชาในกลุ่ม</span>
+                <span>{t('credit_tracking.planner.add_course_title')}</span>
               </h3>
               <button
                 type="button"
                 onClick={() => setShowAddModal(false)}
-                className="text-[#6D6D6D] hover:text-black cursor-pointer p-1"
+                className="text-[#6D6D6D] hover:text-black cursor-pointer p-1 border-none bg-transparent"
               >
                 <X size={20} />
               </button>
             </div>
 
             <form onSubmit={handleSaveCourse} className="space-y-4">
-              <div className="flex flex-col gap-1.5">
-                <label className="text-[14px] font-bold text-[#6D6D6D]">กลุ่มที่เลือก</label>
+              <div className="flex flex-col gap-1.5 min-w-0">
+                <label className="text-[14px] font-bold text-[#6D6D6D]">{t('credit_tracking.planner.selected_group_label')}</label>
                 <div className="bg-[#F7F8F9] px-3 py-2.5 rounded-[8px] text-[15px] font-bold text-black border border-[#D0D0D1]/30 truncate">
-                  {targetGroup}
+                  {t(targetGroup)}
                 </div>
               </div>
 
               <div className="flex flex-col gap-1.5">
-                <label htmlFor="modal-course-code" className="text-[14px] font-bold text-[#6D6D6D]">รหัสวิชา *</label>
+                <label htmlFor="modal-course-code" className="text-[14px] font-bold text-[#6D6D6D]">{t('credit_tracking.planner.course_code_label')} *</label>
                 <input
                   type="text"
                   id="modal-course-code"
                   value={courseCode}
                   onChange={(e) => setCourseCode(e.target.value)}
-                  placeholder="เช่น 2206212"
+                  placeholder={t('credit_tracking.planner.placeholder_code')}
                   required
                   className="w-full border border-[#D0D0D1] hover:border-[#DE5D8F]/50 focus:border-[#DE5D8F] focus:ring-1 focus:ring-[#DE5D8F] rounded-[8px] px-3 h-[42px] outline-none text-[16px] transition-all"
                 />
               </div>
 
               <div className="flex flex-col gap-1.5">
-                <label htmlFor="modal-course-name-th" className="text-[14px] font-bold text-[#6D6D6D]">ชื่อรายวิชาภาษาไทย *</label>
+                <label htmlFor="modal-course-name-th" className="text-[14px] font-bold text-[#6D6D6D]">{t('credit_tracking.planner.course_name_th_label')} *</label>
                 <input
                   type="text"
                   id="modal-course-name-th"
                   value={courseNameTh}
                   onChange={(e) => setCourseNameTh(e.target.value)}
-                  placeholder="เช่น ภูมิทัศน์สารสนเทศ"
+                  placeholder={t('credit_tracking.planner.placeholder_name')}
                   required
-                  className="w-full border border-[#D0D0D1] hover:border-[#DE5D8F]/50 focus:border-[#DE5D8F] focus:ring-1 focus:ring-[#DE5D8F] rounded-[8px] px-3 h-[42px] outline-none text-[16px] transition-all"
-                />
-              </div>
-
-              <div className="flex flex-col gap-1.5">
-                <label htmlFor="modal-course-name-en" className="text-[14px] font-bold text-[#6D6D6D]">ชื่อรายวิชาภาษาอังกฤษ</label>
-                <input
-                  type="text"
-                  id="modal-course-name-en"
-                  value={courseNameEn}
-                  onChange={(e) => setCourseNameEn(e.target.value)}
-                  placeholder="เช่น Information Landscapes"
                   className="w-full border border-[#D0D0D1] hover:border-[#DE5D8F]/50 focus:border-[#DE5D8F] focus:ring-1 focus:ring-[#DE5D8F] rounded-[8px] px-3 h-[42px] outline-none text-[16px] transition-all"
                 />
               </div>
 
               <div className="flex gap-4">
                 <div className="flex-1 flex flex-col gap-1.5">
-                  <label htmlFor="modal-course-credits" className="text-[14px] font-bold text-[#6D6D6D]">หน่วยกิต</label>
+                  <label htmlFor="modal-course-credits" className="text-[14px] font-bold text-[#6D6D6D]">{t('credit_tracking.planner.col_credits')}</label>
                   <select
                     id="modal-course-credits"
                     value={courseCredits}
@@ -705,21 +663,21 @@ export function PlannerView({
                 </div>
 
                 <div className="flex-1 flex flex-col gap-1.5">
-                  <label htmlFor="modal-course-semester" className="text-[14px] font-bold text-[#6D6D6D]">ปี/ภาคการศึกษา</label>
+                  <label htmlFor="modal-course-semester" className="text-[14px] font-bold text-[#6D6D6D]">{t('credit_tracking.planner.semester_label')}</label>
                   <select
                     id="modal-course-semester"
                     value={courseSemester}
                     onChange={(e) => setCourseSemester(e.target.value)}
                     className="w-full border border-[#D0D0D1] hover:border-[#DE5D8F]/50 focus:border-[#DE5D8F] focus:ring-1 focus:ring-[#DE5D8F] rounded-[8px] px-3 h-[42px] outline-none text-[16px] transition-all bg-white"
                   >
-                    <option value="1">ปี 1 เทอม 1</option>
-                    <option value="2">ปี 1 เทอม 2</option>
-                    <option value="3">ปี 2 เทอม 1</option>
-                    <option value="4">ปี 2 เทอม 2</option>
-                    <option value="5">ปี 3 เทอม 1</option>
-                    <option value="6">ปี 3 เทอม 2</option>
-                    <option value="7">ปี 4 เทอม 1</option>
-                    <option value="8">ปี 4 เทอม 2</option>
+                    <option value="1">{t('credit_tracking.planner.semesters.1')}</option>
+                    <option value="2">{t('credit_tracking.planner.semesters.2')}</option>
+                    <option value="3">{t('credit_tracking.planner.semesters.3')}</option>
+                    <option value="4">{t('credit_tracking.planner.semesters.4')}</option>
+                    <option value="5">{t('credit_tracking.planner.semesters.5')}</option>
+                    <option value="6">{t('credit_tracking.planner.semesters.6')}</option>
+                    <option value="7">{t('credit_tracking.planner.semesters.7')}</option>
+                    <option value="8">{t('credit_tracking.planner.semesters.8')}</option>
                   </select>
                 </div>
               </div>
@@ -728,15 +686,15 @@ export function PlannerView({
                 <button
                   type="button"
                   onClick={() => setShowAddModal(false)}
-                  className="px-5 h-[42px] rounded-[8px] font-bold text-[#6D6D6D] hover:text-black transition-colors cursor-pointer"
+                  className="px-5 h-[42px] rounded-[8px] font-bold text-[#6D6D6D] hover:text-black transition-colors cursor-pointer border-none bg-transparent"
                 >
-                  ยกเลิก
+                  {t('credit_tracking.planner.cancel')}
                 </button>
                 <button
                   type="submit"
-                  className="bg-[#E992B4] hover:bg-[#DE5D8F] text-white font-bold px-6 h-[42px] rounded-[8px] shadow-sm transition-colors cursor-pointer"
+                  className="bg-[#E992B4] hover:bg-[#DE5D8F] text-white font-bold px-6 h-[42px] rounded-[8px] shadow-sm transition-colors cursor-pointer border-none"
                 >
-                  บันทึก
+                  {t('credit_tracking.planner.save')}
                 </button>
               </div>
             </form>
@@ -748,25 +706,24 @@ export function PlannerView({
       {showConfirmModal && (
         <div className="fixed inset-0 bg-black/60 z-50 flex items-center justify-center p-4 backdrop-blur-xs font-[ChulaCharasNew]">
           <div className="bg-white border border-[#D0D0D1]/30 rounded-[16px] shadow-2xl p-6 md:p-8 max-w-[480px] w-full select-none text-black">
-            <h3 className="text-black text-[22px] font-bold mb-4">ยืนยันการจัดทำแผนการเรียน</h3>
+            <h3 className="text-black text-[22px] font-bold mb-4">{t('credit_tracking.planner.confirm_modal_title')}</h3>
             <p className="text-[#6D6D6D] text-[16px] leading-relaxed mb-6">
-              คุณต้องการบันทึกแผนการจัดตารางเรียนทั้งหมดใช่หรือไม่?
-              ข้อมูลนี้จะใช้เพื่อติดตามหน่วยกิตสะสมและรายงานผลการศึกษาตลอดหลักสูตรของคุณ
+              {t('credit_tracking.planner.confirm_modal_desc')}
             </p>
             <div className="flex items-center justify-end gap-3">
               <button
                 type="button"
                 onClick={() => setShowConfirmModal(false)}
-                className="px-5 h-[42px] rounded-[8px] font-bold text-[#6D6D6D] hover:text-black transition-colors cursor-pointer"
+                className="px-5 h-[42px] rounded-[8px] font-bold text-[#6D6D6D] hover:text-black transition-colors cursor-pointer border-none bg-transparent"
               >
-                ยกเลิก
+                {t('credit_tracking.planner.cancel')}
               </button>
               <button
                 type="button"
                 onClick={handleConfirmAction}
-                className="bg-[#64A93C] hover:bg-[#528f2e] text-white font-bold px-6 h-[42px] rounded-[8px] shadow-md transition-colors cursor-pointer"
+                className="bg-[#64A93C] hover:bg-[#528f2e] text-white font-bold px-6 h-[42px] rounded-[8px] shadow-md transition-colors cursor-pointer border-none"
               >
-                ยืนยัน
+                {t('credit_tracking.planner.confirm')}
               </button>
             </div>
           </div>

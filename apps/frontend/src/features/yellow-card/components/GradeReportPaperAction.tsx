@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import { Trash2, Check } from 'lucide-react';
 import type { YellowCardSubject } from '../types.js';
 
@@ -12,6 +13,7 @@ export function GradeReportPaperAction({
   onUpdate,
   onDelete,
 }: GradeReportPaperActionProps) {
+  const { t } = useTranslation();
   const gradeOptions = ['', 'A', 'B+', 'B', 'C+', 'C', 'D+', 'D', 'F', 'S', 'U'];
   const isCompleted = subject.grade !== '';
 
@@ -25,8 +27,10 @@ export function GradeReportPaperAction({
     }
   };
 
+  const subjectName = subject.nameKey ? t(subject.nameKey) : '';
+
   return (
-    <div className={`grid grid-cols-[20px_80px_1fr_100px_52px_52px_32px] gap-2 items-center py-2.5 hover:bg-black/[0.01] rounded-[6px] px-1 transition-all text-[16px] border-b border-[#D0D0D1]/20 last:border-b-0 ${
+    <div className={`grid grid-cols-[20px_80px_1fr_100px_52px_52px_32px] gap-2 items-center py-2.5 hover:bg-black/[0.01] rounded-[6px] px-1 transition-all text-[16px] border-b border-[#D0D0D1]/20 last:border-b-0 min-w-0 ${
       !isCompleted ? 'opacity-65' : ''
     }`}>
       {/* Checkbox Toggle Button */}
@@ -38,7 +42,7 @@ export function GradeReportPaperAction({
             ? 'bg-white border-[#8B8B8C] text-black'
             : 'border-[#D0D0D1] bg-white hover:border-[#DE5D8F]'
         }`}
-        aria-label={isCompleted ? 'ทำเครื่องหมายว่ายังไม่เรียน' : 'ทำเครื่องหมายว่าเรียนแล้ว'}
+        aria-label={isCompleted ? t('yellow_card.grade_report.unmark') : t('yellow_card.grade_report.mark')}
       >
         {isCompleted && <Check size={12} strokeWidth={3} className="text-black" />}
       </button>
@@ -50,17 +54,17 @@ export function GradeReportPaperAction({
         onChange={(e) => onUpdate({ ...subject, code: e.target.value })}
         placeholder="............."
         className="w-full text-black bg-transparent font-mono text-[16px] placeholder:text-[#BBBBBB] border-b border-transparent hover:border-[#D0D0D1]/40 focus:border-[#DE5D8F] focus:outline-none focus:ring-0 px-1 py-0.5 transition-all text-left"
-        aria-label="รหัสวิชา"
+        aria-label={t('credit_tracking.planner.col_code')}
       />
 
       {/* Name */}
       <input
         type="text"
-        value={subject.name}
-        onChange={(e) => onUpdate({ ...subject, name: e.target.value })}
+        value={subjectName}
+        onChange={(e) => onUpdate({ ...subject, nameKey: e.target.value })}
         placeholder="................................................"
         className="w-full text-black bg-transparent font-normal text-[16px] placeholder:text-[#BBBBBB] border-b border-transparent hover:border-[#D0D0D1]/40 focus:border-[#DE5D8F] focus:outline-none focus:ring-0 px-1 py-0.5 transition-all text-left"
-        aria-label="ชื่อรายวิชา"
+        aria-label={t('credit_tracking.planner.col_name')}
       />
 
       {/* Semester */}
@@ -70,7 +74,7 @@ export function GradeReportPaperAction({
         onChange={(e) => onUpdate({ ...subject, semester: e.target.value })}
         placeholder="....."
         className="w-full text-black bg-transparent text-[16px] placeholder:text-[#BBBBBB] border-b border-transparent hover:border-[#D0D0D1]/40 focus:border-[#DE5D8F] focus:outline-none focus:ring-0 px-1 py-0.5 transition-all text-center"
-        aria-label="ภาค/ปีการศึกษา"
+        aria-label={t('yellow_card.grade_report.term_year')}
       />
 
       {/* Credits */}
@@ -80,7 +84,7 @@ export function GradeReportPaperAction({
         onChange={(e) => onUpdate({ ...subject, credits: e.target.value })}
         placeholder="..."
         className="w-full text-black bg-transparent font-mono text-[16px] placeholder:text-[#BBBBBB] border-b border-transparent hover:border-[#D0D0D1]/40 focus:border-[#DE5D8F] focus:outline-none focus:ring-0 px-1 py-0.5 transition-all text-center"
-        aria-label="หน่วยกิต"
+        aria-label={t('credit_tracking.planner.col_credits')}
       />
 
       {/* Grade */}
@@ -88,8 +92,8 @@ export function GradeReportPaperAction({
         <select
           value={subject.grade}
           onChange={(e) => onUpdate({ ...subject, grade: e.target.value })}
-          className="w-full text-black bg-transparent font-normal text-[16px] border-b border-transparent hover:border-[#D0D0D1]/40 focus:border-[#DE5D8F] focus:outline-none focus:ring-0 px-1 py-0.5 transition-all text-center cursor-pointer appearance-none"
-          aria-label="เกรด"
+          className="w-full text-black bg-transparent font-normal text-[16px] border-b border-transparent hover:border-[#D0D0D1]/40 focus:border-[#DE5D8F] focus:outline-none focus:ring-0 px-1 py-0.5 transition-all text-center cursor-pointer appearance-none bg-white"
+          aria-label={t('yellow_card.grade_report.grade')}
         >
           {gradeOptions.map((opt) => (
             <option key={opt} value={opt} className="bg-white text-black font-normal">
@@ -103,8 +107,8 @@ export function GradeReportPaperAction({
       <button
         type="button"
         onClick={(e) => { e.stopPropagation(); onDelete(); }}
-        className="text-[#6D6D6D] hover:text-[#ea234f] transition-colors cursor-pointer flex items-center justify-center p-1"
-        title="ลบวิชานี้"
+        className="text-[#6D6D6D] hover:text-[#ea234f] transition-colors cursor-pointer flex items-center justify-center p-1 border-none bg-transparent"
+        title={t('credit_tracking.planner.btn_delete')}
       >
         <Trash2 size={16} />
       </button>

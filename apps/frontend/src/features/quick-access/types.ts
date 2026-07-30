@@ -5,4 +5,6 @@ export interface FeatureMenu {
   description: string;
   icon: LucideIcon;
   href: string;
+  iconName?: string;
+  isExternal?: boolean;
 }

@@ -25,7 +25,7 @@ export function LoginDropdown({ onClose, onLogin }: LoginDropdownProps) {
 
       {/* Login Button Area */}
       <button
-        className="flex flex-row items-center justify-center bg-white border border-[#E5E7EB] cursor-pointer hover:bg-gray-50 active:scale-95 transition-all shadow-[0px_4px_10px_rgba(0,0,0,0.1)] gap-[10px] w-full max-w-[360px] lg:max-w-none shrink-0"
+        className="flex flex-row items-center justify-center bg-white border border-[#E5E7EB] cursor-pointer hover:bg-gray-50 active:scale-95 transition-all gap-[10px] w-full max-w-[360px] lg:max-w-none shrink-0"
         style={{
           height: '52px',
           padding: '0 32px',

@@ -7,11 +7,13 @@ export { SectionHeading } from './lib/components/SectionHeading/index.js';
 export { Pagination } from './lib/components/Pagination/index.js';
 export { IconButton } from './lib/components/IconButton/index.js';
 export { Chip } from './lib/components/Chip/index.js';
+export { AccordionItem } from './lib/components/AccordionItem/index.js';
 
 import logoImg from './lib/assets/logo_goz_horizontal.ico';
 import cuLogoImg from './lib/assets/CU_logo.ico';
+import logoGozVertical from './lib/assets/logo_goz_vertical.ico';
 
-export { logoImg, cuLogoImg };
+export { logoImg, cuLogoImg, logoGozVertical };
 export { LoginDropdown } from './lib/components/LoginDropdown/index.js';
 export { MobileSidebar } from './lib/components/MobileSidebar/index.js';
 export { SavedArticleHeader } from './lib/components/SavedArticleHeader/index.js';

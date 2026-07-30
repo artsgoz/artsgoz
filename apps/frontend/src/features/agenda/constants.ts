@@ -2,38 +2,39 @@ import { AgendaEvent, UpcomingEvent } from './types.js';
 
 /**
  * Mock upcoming events for the UpcomingEventsCard.
+ * dayLabels and title fields now store i18n translation keys.
  * TODO: Replace with live data from Google Calendar API (GET /calendars/{calendarId}/events).
  */
 export const MOCK_UPCOMING_EVENTS: UpcomingEvent[] = [
   {
-    month: 'มี.ค.',
+    month: 'agenda.months.mar',
     day: 31,
-    dayLabel: 'วันนี้',
-    title: 'ส่งแบบเสนอหัวข้อโครงงาน',
+    dayLabels: ['agenda.events.today', 'agenda.events.important'],
+    title: 'agenda.events.submit_proposal',
     time: '13:00 – 15:00 น.',
     isToday: true,
   },
   {
-    month: 'เม.ย.',
+    month: 'agenda.months.apr',
     day: 1,
-    dayLabel: 'พรุ่งนี้',
-    title: 'สัมมนาวิชาการระดับชาติ',
+    dayLabels: ['agenda.events.tomorrow', 'agenda.events.dont_forget'],
+    title: 'agenda.events.national_seminar',
     time: '09:00 – 12:00 น.',
     isToday: false,
   },
   {
-    month: 'เม.ย.',
+    month: 'agenda.months.apr',
     day: 2,
-    dayLabel: 'พฤ.',
-    title: 'ปฐมนิเทศฝึกงานภาคฤดูร้อน',
+    dayLabel: 'agenda.events.important',
+    title: 'agenda.events.internship_orientation',
     time: '10:00 – 12:00 น.',
     isToday: false,
   },
   {
-    month: 'เม.ย.',
+    month: 'agenda.months.apr',
     day: 3,
-    dayLabel: 'ศ.',
-    title: 'ประชุมคณะกรรมการนิสิตประจำภาควิชา',
+    dayLabel: 'agenda.events.dont_forget',
+    title: 'agenda.events.committee_meeting',
     time: '16:30 – 18:30 น.',
     isToday: false,
   },
@@ -54,18 +55,19 @@ export const MOCK_CALENDAR_DAYS: (number | null)[] = [
 
 /**
  * Mock events keyed by calendar day number.
+ * title fields store i18n translation keys.
  * TODO: Replace with Google Calendar API events mapped to their date.
  */
 export const MOCK_EVENTS_BY_DATE: Record<number, AgendaEvent[]> = {
   5: [
-    { id: 'ev-1', title: 'ส่งแบบเสนอหัวข้อโครงงาน', time: '13:00 - 15:00 น.', colorClass: 'bg-blue-500' },
+    { id: 'ev-1', title: 'agenda.events.submit_proposal', time: '13:00 - 15:00 น.', colorClass: 'bg-blue-500' },
   ],
   17: [
-    { id: 'ev-2', title: 'สัมมนาวิชาการระดับชาติ คณะอักษรศาสตร์', time: '09:00 - 12:00 น.', colorClass: 'bg-[#E992B4]' },
-    { id: 'ev-3', title: 'ปฐมนิเทศฝึกงานภาคฤดูร้อน', time: '13:00 - 15:00 น.', colorClass: 'bg-yellow-500' },
+    { id: 'ev-2', title: 'agenda.events.national_seminar_full', time: '09:00 - 12:00 น.', colorClass: 'bg-[#E992B4]' },
+    { id: 'ev-3', title: 'agenda.events.internship_orientation', time: '13:00 - 15:00 น.', colorClass: 'bg-yellow-500' },
   ],
   22: [
-    { id: 'ev-4', title: 'ประชุมคณะกรรมการนิสิตประจำคณะ', time: '16:30 - 18:30 น.', colorClass: 'bg-green-500' },
+    { id: 'ev-4', title: 'agenda.events.faculty_committee_meeting', time: '16:30 - 18:30 น.', colorClass: 'bg-green-500' },
   ],
 };
 

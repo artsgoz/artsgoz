@@ -100,7 +100,7 @@ export function MobileStudentProfileCard({
           <Button
             variant="outline"
             onClick={onLogout}
-            className="w-full h-[42px] font-serif text-[15px] font-semibold text-[#111827] shadow-[0px_4px_6px_rgba(0,0,0,0.04)] border border-[#E5E7EB] bg-white hover:bg-gray-50 active:scale-95 transition-all mt-auto"
+            className="w-full h-[42px] font-serif text-[15px] font-semibold text-[#111827] border border-[#E5E7EB] bg-white hover:bg-gray-50 active:scale-95 transition-all mt-auto"
           >
             ออกจากระบบ
           </Button>

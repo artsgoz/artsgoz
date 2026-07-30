@@ -1,4 +1,5 @@
 import { useMemo } from 'react';
+import { useTranslation } from 'react-i18next';
 import { BookPlus } from 'lucide-react';
 import { SystemBanner } from '../../../components/SystemBanner/index.js';
 import type { YellowCardSubject, GPATermData } from '../types.js';
@@ -20,6 +21,8 @@ const GRADE_POINTS: Record<string, number> = {
 };
 
 export function GPATable({ subjects }: GPATableProps) {
+  const { t } = useTranslation();
+
   // Normalize and group courses by semester
   const termCalculations = useMemo<(GPATermData & { hasData?: boolean })[]>(() => {
     const termMap: Record<string, YellowCardSubject[]> = {};
@@ -37,19 +40,11 @@ export function GPATable({ subjects }: GPATableProps) {
     if (semesters.length === 0) {
       // Return 8 default empty terms if no data entered yet to match Figma visual style
       const defaultTerms: (GPATermData & { hasData?: boolean })[] = [];
-      const termsLabels = [
-        '  1. ภาคต้น / 25..........',
-        '  1. ภาคปลาย / 25..........',
-        '  1. ภาคต้น / 25..........',
-        '  1. ภาคปลาย / 25..........',
-        '  1. ภาคต้น / 25..........',
-        '  1. ภาคปลาย / 25..........',
-        '  1. ภาคต้น / 25..........',
-        '  1. ภาคปลาย / 25..........',
-      ];
-      termsLabels.forEach((label) => {
+      for (let i = 0; i < 8; i++) {
         defaultTerms.push({
-          semester: label,
+          semester: i % 2 === 0 
+            ? t('yellow_card.gpa_table.term_first_placeholder') 
+            : t('yellow_card.gpa_table.term_second_placeholder'),
           ca: 0,
           cg: 0,
           gpa: 0,
@@ -58,7 +53,7 @@ export function GPATable({ subjects }: GPATableProps) {
           gpax: 0,
           hasData: false,
         });
-      });
+      }
       return defaultTerms;
     }
 
@@ -74,15 +69,15 @@ export function GPATable({ subjects }: GPATableProps) {
         return year * 10 + term;
       }
 
-      if (semStr.includes('ภาคต้น')) {
+      if (semStr.includes('ภาคต้น') || semStr.includes('First') || semStr.includes('First Semester')) {
         const yr = parseInt(semStr.replace(/[^0-9]/g, '')) || 0;
         return yr * 10 + 1;
       }
-      if (semStr.includes('ภาคปลาย')) {
+      if (semStr.includes('ภาคปลาย') || semStr.includes('Second') || semStr.includes('Second Semester')) {
         const yr = parseInt(semStr.replace(/[^0-9]/g, '')) || 0;
         return yr * 10 + 2;
       }
-      if (semStr.includes('ภาคฤดูร้อน')) {
+      if (semStr.includes('ภาคฤดูร้อน') || semStr.includes('Summer') || semStr.includes('Summer Semester')) {
         const yr = parseInt(semStr.replace(/[^0-9]/g, '')) || 0;
         return yr * 10 + 3;
       }
@@ -136,10 +131,10 @@ export function GPATable({ subjects }: GPATableProps) {
         let year = parseInt(parts[1]) || 0;
         if (year < 100) year += 2500;
         displayLabel = term === '1' 
-          ? `  1. ภาคต้น / ${year}` 
+          ? t('yellow_card.gpa_table.term_first_prefix', { year }) 
           : term === '2' 
-            ? `  1. ภาคปลาย / ${year}` 
-            : `  1. ภาคฤดูร้อน / ${year}`;
+            ? t('yellow_card.gpa_table.term_second_prefix', { year }) 
+            : t('yellow_card.gpa_table.term_summer_prefix', { year });
       } else {
         const hasPrefix = sem.trim().startsWith('1.');
         const leadingSpaces = sem.startsWith(' ') ? '' : '  ';
@@ -164,7 +159,9 @@ export function GPATable({ subjects }: GPATableProps) {
     while (paddedTerms.length < 8) {
       const idx = paddedTerms.length;
       paddedTerms.push({
-        semester: idx % 2 === 0 ? '  1. ภาคต้น / 25..........' : '  1. ภาคปลาย / 25..........',
+        semester: idx % 2 === 0 
+          ? t('yellow_card.gpa_table.term_first_placeholder') 
+          : t('yellow_card.gpa_table.term_second_placeholder'),
         ca: 0,
         cg: 0,
         gpa: 0,
@@ -176,23 +173,23 @@ export function GPATable({ subjects }: GPATableProps) {
     }
 
     return paddedTerms;
-  }, [subjects]);
+  }, [subjects, t]);
 
   return (
-    <div className="w-full bg-white border border-[#D0D0D1]/30 rounded-[16px] p-6 shadow-xs font-[ChulaCharasNew] mb-8 select-none">
+    <div className="w-full bg-white border border-[#D0D0D1]/30 rounded-[16px] p-6 shadow-xs font-[ChulaCharasNew] mb-8 select-none min-w-0">
       {/* Header Tab */}
       <div 
-        className="w-full h-[60px] bg-[#E992B4] rounded-[8px] px-5 flex items-center justify-between shadow-xs mb-6"
+        className="w-full h-[60px] bg-[#E992B4] rounded-[8px] px-5 flex items-center justify-between shadow-xs mb-6 min-w-0"
       >
-        <span className="text-white text-[18px] font-bold">ตารางเกรด</span>
+        <span className="text-white text-[18px] font-bold truncate">{t('yellow_card.gpa_table.title')}</span>
       </div>
 
-      {/* Warning Banner using shared SystemBanner component */}
+      {/* Warning Banner */}
       <SystemBanner
         type="warning"
         emphasis="solid"
         icon={BookPlus}
-        message="หมายเหตุ: สามารถตรวจสอบข้อมูลส่วนนี้ได้ที่เว็บไซต์ reg chula"
+        message={t('yellow_card.gpa_table.warning_note')}
         className="w-fit max-w-full mb-6 font-[ChulaCharasNew] bg-[#EE8A50] border-transparent"
       />
 
@@ -201,14 +198,14 @@ export function GPATable({ subjects }: GPATableProps) {
         <table className="w-full min-w-[1058px] table-fixed border-collapse text-center text-[15px]">
           <thead>
             <tr className="border-b border-[#D0D0D1]/30 font-bold text-center text-[16px]">
-              <th className="py-3 px-4 text-left text-white w-[221px] border-r border-white/20" style={{ backgroundColor: '#E992B4' }}>ภาค/ปีการศึกษา</th>
+              <th className="py-3 px-4 text-left text-white w-[221px] border-r border-white/20" style={{ backgroundColor: '#E992B4' }}>{t('yellow_card.grade_report.term_year')}</th>
               <th className="py-3 px-4 w-[84px] text-white border-r border-white/20" style={{ backgroundColor: '#E992B4' }}>CA</th>
               <th className="py-3 px-4 w-[84px] text-white border-r border-white/20" style={{ backgroundColor: '#E992B4' }}>CG</th>
               <th className="py-3 px-4 w-[84px] text-white border-r border-white/20" style={{ backgroundColor: '#E992B4' }}>GPA</th>
               <th className="py-3 px-4 w-[84px] text-white border-r border-white/20" style={{ backgroundColor: '#E992B4' }}>CAX</th>
               <th className="py-3 px-4 w-[84px] text-white border-r border-white/20" style={{ backgroundColor: '#E992B4' }}>CGX</th>
               <th className="py-3 px-4 w-[84px] text-white border-r border-white/20" style={{ backgroundColor: '#E992B4' }}>GPAX</th>
-              <th className="py-3 px-4 w-[333px] text-black font-bold" style={{ backgroundColor: '#D0D0D1' }}>หมายเหตุ</th>
+              <th className="py-3 px-4 w-[333px] text-black font-bold" style={{ backgroundColor: '#D0D0D1' }}>{t('yellow_card.gpa_table.col_remark')}</th>
             </tr>
           </thead>
           <tbody className="divide-y divide-[#D0D0D1]/20">
@@ -216,7 +213,7 @@ export function GPATable({ subjects }: GPATableProps) {
               const hasData = calc.hasData !== false && (calc.ca > 0 || calc.cg > 0);
               return (
                 <tr key={index} className="hover:bg-[#FCEFF4]/5 transition-colors">
-                  <td className="py-3.5 px-4 text-left font-bold text-black border-r border-[#D0D0D1]/30 whitespace-pre">{calc.semester}</td>
+                  <td className="py-3.5 px-4 text-left font-bold text-black border-r border-[#D0D0D1]/30 whitespace-pre truncate">{calc.semester}</td>
                   <td className="py-3.5 px-4 font-mono text-black border-r border-[#D0D0D1]/30">
                     {hasData ? calc.ca.toFixed(2) : '..........'}
                   </td>

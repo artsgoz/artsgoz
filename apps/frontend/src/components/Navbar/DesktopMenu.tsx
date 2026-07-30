@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import { Link, useLocation } from 'react-router';
+import { useTranslation } from 'react-i18next';
 import { NAV_ITEMS, DROPDOWN_ITEMS } from './navConfig.js';
 
 export const menuTextStyle = {
@@ -27,6 +28,7 @@ function useClickOutside(ref: React.RefObject<HTMLElement | null>, callback: () 
 
 export function DesktopMenu() {
   const location = useLocation();
+  const { t } = useTranslation();
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
 
@@ -46,7 +48,7 @@ export function DesktopMenu() {
               ref={dropdownRef}
               onClick={() => setIsDropdownOpen(!isDropdownOpen)}
             >
-              <span className="hover:opacity-75 transition-opacity whitespace-nowrap">{item.label}</span>
+              <span className="hover:opacity-75 transition-opacity whitespace-nowrap">{t(item.label)}</span>
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 width="17"
@@ -73,7 +75,7 @@ export function DesktopMenu() {
                         color: menuTextStyle.color,
                       }}
                     >
-                      {dropdownItem.label}
+                      {t(dropdownItem.label)}
                     </Link>
                   ))}
                 </div>
@@ -94,7 +96,7 @@ export function DesktopMenu() {
             }}
             className="hover:opacity-75 transition-opacity text-center whitespace-nowrap"
           >
-            {item.label}
+            {t(item.label)}
           </Link>
         );
       })}
