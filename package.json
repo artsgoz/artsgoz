@@ -2,6 +2,7 @@
   "name": "@org/source",
   "version": "0.0.0",
   "license": "MIT",
+  "packageManager": "pnpm@11.18.0",
   "scripts": {
     "dev": "nx run-many -t dev --exclude @org/source",
     "dev:frontend": "nx dev @org/frontend",
@@ -108,19 +109,5 @@
     "react-router-dom": "6.30.3",
     "reflect-metadata": "^0.2.2",
     "rxjs": "^7.8.2"
-  },
-  "pnpm": {
-    "overrides": {
-      "js-yaml": ">=4.2.0",
-      "multer": ">=2.2.0"
-    },
-    "onlyBuiltDependencies": [
-      "@parcel/watcher",
-      "@swc/core",
-      "esbuild",
-      "less",
-      "nx",
-      "unrs-resolver"
-    ]
   }
 }
