@@ -6,7 +6,7 @@ interface CreditsSummaryCardProps {
 }
 
 export function CreditsSummaryCard({ progressList }: CreditsSummaryCardProps) {
-  const { t } = useTranslation();
+  const { t } = useTranslation('credit_tracking');
   const totalCompleted = progressList.reduce((sum, item) => sum + item.completed, 0);
   const totalRequired = progressList.reduce((sum, item) => sum + item.required, 0);
 
@@ -63,7 +63,7 @@ export function CreditsSummaryCard({ progressList }: CreditsSummaryCardProps) {
                 </th>
               ))}
               {/* Total header */}
-              <th style={{ ...totalHeaderStyle }}>{t('credit_tracking.total')}</th>
+              <th style={{ ...totalHeaderStyle }}>{t('total')}</th>
             </tr>
           </thead>
 

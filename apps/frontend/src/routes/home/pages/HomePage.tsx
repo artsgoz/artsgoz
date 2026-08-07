@@ -40,7 +40,7 @@ function NoiseOverlay() {
 
 export function HomePage() {
   const { menus, addMenu, deleteMenu } = useQuickAccess();
-  const { t } = useTranslation();
+  const { t } = useTranslation('home');
   const [isManageMode, setIsManageMode] = useState(false);
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
 

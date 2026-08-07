@@ -10,7 +10,7 @@ interface ProfileSetupFormProps {
 }
 
 export function ProfileSetupForm({ onSetupComplete }: ProfileSetupFormProps) {
-  const { t } = useTranslation();
+  const { t } = useTranslation('credit_tracking');
   const [major, setMajor] = useState('credit_tracking.profile.select_major');
   const [minor, setMinor] = useState('credit_tracking.profile.select_minor');
   const [curriculum, setCurriculum] = useState('credit_tracking.profile.select_curriculum');
@@ -20,15 +20,15 @@ export function ProfileSetupForm({ onSetupComplete }: ProfileSetupFormProps) {
     e.preventDefault();
 
     if (!major || major === 'credit_tracking.profile.select_major') {
-      setError(t('credit_tracking.profile.error_major'));
+      setError(t('profile.error_major'));
       return;
     }
     if (!minor || minor === 'credit_tracking.profile.select_minor') {
-      setError(t('credit_tracking.profile.error_minor'));
+      setError(t('profile.error_minor'));
       return;
     }
     if (!curriculum || curriculum === 'credit_tracking.profile.select_curriculum') {
-      setError(t('credit_tracking.profile.error_curriculum'));
+      setError(t('profile.error_curriculum'));
       return;
     }
 
@@ -40,11 +40,11 @@ export function ProfileSetupForm({ onSetupComplete }: ProfileSetupFormProps) {
     <div className="w-full max-w-[620px] mx-auto bg-white border border-[#D0D0D1]/30 rounded-[16px] shadow-lg p-6 md:p-8 font-[ChulaCharasNew] my-8 select-none">
       <div className="text-center mb-8">
         <h2 className="text-black text-[28px] font-bold mb-1">Academic Tracker</h2>
-        <p className="text-[#6D6D6D] text-[18px] break-words">{t('credit_tracking.subtitle')}</p>
+        <p className="text-[#6D6D6D] text-[18px] break-words">{t('subtitle')}</p>
       </div>
 
       <div className="bg-[#FCEFF4] text-[#DE5D8F] text-[18px] font-bold py-2 px-4 rounded-[8px] text-center mb-6 break-words">
-        {t('credit_tracking.profile.fill_info')}
+        {t('profile.fill_info')}
       </div>
 
       <form onSubmit={handleSubmit} className="space-y-6">
@@ -52,7 +52,7 @@ export function ProfileSetupForm({ onSetupComplete }: ProfileSetupFormProps) {
         <div className="flex flex-col sm:flex-row flex-wrap gap-8">
           <DropdownMenuContainer
             id="select-major"
-            label={t('credit_tracking.profile.major_label')}
+            label={t('profile.major_label')}
             value={major}
             options={MAJOR_OPTIONS}
             placeholder="credit_tracking.profile.select_major"
@@ -60,7 +60,7 @@ export function ProfileSetupForm({ onSetupComplete }: ProfileSetupFormProps) {
           />
           <DropdownMenuContainer
             id="select-minor"
-            label={t('credit_tracking.profile.minor_label')}
+            label={t('profile.minor_label')}
             value={minor}
             options={MINOR_OPTIONS}
             placeholder="credit_tracking.profile.select_minor"
@@ -68,7 +68,7 @@ export function ProfileSetupForm({ onSetupComplete }: ProfileSetupFormProps) {
           />
           <DropdownMenuContainer
             id="select-curriculum"
-            label={t('credit_tracking.profile.curriculum_label')}
+            label={t('profile.curriculum_label')}
             value={curriculum}
             options={CURRICULUM_OPTIONS}
             placeholder="credit_tracking.profile.select_curriculum"
@@ -87,7 +87,7 @@ export function ProfileSetupForm({ onSetupComplete }: ProfileSetupFormProps) {
           variant="primary"
           className="w-full h-[48px] rounded-[8px] font-bold text-[18px] mt-4 font-[ChulaCharasNew]"
         >
-          {t('credit_tracking.profile.submit')}
+          {t('profile.submit')}
         </Button>
       </form>
     </div>

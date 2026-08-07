@@ -6,7 +6,7 @@ export function BannerCarousel({
   banners,
   autoPlayInterval = 5000,
 }: BannerCarouselProps) {
-  const { t } = useTranslation();
+  const { t } = useTranslation('home');
   const {
     displayIndex,
     isTransitioning,

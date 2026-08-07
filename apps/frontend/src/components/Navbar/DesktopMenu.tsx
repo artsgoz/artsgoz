@@ -28,7 +28,7 @@ function useClickOutside(ref: React.RefObject<HTMLElement | null>, callback: () 
 
 export function DesktopMenu() {
   const location = useLocation();
-  const { t } = useTranslation();
+  const { t } = useTranslation('common');
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
 

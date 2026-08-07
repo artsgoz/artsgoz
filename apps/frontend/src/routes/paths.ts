@@ -7,6 +7,7 @@ export const PATHS = {
   STUDENT_SERVICES_2: '/student-service2',
   FORMS: '/forms',
   YELLOW_CARD: '/yellow-card',
+  YELLOW_CARD_BACKOFFICE: '/yellow-card/backoffice',
   CURRICULUM: '/curriculum',
   INTERNSHIPS: '/internships',
   INTERNSHIPS_OPEN: '/internships/open',
@@ -15,4 +16,3 @@ export const PATHS = {
   CLUBS: '/clubs',
   HELP: '/help',
 } as const;
-

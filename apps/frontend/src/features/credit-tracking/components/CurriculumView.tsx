@@ -9,40 +9,40 @@ interface CurriculumViewProps {
 }
 
 export function CurriculumView({ profile }: CurriculumViewProps) {
-  const { t } = useTranslation();
+  const { t } = useTranslation('credit_tracking');
   const majorName = profile?.major ?? 'credit_tracking.majors.default';
   const minorName = profile?.minor ?? 'credit_tracking.minors.default';
 
   const curriculumRows = [
     {
-      part: t('credit_tracking.curriculum.major_title'),
+      part: t('curriculum.major_title'),
       credits: 48,
-      detail: t('credit_tracking.curriculum.major_details'),
+      detail: t('curriculum.major_details'),
     },
     {
-      part: t('credit_tracking.curriculum.specific_courses'),
+      part: t('curriculum.specific_courses'),
       credits: 18,
       detail: '',
       isIndented: true,
     },
     {
-      part: t('credit_tracking.curriculum.basic_courses'),
+      part: t('curriculum.basic_courses'),
       credits: 12,
       detail: '',
       isIndented: true,
     },
     {
-      part: t('credit_tracking.curriculum.specialized_courses'),
+      part: t('curriculum.specialized_courses'),
       credits: 18,
       detail: '',
       isIndented: true,
     },
     {
-      part: t('credit_tracking.curriculum.minor_title'),
+      part: t('curriculum.minor_title'),
       credits: 18,
       detail: minorName !== 'credit_tracking.minors.default' && minorName !== 'credit_tracking.minors.none'
-        ? t('credit_tracking.curriculum.minor_name', { name: t(minorName) })
-        : t('credit_tracking.curriculum.minor_desc_empty'),
+        ? t('curriculum.minor_name', { name: t(minorName) })
+        : t('curriculum.minor_desc_empty'),
     },
   ];
 
@@ -58,7 +58,7 @@ export function CurriculumView({ profile }: CurriculumViewProps) {
             className="text-black truncate"
             style={{ fontSize: '28px', fontWeight: 700, lineHeight: '36px' }}
           >
-            {t('credit_tracking.curriculum.title')}
+            {t('curriculum.title')}
           </h1>
         </div>
 
@@ -77,53 +77,53 @@ export function CurriculumView({ profile }: CurriculumViewProps) {
                   className="border border-[#D0D0D1]/40 px-3 py-2 text-center font-bold"
                   colSpan={3}
                 >
-                  {t('credit_tracking.curriculum.general_ed')}
+                  {t('curriculum.general_ed')}
                   <br />
-                  <span style={{ fontWeight: 400 }}>{t('credit_tracking.curriculum.credits_val', { count: 30 })}</span>
+                  <span style={{ fontWeight: 400 }}>{t('curriculum.credits_val', { count: 30 })}</span>
                 </th>
                 <th
                   className="border border-[#D0D0D1]/40 px-3 py-2 text-center font-bold"
                   colSpan={4}
                 >
-                  {t('credit_tracking.curriculum.specific_ed')}
+                  {t('curriculum.specific_ed')}
                   <br />
-                  <span style={{ fontWeight: 400 }}>{t('credit_tracking.curriculum.specific_credits_detail')}</span>
+                  <span style={{ fontWeight: 400 }}>{t('curriculum.specific_credits_detail')}</span>
                 </th>
                 <th className="border border-[#D0D0D1]/40 px-3 py-2 text-center font-bold">
-                  {t('credit_tracking.curriculum.free_choice')}
+                  {t('curriculum.free_choice')}
                   <br />
-                  <span style={{ fontWeight: 400 }}>{t('credit_tracking.curriculum.credits_val', { count: 6 })}</span>
+                  <span style={{ fontWeight: 400 }}>{t('curriculum.credits_val', { count: 6 })}</span>
                 </th>
               </tr>
               <tr style={{ backgroundColor: '#F0F0F0', fontSize: '13px' }}>
                 <th className="border border-[#D0D0D1]/40 px-2 py-2 text-center align-top whitespace-normal">
-                  {t('credit_tracking.curriculum.general_sub1')}
+                  {t('curriculum.general_sub1')}
                   <br />
-                  {t('credit_tracking.curriculum.credits_val', { count: 12 })}
+                  {t('curriculum.credits_val', { count: 12 })}
                 </th>
                 <th className="border border-[#D0D0D1]/40 px-2 py-2 text-center align-top whitespace-normal">
-                  {t('credit_tracking.curriculum.general_sub2')}
+                  {t('curriculum.general_sub2')}
                   <br />
-                  {t('credit_tracking.curriculum.credits_val', { count: 12 })}
+                  {t('curriculum.credits_val', { count: 12 })}
                 </th>
                 <th className="border border-[#D0D0D1]/40 px-2 py-2 text-center align-top whitespace-normal">
-                  {t('credit_tracking.curriculum.general_sub3')}
+                  {t('curriculum.general_sub3')}
                   <br />
-                  {t('credit_tracking.curriculum.credits_val', { count: 6 })}
+                  {t('curriculum.credits_val', { count: 6 })}
                 </th>
                 <th className="border border-[#D0D0D1]/40 px-2 py-2 text-center align-top whitespace-normal">
-                  {t('credit_tracking.curriculum.basic_arts')}
+                  {t('curriculum.basic_arts')}
                   <br />
-                  {t('credit_tracking.curriculum.credits_val', { count: 27 })}
+                  {t('curriculum.credits_val', { count: 27 })}
                 </th>
                 <th
                   className="border border-[#D0D0D1]/40 px-2 py-2 text-center align-top whitespace-normal"
                   colSpan={2}
                 >
-                  {t('credit_tracking.curriculum.english_major_detail')}
+                  {t('curriculum.english_major_detail')}
                 </th>
                 <th className="border border-[#D0D0D1]/40 px-2 py-2 text-center align-top whitespace-normal">
-                  {t('credit_tracking.curriculum.other_majors_detail')}
+                  {t('curriculum.other_majors_detail')}
                 </th>
                 <th className="border border-[#D0D0D1]/40 px-2 py-2 text-center" rowSpan={2} />
               </tr>
@@ -131,19 +131,19 @@ export function CurriculumView({ profile }: CurriculumViewProps) {
             <tbody style={{ fontSize: '13px' }}>
               <tr>
                 <td className="border border-[#D0D0D1]/40 px-2 py-2 align-top text-center" colSpan={3}>
-                  {t('credit_tracking.curriculum.general_12_credits')}
+                  {t('curriculum.general_12_credits')}
                 </td>
                 <td className="border border-[#D0D0D1]/40 px-2 py-2 align-top text-center whitespace-normal">
-                  {t('credit_tracking.curriculum.basic_arts_detail')}
+                  {t('curriculum.basic_arts_detail')}
                 </td>
                 <td className="border border-[#D0D0D1]/40 px-2 py-2 align-top text-center whitespace-normal">
-                  {t('credit_tracking.curriculum.major_range_detail')}
+                  {t('curriculum.major_range_detail')}
                 </td>
                 <td className="border border-[#D0D0D1]/40 px-2 py-2 align-top text-center whitespace-normal">
-                  {t('credit_tracking.curriculum.minor_18_credits')}
+                  {t('curriculum.minor_18_credits')}
                 </td>
                 <td className="border border-[#D0D0D1]/40 px-2 py-2 align-top text-center whitespace-normal">
-                  {t('credit_tracking.curriculum.other_major_credits')}
+                  {t('curriculum.other_major_credits')}
                 </td>
               </tr>
             </tbody>
@@ -165,7 +165,7 @@ export function CurriculumView({ profile }: CurriculumViewProps) {
             className="text-black break-words"
             style={{ fontSize: '16px', fontWeight: 400, lineHeight: '24px' }}
           >
-            {t('credit_tracking.curriculum.req_details_desc')}
+            {t('curriculum.req_details_desc')}
           </p>
         </div>
 
@@ -180,19 +180,19 @@ export function CurriculumView({ profile }: CurriculumViewProps) {
               className="flex-1 text-black"
               style={{ fontSize: '18px', fontWeight: 700, lineHeight: '24px' }}
             >
-              {t('credit_tracking.curriculum.col_component')}
+              {t('curriculum.col_component')}
             </span>
             <span
               className="w-[100px] text-center text-black"
               style={{ fontSize: '18px', fontWeight: 700, lineHeight: '24px' }}
             >
-              {t('credit_tracking.curriculum.col_credits')}
+              {t('curriculum.col_credits')}
             </span>
             <span
               className="flex-1 text-black text-right"
               style={{ fontSize: '18px', fontWeight: 700, lineHeight: '24px' }}
             >
-              {t('credit_tracking.curriculum.col_details')}
+              {t('curriculum.col_details')}
             </span>
           </div>
 
@@ -266,7 +266,7 @@ export function CurriculumView({ profile }: CurriculumViewProps) {
             className="text-white break-words"
             style={{ fontSize: '18px', fontWeight: 700, lineHeight: '24px' }}
           >
-            {t('credit_tracking.curriculum.warning_note')}
+            {t('curriculum.warning_note')}
           </span>
         </div>
       </div>

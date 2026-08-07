@@ -9,7 +9,7 @@ interface AcademicTrackerNavBarProps {
 }
 
 export function AcademicTrackerNavBar({ activeTab, onTabChange, showSummary }: AcademicTrackerNavBarProps) {
-  const { t } = useTranslation();
+  const { t } = useTranslation('credit_tracking');
 
   const tabs: { key: ActiveTab; labelKey: string }[] = [
     { key: 'curriculum', labelKey: 'credit_tracking.navbar.curriculum' },

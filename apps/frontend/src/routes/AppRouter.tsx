@@ -1,17 +1,18 @@
 import { createBrowserRouter, RouterProvider } from 'react-router';
-import MainLayout from '../layouts/MainLayout';
-import { aboutRoutes } from './about/aboutRoutes';
-import { homeRoutes } from './home/homeRoutes';
-import { creditTrackingRoutes } from './credit-tracking/creditTrackingRoutes';
-import { professorsRoutes } from './professors/professorsRoutes';
-import { studentServicesRoutes } from './student-services/studentServicesRoutes';
-import { formsRoutes } from './forms/formsRoutes';
-import { curriculumRoutes } from './curriculum/curriculumRoutes';
-import { internshipsRoutes } from './internships/internshipsRoutes';
-import { articlesRoutes } from './articles/articlesRoutes';
-import { clubsRoutes } from './clubs/clubsRoutes';
-import { helpRoutes } from './help/helpRoutes';
-import { PATHS } from './paths';
+import MainLayout from '../layouts/MainLayout.js';
+import { aboutRoutes } from './about/aboutRoutes.js';
+import { homeRoutes } from './home/homeRoutes.js';
+import { creditTrackingRoutes } from './credit-tracking/creditTrackingRoutes.js';
+import { professorsRoutes } from './professors/professorsRoutes.js';
+import { studentServicesRoutes } from './student-services/studentServicesRoutes.js';
+import { formsRoutes } from './forms/formsRoutes.js';
+import { curriculumRoutes } from './curriculum/curriculumRoutes.js';
+import { internshipsRoutes } from './internships/internshipsRoutes.js';
+import { articlesRoutes } from './articles/articlesRoutes.js';
+import { clubsRoutes } from './clubs/clubsRoutes.js';
+import { helpRoutes } from './help/helpRoutes.js';
+import { PATHS } from './paths.js';
+import YellowCardBackofficePage from './forms/pages/YellowCardBackofficePage.js';
 
 const router = createBrowserRouter([
   {
@@ -30,6 +31,10 @@ const router = createBrowserRouter([
       ...clubsRoutes,
       ...helpRoutes,
     ],
+  },
+  {
+    path: PATHS.YELLOW_CARD_BACKOFFICE,
+    element: <YellowCardBackofficePage />,
   },
 ]);
 

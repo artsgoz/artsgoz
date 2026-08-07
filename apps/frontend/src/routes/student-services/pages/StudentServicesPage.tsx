@@ -135,7 +135,7 @@ function getModalContentConfig(serviceName: string): ModalContentDetails | null 
 }
 
 export default function StudentServicesPage() {
-  const { t } = useTranslation();
+  const { t } = useTranslation('student_services');
   const [searchParams, setSearchParams] = useSearchParams();
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedFilter, setSelectedFilter] = useState('all');
@@ -281,14 +281,14 @@ export default function StudentServicesPage() {
     <div className="w-full bg-[#FFF] flex flex-col min-h-screen relative">
       <div className="flex-1 w-full bg-white flex flex-col pt-12 pb-16">
         <div className="max-w-[1282px] w-full mx-auto px-4 lg:px-6 flex-1 flex flex-col">
-          <SectionHeading title={t('student_services.title')} description={t('student_services.desc')} />
+          <SectionHeading title={t('title')} description={t('desc')} />
 
           <div className="mt-8 pb-8 w-full">
             <div className="relative max-w-full">
               <Search size={18} className="absolute left-4 top-1/2 -translate-y-1/2 text-[#DE5D8F] pointer-events-none" />
               <input
                 type="text"
-                placeholder={t('student_services.search_placeholder')}
+                placeholder={t('search_placeholder')}
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 className="w-full pl-12 pr-10 py-3 rounded-full border border-[#8B8B8C] bg-white text-[16px] font-[ChulaCharasNew] text-[#DE5D8F] placeholder:text-[#DE5D8F] focus:outline-none focus:ring-2 focus:ring-[#DE5D8F]/30 transition-all"
@@ -368,10 +368,10 @@ export default function StudentServicesPage() {
                   <div>
                     <div className="flex items-baseline justify-between pb-3 mb-6">
                       <h3 className="text-[26px] font-bold text-gray-900 font-serif leading-none break-words">
-                        {t('student_services.search_results_for')}{searchQuery}"
+                        {t('search_results_for')}{searchQuery}"
                       </h3>
                       <span className="text-[13px] font-semibold text-gray-400 font-serif tracking-wide shrink-0">
-                        {filteredServices.length} {t('student_services.items_count')}
+                        {filteredServices.length} {t('items_count')}
                       </span>
                     </div>
                     {filteredServices.length > 0 ? (
@@ -391,12 +391,12 @@ export default function StudentServicesPage() {
                     ) : (
                       <div className="flex flex-col items-center justify-center py-16 text-center">
                         <Search size={48} className="text-gray-300 mb-4" />
-                        <p className="text-gray-500 text-[16px] font-[ChulaCharasNew] break-words">{t('student_services.no_results')}</p>
+                        <p className="text-gray-500 text-[16px] font-[ChulaCharasNew] break-words">{t('no_results')}</p>
                         <button
                           onClick={() => setSearchQuery('')}
                           className="mt-4 px-4 py-2 text-[14px] font-bold text-[#DE5D8F] border border-[#DE5D8F] rounded-lg hover:bg-[#DE5D8F]/10 transition-colors font-[ChulaCharasNew] cursor-pointer bg-transparent"
                         >
-                          {t('student_services.clear_search')}
+                          {t('clear_search')}
                         </button>
                       </div>
                     )}
@@ -495,7 +495,7 @@ export default function StudentServicesPage() {
                 variant="primary"
                 className="px-6 py-2.5 h-[40px] rounded-lg font-[ChulaCharasNew] text-[14px] font-bold"
               >
-                {t('student_services.modal_ok')}
+                {t('modal_ok')}
               </Button>
             </div>
           </div>
