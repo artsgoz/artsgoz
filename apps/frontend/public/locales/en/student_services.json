@@ -147,5 +147,36 @@
       "title": "Learning Innovation",
       "desc": "Free online courses & archives"
     }
+  },
+  "documents": {
+    "title": "Document Download & Forms",
+    "search_placeholder": "Search forms or documents...",
+    "filter_label": "Filter Status",
+    "no_results_title": "No documents found",
+    "no_results_desc": "Try searching with a different document name or keyword",
+    "status": {
+      "failed": "Urgent",
+      "pending": "Pending",
+      "neutral": "General"
+    },
+    "download_label": "Download document",
+    "bookmark_label": "Bookmark document",
+    "unbookmark_label": "Remove bookmark"
+  },
+  "professors": {
+    "title": "Faculty & Professors Directory",
+    "search_placeholder": "Search professor by name, department...",
+    "search_btn": "Search",
+    "filter_btn": "Filter Department",
+    "department_label": "Department",
+    "status_label": "Status",
+    "no_results": "No professors found",
+    "back": "Back to list",
+    "abbreviation_label": "Abbreviation",
+    "department_agency_label": "Department / Affiliation",
+    "location_label": "Office Location",
+    "achievements_label": "Research & Achievements",
+    "qualifications_label": "Education & Qualifications",
+    "courses_label": "Taught Courses"
   }
 }

@@ -4,7 +4,6 @@ import {
   THAI_MONTHS,
   THAI_MONTHS_SHORT,
   THAI_DAYS_FULL,
-  THAI_DAYS_SHORT,
   toBuddhistYear,
   CalendarEvent,
 } from '../constants.js';
@@ -128,9 +127,9 @@ export function buildAgendaData(
     eventsByDateKey,
     selectedDayEvents,
     upcomingEvents: allUpcoming,
-    prevMonth: prevMonth ?? (() => {}),
-    nextMonth: nextMonth ?? (() => {}),
-    setSelectedDate: setSelectedDate ?? (() => {}),
+    prevMonth: prevMonth ?? (() => undefined),
+    nextMonth: nextMonth ?? (() => undefined),
+    setSelectedDate: setSelectedDate ?? (() => undefined),
     selectedDate,
     getDateKey,
   };

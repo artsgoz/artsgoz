@@ -20,14 +20,14 @@ export function AgendaWidgets() {
       if (m === 1) { setDisplayYear((y) => y - 1); return 12; }
       return m - 1;
     });
-  }, []);
+  }, [setDisplayMonth, setDisplayYear]);
 
   const nextMonth = useCallback(() => {
     setDisplayMonth((m) => {
       if (m === 12) { setDisplayYear((y) => y + 1); return 1; }
       return m + 1;
     });
-  }, []);
+  }, [setDisplayMonth, setDisplayYear]);
 
   const data = buildAgendaData(displayYear, displayMonth, selectedDate, prevMonth, nextMonth, setSelectedDate);
 

@@ -147,5 +147,36 @@
       "title": "นวัตกรรมการเรียนรู้",
       "desc": "คอร์สเรียนฟรีและคลังความรู้เสริม"
     }
+  },
+  "documents": {
+    "title": "ดาวน์โหลดเอกสารและคำร้อง",
+    "search_placeholder": "ค้นหาชื่อเอกสาร หรือแบบคำร้อง...",
+    "filter_label": "ตัวกรองสถานะ",
+    "no_results_title": "ไม่พบเอกสาร",
+    "no_results_desc": "ลองค้นหาด้วยชื่อเอกสารหรือคำค้นอื่น",
+    "status": {
+      "failed": "เร่งด่วน",
+      "pending": "รอดำเนินการ",
+      "neutral": "ทั่วไป"
+    },
+    "download_label": "ดาวน์โหลดเอกสาร",
+    "bookmark_label": "บันทึกเอกสาร",
+    "unbookmark_label": "ยกเลิกการบันทึก"
+  },
+  "professors": {
+    "title": "รายนามอาจารย์และบุคลากร",
+    "search_placeholder": "ค้นหาชื่ออาจารย์, ภาควิชา...",
+    "search_btn": "ค้นหา",
+    "filter_btn": "กรองตามภาควิชา",
+    "department_label": "ภาควิชา",
+    "status_label": "สถานะ",
+    "no_results": "ไม่พบข้อมูลอาจารย์",
+    "back": "ย้อนกลับ",
+    "abbreviation_label": "ชื่อย่อ",
+    "department_agency_label": "ภาควิชา / สังกัด",
+    "location_label": "ห้องทำงาน / สถานที่ติดต่อ",
+    "achievements_label": "ผลงานทางวิชาการ",
+    "qualifications_label": "คุณวุฒิการศึกษา",
+    "courses_label": "รายวิชาที่สอน"
   }
 }

@@ -12,7 +12,6 @@ import { articlesRoutes } from './articles/articlesRoutes.js';
 import { clubsRoutes } from './clubs/clubsRoutes.js';
 import { helpRoutes } from './help/helpRoutes.js';
 import { PATHS } from './paths.js';
-import YellowCardBackofficePage from './forms/pages/YellowCardBackofficePage.js';
 
 const router = createBrowserRouter([
   {
@@ -31,10 +30,6 @@ const router = createBrowserRouter([
       ...clubsRoutes,
       ...helpRoutes,
     ],
-  },
-  {
-    path: PATHS.YELLOW_CARD_BACKOFFICE,
-    element: <YellowCardBackofficePage />,
   },
 ]);
 
