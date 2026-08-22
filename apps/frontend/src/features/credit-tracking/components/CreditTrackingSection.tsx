@@ -1,7 +1,7 @@
 import { useState, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import type { AcademicProfile, Subject, CategoryProgress } from '../types.js';
-import { MOCK_SUBJECTS, CATEGORIES_CONFIG, MAJOR_OPTIONS, MINOR_OPTIONS, CURRICULUM_OPTIONS } from '../constants.js';
+import { CATEGORIES_CONFIG, MAJOR_OPTIONS, MINOR_OPTIONS, CURRICULUM_OPTIONS } from '../constants.js';
 import { DropdownMenuContainer } from './DropdownMenuContainer.js';
 import { PDPAForm } from './PDPAForm.js';
 import { ProfileSetupForm } from './ProfileSetupForm.js';
@@ -10,6 +10,8 @@ import { CurriculumView } from './CurriculumView.js';
 import { PlannerView } from './PlannerView.js';
 import { AcademicTrackerNavBar, type ActiveTab } from './AcademicTrackerNavBar.js';
 import { SummaryView } from './SummaryView.js';
+
+import { generateSubjectsForProfile } from '../utils/subjectGenerator.js';
 
 type AppStep = 'pdpa' | 'setup' | 'dashboard';
 
@@ -61,25 +63,32 @@ export function CreditTrackingSection() {
     }
     return '';
   });
+
   const [subjects, setSubjects] = useState<Subject[]>(() => {
     if (typeof window !== 'undefined') {
       try {
-        const savedSubjects = localStorage.getItem('tracker_subjects');
-        if (savedSubjects) {
-          const parsed = JSON.parse(savedSubjects) as Subject[];
-          const merged = [...parsed];
-          MOCK_SUBJECTS.forEach((mock) => {
-            if (!merged.some((s) => s.code === mock.code)) {
-              merged.push(mock);
-            }
-          });
-          return merged;
+        const savedProfile = localStorage.getItem('tracker_profile');
+        const parsedProfile = savedProfile ? JSON.parse(savedProfile) : null;
+        if (parsedProfile?.major) {
+          const generated = generateSubjectsForProfile(parsedProfile.major, parsedProfile.minor || '');
+          const savedSubjects = localStorage.getItem('tracker_subjects');
+          if (savedSubjects) {
+            const parsed = JSON.parse(savedSubjects) as Subject[];
+            const merged = [...parsed];
+            generated.forEach((gen) => {
+              if (!merged.some((s) => s.code === gen.code)) {
+                merged.push(gen);
+              }
+            });
+            return merged;
+          }
+          return generated;
         }
       } catch (e) {
         console.error('Failed to load tracker_subjects', e);
       }
     }
-    return MOCK_SUBJECTS;
+    return generateSubjectsForProfile('credit_tracking.majors.thai', '');
   });
 
   // Save states helper
@@ -103,9 +112,11 @@ export function CreditTrackingSection() {
   };
 
   const handleConfirmSetup = (setupProfile: AcademicProfile) => {
+    const newSubjects = generateSubjectsForProfile(setupProfile.major, setupProfile.minor);
     setProfile(setupProfile);
+    setSubjects(newSubjects);
     setStep('dashboard');
-    saveState('dashboard', setupProfile, subjects);
+    saveState('dashboard', setupProfile, newSubjects);
   };
 
   const handleToggleSubject = (id: string) => {
@@ -131,15 +142,19 @@ export function CreditTrackingSection() {
   const handleUpdateMajor = (newMajor: string) => {
     if (!profile) return;
     const nextProfile = { ...profile, major: newMajor };
+    const nextSubjects = generateSubjectsForProfile(newMajor, profile.minor);
     setProfile(nextProfile);
-    saveState(step, nextProfile, subjects);
+    setSubjects(nextSubjects);
+    saveState(step, nextProfile, nextSubjects);
   };
 
   const handleUpdateMinor = (newMinor: string) => {
     if (!profile) return;
     const nextProfile = { ...profile, minor: newMinor };
+    const nextSubjects = generateSubjectsForProfile(profile.major, newMinor);
     setProfile(nextProfile);
-    saveState(step, nextProfile, subjects);
+    setSubjects(nextSubjects);
+    saveState(step, nextProfile, nextSubjects);
   };
 
   const handleUpdateCurriculum = (newCurriculum: string) => {
