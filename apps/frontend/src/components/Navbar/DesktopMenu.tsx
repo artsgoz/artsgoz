@@ -8,7 +8,7 @@ export const menuTextStyle = {
   fontFamily:
     'var(--typography-desktop-body-xl-font-family, ChulaCharasNew, sans-serif)',
   fontSize: 'var(--typography-desktop-body-xl-size, 20px)',
-  fontWeight: 'var(--typography-desktop-body-xl-weight-Regular, 400)',
+  fontWeight: '700',
   lineHeight: 'var(--typography-desktop-body-xl-line-height, 28px)',
 };
 
@@ -90,9 +90,7 @@ export function DesktopMenu() {
             to={item.path}
             style={{
               ...menuTextStyle,
-              fontWeight: isActive(item.path)
-                ? 'bold'
-                : menuTextStyle.fontWeight,
+              color: isActive(item.path) ? '#CA5582' : menuTextStyle.color,
             }}
             className="hover:opacity-75 transition-opacity text-center whitespace-nowrap"
           >

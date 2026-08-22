@@ -15,11 +15,10 @@ export interface DropdownItem {
 
 export const NAV_ITEMS: NavItem[] = [
   { label: 'navbar.home',             path: PATHS.ROOT },
-  { label: 'navbar.about',            path: PATHS.ABOUT },
   { label: 'navbar.student_services', path: PATHS.STUDENT_SERVICES },
-  { label: 'navbar.curriculum',       path: PATHS.CURRICULUM },
   { label: 'navbar.help',             path: PATHS.HELP },
   { label: 'navbar.internships',      path: PATHS.INTERNSHIPS, hasDropdown: true },
+  { label: 'navbar.curriculum',       path: PATHS.CURRICULUM },
 ];
 
 export const DROPDOWN_ITEMS: DropdownItem[] = [
