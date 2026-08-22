@@ -35,6 +35,7 @@ export interface MinorCurriculumInfo {
   revision: string;
   breakdown: {
     compulsory: number;
+    requiredElective?: number;
     elective: number;
   };
   courses: CourseDetail[];
@@ -5432,123 +5433,19 @@ export const MINOR_CURRICULUMS: Record<string, MinorCurriculumInfo> = {
     "nameEn": "Vietnamese Minor",
     "totalCredits": "18",
     "revision": "หลักสูตรปรับปรุง พ.ศ. 2566",
-    "breakdown": {
-      "compulsory": 12,
-      "elective": 6
-    },
+    "breakdown": { "compulsory": 15, "requiredElective": 0, "elective": 3 },
     "courses": [
-      {
-        "code": "2226101",
-        "nameTh": "ภาษาเวียดนาม 1",
-        "nameEn": "Vietnamese |",
-        "credits": 3,
-        "group": "วิชาเลือก"
-      },
-      {
-        "code": "2226102",
-        "nameTh": "ภาษาเวียดนาม 2",
-        "nameEn": "Vietnamese Il",
-        "credits": 3,
-        "group": "วิชาเลือก"
-      },
-      {
-        "code": "2226201",
-        "nameTh": "ภาษาเวียดนาม 3",
-        "nameEn": "Vietnamese Ill",
-        "credits": 3,
-        "group": "วิชาเลือก"
-      },
-      {
-        "code": "2226202",
-        "nameTh": "ภาษาเวียดนาม 4",
-        "nameEn": "Vietnamese IV",
-        "credits": 3,
-        "group": "วิชาเลือก"
-      },
-      {
-        "code": "2226301",
-        "nameTh": "ภาษาเวียดนาม 5",
-        "nameEn": "Vietnamese V",
-        "credits": 3,
-        "group": "วิชาเลือก"
-      },
-      {
-        "code": "2226001",
-        "nameTh": "ปูริทัศน์วัฒนธรรมเวียดนาม",
-        "nameEn": "Introduction to Vietnamese Culture",
-        "credits": 3,
-        "group": "วิชาเลือก"
-      },
-      {
-        "code": "2226211",
-        "nameTh": "การอ่านภาษาเวียดนาม",
-        "nameEn": "Vietnamese Reading",
-        "credits": 3,
-        "group": "วิชาเลือก"
-      },
-      {
-        "code": "2226311",
-        "nameTh": "ภาษาเวียดนามสําหรับการท่องเที่ยว",
-        "nameEn": "Vietnamese for Tourism",
-        "credits": 3,
-        "group": "วิชาเลือก"
-      },
-      {
-        "code": "2226001",
-        "nameTh": "#ปูริทัศน์วัฒนธรรมเวียดนาม",
-        "nameEn": "#ปูริทัศน์วัฒนธรรมเวียดนาม",
-        "credits": 3,
-        "group": "วิชาเลือก"
-      },
-      {
-        "code": "2226101",
-        "nameTh": "ภาษาเวียดนาม 1",
-        "nameEn": "ภาษาเวียดนาม 1",
-        "credits": 3,
-        "group": "วิชาเลือก"
-      },
-      {
-        "code": "2226102",
-        "nameTh": "ภาษาเวียดนาม 2",
-        "nameEn": "ภาษาเวียดนาม 2",
-        "credits": 3,
-        "group": "วิชาเลือก"
-      },
-      {
-        "code": "2226201",
-        "nameTh": "ภาษาเวียดนาม 3",
-        "nameEn": "ภาษาเวียดนาม 3",
-        "credits": 3,
-        "group": "วิชาเลือก"
-      },
-      {
-        "code": "2226202",
-        "nameTh": "ภาษาเวียดนาม 4",
-        "nameEn": "ภาษาเวียดนาม 4",
-        "credits": 3,
-        "group": "วิชาเลือก"
-      },
-      {
-        "code": "2226211",
-        "nameTh": "การอ่านภาษาเวียดนาม",
-        "nameEn": "การอ่านภาษาเวียดนาม",
-        "credits": 3,
-        "group": "วิชาเลือก"
-      },
-      {
-        "code": "2226301",
-        "nameTh": "ภาษาเวียดนาม 5",
-        "nameEn": "ภาษาเวียดนาม 5",
-        "credits": 3,
-        "group": "วิชาเลือก"
-      },
-      {
-        "code": "2226311",
-        "nameTh": "ภาษาเวียดนามสําหรับการท่องเที่ยว",
-        "nameEn": "ภาษาเวียดนามสําหรับการท่องเที่ยว",
-        "credits": 3,
-        "group": "วิชาเลือก"
-      }
+      { "code": "2226101", "nameTh": "ภาษาเวียดนาม 1", "nameEn": "Vietnamese I", "credits": 3, "group": "วิชาบังคับ" },
+      { "code": "2226102", "nameTh": "ภาษาเวียดนาม 2", "nameEn": "Vietnamese II", "credits": 3, "group": "วิชาบังคับ" },
+      { "code": "2226201", "nameTh": "ภาษาเวียดนาม 3", "nameEn": "Vietnamese III", "credits": 3, "group": "วิชาบังคับ" },
+      { "code": "2226202", "nameTh": "ภาษาเวียดนาม 4", "nameEn": "Vietnamese IV", "credits": 3, "group": "วิชาบังคับ" },
+      { "code": "2226301", "nameTh": "ภาษาเวียดนาม 5", "nameEn": "Vietnamese V", "credits": 3, "group": "วิชาบังคับ" },
+      { "code": "2226001", "nameTh": "ปริทัศน์วัฒนธรรมเวียดนาม", "nameEn": "Introduction to Vietnamese Culture", "credits": 3, "group": "วิชาเลือก" },
+      { "code": "2226211", "nameTh": "การอ่านภาษาเวียดนาม", "nameEn": "Vietnamese Reading", "credits": 3, "group": "วิชาเลือก" },
+      { "code": "2226311", "nameTh": "ภาษาเวียดนามสำหรับการท่องเที่ยว", "nameEn": "Vietnamese for Tourism", "credits": 3, "group": "วิชาเลือก" },
+      { "code": "2226322", "nameTh": "การแปลเวียดนาม-ไทย", "nameEn": "Translation: Vietnamese-Thai", "credits": 3, "group": "วิชาเลือก" },
+      { "code": "2226323", "nameTh": "ภาพยนตร์เวียดนาม", "nameEn": "Vietnamese Movies", "credits": 3, "group": "วิชาเลือก" },
+      { "code": "2226411", "nameTh": "การศึกษาอิสระ", "nameEn": "Independent Study", "credits": 3, "group": "วิชาเลือก" }
     ]
   },
   "arabic": {
@@ -5557,200 +5454,21 @@ export const MINOR_CURRICULUMS: Record<string, MinorCurriculumInfo> = {
     "nameEn": "Arabic Minor",
     "totalCredits": "18",
     "revision": "หลักสูตรปรับปรุง พ.ศ. 2566",
-    "breakdown": {
-      "compulsory": 12,
-      "elective": 6
-    },
+    "breakdown": { "compulsory": 0, "requiredElective": 6, "elective": 12 },
     "courses": [
-      {
-        "code": "2228101",
-        "nameTh": "ภาษาอาหรับ 1",
-        "nameEn": "Arabic |",
-        "credits": 3,
-        "group": "วิชาบังคับเลือก"
-      },
-      {
-        "code": "2228102",
-        "nameTh": "ภาษาอาหรับ 2",
-        "nameEn": "Arabic II",
-        "credits": 3,
-        "group": "วิชาบังคับเลือก"
-      },
-      {
-        "code": "2228104",
-        "nameTh": "ภาษาอาหรับ 3",
-        "nameEn": "Arabic III",
-        "credits": 3,
-        "group": "วิชาบังคับเลือก"
-      },
-      {
-        "code": "2228202",
-        "nameTh": "ภาษาอาหรับ 4",
-        "nameEn": "Arabic IV",
-        "credits": 3,
-        "group": "วิชาบังคับเลือก"
-      },
-      {
-        "code": "2228105",
-        "nameTh": "การสนทนาภาษาอาทรับ 1",
-        "nameEn": "Arabic Conversation |",
-        "credits": 3,
-        "group": "วิชาบังคับเลือก"
-      },
-      {
-        "code": "2228106",
-        "nameTh": "การสนทนาภาษาอาหรับ 2",
-        "nameEn": "Arabic Conversation II",
-        "credits": 3,
-        "group": "วิชาบังคับเลือก"
-      },
-      {
-        "code": "2228107",
-        "nameTh": "ปูริทัศน์วัฒนธรรมอาหรับ",
-        "nameEn": "Introduction to Arabic Culture",
-        "credits": 3,
-        "group": "วิชาบังคับเลือก"
-      },
-      {
-        "code": "2228201",
-        "nameTh": "การสนทนาภาษาอาหรับ 3",
-        "nameEn": "Arabic Conversation Ill",
-        "credits": 3,
-        "group": "วิชาบังคับเลือก"
-      },
-      {
-        "code": "2258203",
-        "nameTh": "อารยธรรมอาหรับ",
-        "nameEn": "Arabic Civilization",
-        "credits": 3,
-        "group": "วิชาบังคับเลือก"
-      },
-      {
-        "code": "2228204",
-        "nameTh": "ภาษาศาสตร์อาหรับเบื้องต้น",
-        "nameEn": "Introduction to Arabic Linguistics",
-        "credits": 3,
-        "group": "วิชาบังคับเลือก"
-      },
-      {
-        "code": "2228205",
-        "nameTh": "ภาษาอาหรับเพื่อการสื่อสารด้านการแพทย์",
-        "nameEn": "Arabic for Medical Communication",
-        "credits": 3,
-        "group": "วิชาบังคับเลือก"
-      },
-      {
-        "code": "2228206",
-        "nameTh": "ภาษาอาหรับด้านธุรกิจ",
-        "nameEn": "Arabic for Business",
-        "credits": 3,
-        "group": "วิชาบังคับเลือก"
-      },
-      {
-        "code": "2228207",
-        "nameTh": "ภาษาอาหรับสําหรับการท่องเที่ยว",
-        "nameEn": "Arabic for Tourism",
-        "credits": 3,
-        "group": "วิชาบังคับเลือก"
-      },
-      {
-        "code": "2228101",
-        "nameTh": "ภาษาอาทรับ 1",
-        "nameEn": "ภาษาอาทรับ 1",
-        "credits": 3,
-        "group": "วิชาบังคับเลือก"
-      },
-      {
-        "code": "2228102",
-        "nameTh": "ภาษาอาหรับ 2",
-        "nameEn": "ภาษาอาหรับ 2",
-        "credits": 3,
-        "group": "วิชาบังคับเลือก"
-      },
-      {
-        "code": "2228105",
-        "nameTh": "การสนทนาภาษาอาหรับ 1 หรือรายวิชาที่คณะอนุญาตให้เรียน)",
-        "nameEn": "การสนทนาภาษาอาหรับ 1 หรือรายวิชาที่คณะอนุญาตให้เรียน)",
-        "credits": 3,
-        "group": "วิชาบังคับเลือก"
-      },
-      {
-        "code": "2228104",
-        "nameTh": "ภาษาอาหรับ 3",
-        "nameEn": "ภาษาอาหรับ 3",
-        "credits": 3,
-        "group": "วิชาบังคับเลือก"
-      },
-      {
-        "code": "2228105",
-        "nameTh": "การสนทนาภาษาอาหรับ 1",
-        "nameEn": "การสนทนาภาษาอาหรับ 1",
-        "credits": 3,
-        "group": "วิชาบังคับเลือก"
-      },
-      {
-        "code": "2228106",
-        "nameTh": "การสนทนาภาษาอาหรับ 2",
-        "nameEn": "การสนทนาภาษาอาหรับ 2",
-        "credits": 3,
-        "group": "วิชาบังคับเลือก"
-      },
-      {
-        "code": "2228107",
-        "nameTh": "#ปริทัศน์วัฒนธรรมอาหรับ",
-        "nameEn": "#ปริทัศน์วัฒนธรรมอาหรับ",
-        "credits": 3,
-        "group": "วิชาบังคับเลือก"
-      },
-      {
-        "code": "2228201",
-        "nameTh": "การสนทนาภาษาอาหรับ 3",
-        "nameEn": "การสนทนาภาษาอาหรับ 3",
-        "credits": 3,
-        "group": "วิชาบังคับเลือก"
-      },
-      {
-        "code": "2228202",
-        "nameTh": "ภาษาอาหรับ 4",
-        "nameEn": "ภาษาอาหรับ 4",
-        "credits": 3,
-        "group": "วิชาบังคับเลือก"
-      },
-      {
-        "code": "2228203",
-        "nameTh": "อารยธรรมอาหรับ",
-        "nameEn": "อารยธรรมอาหรับ",
-        "credits": 3,
-        "group": "วิชาบังคับเลือก"
-      },
-      {
-        "code": "2228204",
-        "nameTh": "ภาษาศาสตร์อาหรับเบื้องต้น",
-        "nameEn": "ภาษาศาสตร์อาหรับเบื้องต้น",
-        "credits": 3,
-        "group": "วิชาบังคับเลือก"
-      },
-      {
-        "code": "2228205",
-        "nameTh": "ภาษาอาหรับเพื่อการสื่อสารด้านการแพทย์",
-        "nameEn": "ภาษาอาหรับเพื่อการสื่อสารด้านการแพทย์",
-        "credits": 3,
-        "group": "วิชาบังคับเลือก"
-      },
-      {
-        "code": "2228206",
-        "nameTh": "ภาษาอาหรับด้านธุรกิจ",
-        "nameEn": "ภาษาอาหรับด้านธุรกิจ",
-        "credits": 3,
-        "group": "วิชาบังคับเลือก"
-      },
-      {
-        "code": "2228207",
-        "nameTh": "ภาษาอาหรับสําหรับการท่องเที่ยว",
-        "nameEn": "ภาษาอาหรับสําหรับการท่องเที่ยว",
-        "credits": 3,
-        "group": "วิชาบังคับเลือก"
-      }
+      { "code": "2228101", "nameTh": "ภาษาอาหรับ 1", "nameEn": "Arabic I", "credits": 3, "group": "วิชาบังคับเลือก" },
+      { "code": "2228102", "nameTh": "ภาษาอาหรับ 2", "nameEn": "Arabic II", "credits": 3, "group": "วิชาบังคับเลือก" },
+      { "code": "2228104", "nameTh": "ภาษาอาหรับ 3", "nameEn": "Arabic III", "credits": 3, "group": "วิชาบังคับเลือก" },
+      { "code": "2228202", "nameTh": "ภาษาอาหรับ 4", "nameEn": "Arabic IV", "credits": 3, "group": "วิชาบังคับเลือก" },
+      { "code": "2228105", "nameTh": "การสนทนาภาษาอาหรับ 1", "nameEn": "Arabic Conversation I", "credits": 3, "group": "วิชาเลือก" },
+      { "code": "2228106", "nameTh": "การสนทนาภาษาอาหรับ 2", "nameEn": "Arabic Conversation II", "credits": 3, "group": "วิชาเลือก" },
+      { "code": "2228107", "nameTh": "ปริทัศน์วัฒนธรรมอาหรับ", "nameEn": "Introduction to Arabic Culture", "credits": 3, "group": "วิชาเลือก" },
+      { "code": "2228201", "nameTh": "การสนทนาภาษาอาหรับ 3", "nameEn": "Arabic Conversation III", "credits": 3, "group": "วิชาเลือก" },
+      { "code": "2228203", "nameTh": "อารยธรรมอาหรับ", "nameEn": "Arab Civilization", "credits": 3, "group": "วิชาเลือก" },
+      { "code": "2228204", "nameTh": "ภาษาศาสตร์อาหรับเบื้องต้น", "nameEn": "Introduction to Arabic Linguistics", "credits": 3, "group": "วิชาเลือก" },
+      { "code": "2228205", "nameTh": "ภาษาอาหรับเพื่อการสื่อสารด้านการแพทย์", "nameEn": "Arabic for Medical Communication", "credits": 3, "group": "วิชาเลือก" },
+      { "code": "2228206", "nameTh": "ภาษาอาหรับด้านธุรกิจ", "nameEn": "Arabic for Business", "credits": 3, "group": "วิชาเลือก" },
+      { "code": "2228207", "nameTh": "ภาษาอาหรับสำหรับการท่องเที่ยว", "nameEn": "Arabic for Tourism", "credits": 3, "group": "วิชาเลือก" }
     ]
   },
   "portuguese": {
@@ -5759,151 +5477,18 @@ export const MINOR_CURRICULUMS: Record<string, MinorCurriculumInfo> = {
     "nameEn": "Portuguese Minor",
     "totalCredits": "18",
     "revision": "หลักสูตรปรับปรุง พ.ศ. 2566",
-    "breakdown": {
-      "compulsory": 12,
-      "elective": 6
-    },
+    "breakdown": { "compulsory": 0, "requiredElective": 0, "elective": 18 },
     "courses": [
-      {
-        "code": "2235101",
-        "nameTh": "ภาษาโปรตุเกส 1",
-        "nameEn": "Portuguese |",
-        "credits": 3,
-        "group": "วิชาเลือก"
-      },
-      {
-        "code": "2235102",
-        "nameTh": "ภาษาโปรตุเกส 2",
-        "nameEn": "Portuguese ||",
-        "credits": 3,
-        "group": "วิชาเลือก"
-      },
-      {
-        "code": "2235201",
-        "nameTh": "ภาษาโปรตุเกส 3",
-        "nameEn": "Portuguese III",
-        "credits": 3,
-        "group": "วิชาเลือก"
-      },
-      {
-        "code": "2235202",
-        "nameTh": "ภาษาโปรตุเกส 4",
-        "nameEn": "Portuguese IV",
-        "credits": 3,
-        "group": "วิชาเลือก"
-      },
-      {
-        "code": "2235310",
-        "nameTh": "การแปลโปรตุเกสเบื้องต้น",
-        "nameEn": "Introduction to Portuguese Translation",
-        "credits": 3,
-        "group": "วิชาเลือก"
-      },
-      {
-        "code": "2235320",
-        "nameTh": "โปรตุเกสและบราซิลในโลกปัจจุบัน",
-        "nameEn": "Contemporary Portugal and Brazil",
-        "credits": 3,
-        "group": "วิชาเลือก"
-      },
-      {
-        "code": "2235325",
-        "nameTh": "วรรณกรรมภาษาโปรตุเกสเบื้องต้น",
-        "nameEn": "Introduction to Portuguese Literature",
-        "credits": 3,
-        "group": "วิชาเลือก"
-      },
-      {
-        "code": "2235327",
-        "nameTh": "การพูดภาษาโปรตุเกส",
-        "nameEn": "Portuguese Speaking",
-        "credits": 3,
-        "group": "วิชาเลือก"
-      },
-      {
-        "code": "2235329",
-        "nameTh": "กการเขียนภาษาโปรตุเกส",
-        "nameEn": "Portuguese Writing",
-        "credits": 3,
-        "group": "วิชาเลือก"
-      },
-      {
-        "code": "2235410",
-        "nameTh": "การอ่านงานเขียนภาษาโปรตุเกสที่ไม่ใช่วรรณคดี",
-        "nameEn": "Reading of Portuguese Non-Literary Texts",
-        "credits": 3,
-        "group": "วิชาเลือก"
-      },
-      {
-        "code": "2235101",
-        "nameTh": "ภาษาโปรตุเกส 1",
-        "nameEn": "ภาษาโปรตุเกส 1",
-        "credits": 3,
-        "group": "วิชาเลือก"
-      },
-      {
-        "code": "2235102",
-        "nameTh": "ภาษาโปรตุเกส 2",
-        "nameEn": "ภาษาโปรตุเกส 2",
-        "credits": 3,
-        "group": "วิชาเลือก"
-      },
-      {
-        "code": "2235201",
-        "nameTh": "ภาษาโปรตุเกส 3",
-        "nameEn": "ภาษาโปรตุเกส 3",
-        "credits": 3,
-        "group": "วิชาเลือก"
-      },
-      {
-        "code": "2235202",
-        "nameTh": "ภาษาโปรตุเกส 4",
-        "nameEn": "ภาษาโปรตุเกส 4",
-        "credits": 3,
-        "group": "วิชาเลือก"
-      },
-      {
-        "code": "2235310",
-        "nameTh": "การแปลโปรตุเกสเบื้องต้น",
-        "nameEn": "การแปลโปรตุเกสเบื้องต้น",
-        "credits": 3,
-        "group": "วิชาเลือก"
-      },
-      {
-        "code": "2235320",
-        "nameTh": "'โโปรตุเกสและบราซิลในโลกปัจจุบัน",
-        "nameEn": "'โโปรตุเกสและบราซิลในโลกปัจจุบัน",
-        "credits": 3,
-        "group": "วิชาเลือก"
-      },
-      {
-        "code": "2235325",
-        "nameTh": "วรรณกรรมภาษาโปรตุเกสเบื้องต้น",
-        "nameEn": "วรรณกรรมภาษาโปรตุเกสเบื้องต้น",
-        "credits": 3,
-        "group": "วิชาเลือก"
-      },
-      {
-        "code": "2235327",
-        "nameTh": "กการพูดภาษาโปรตุเกส",
-        "nameEn": "กการพูดภาษาโปรตุเกส",
-        "credits": 3,
-        "group": "วิชาเลือก"
-      },
-      {
-        "code": "2235329",
-        "nameTh": "การเขียนภาษาโปรตุเกส",
-        "nameEn": "การเขียนภาษาโปรตุเกส",
-        "credits": 3,
-        "group": "วิชาเลือก"
-      },
-      {
-        "code": "2235410",
-        "nameTh": "การอ่านงานเขียนภาษาโปรตุเกสที่ไม่ใช่วรรณคดี",
-        "nameEn": "การอ่านงานเขียนภาษาโปรตุเกสที่ไม่ใช่วรรณคดี",
-        "credits": 3,
-        "group": "วิชาเลือก"
-      }
+      { "code": "2235101", "nameTh": "ภาษาโปรตุเกส 1", "nameEn": "Portuguese I", "credits": 3, "group": "วิชาเลือก" },
+      { "code": "2235102", "nameTh": "ภาษาโปรตุเกส 2", "nameEn": "Portuguese II", "credits": 3, "group": "วิชาเลือก" },
+      { "code": "2235201", "nameTh": "ภาษาโปรตุเกส 3", "nameEn": "Portuguese III", "credits": 3, "group": "วิชาเลือก" },
+      { "code": "2235202", "nameTh": "ภาษาโปรตุเกส 4", "nameEn": "Portuguese IV", "credits": 3, "group": "วิชาเลือก" },
+      { "code": "2235310", "nameTh": "การแปลโปรตุเกสเบื้องต้น", "nameEn": "Introduction to Portuguese Translation", "credits": 3, "group": "วิชาเลือก" },
+      { "code": "2235320", "nameTh": "โปรตุเกสและบราซิลในโลกปัจจุบัน", "nameEn": "Contemporary Portugal and Brazil", "credits": 3, "group": "วิชาเลือก" },
+      { "code": "2235325", "nameTh": "วรรณกรรมภาษาโปรตุเกสเบื้องต้น", "nameEn": "Introduction to Portuguese Literature", "credits": 3, "group": "วิชาเลือก" },
+      { "code": "2235327", "nameTh": "การพูดภาษาโปรตุเกส", "nameEn": "Portuguese Speaking", "credits": 3, "group": "วิชาเลือก" },
+      { "code": "2235329", "nameTh": "การเขียนภาษาโปรตุเกส", "nameEn": "Portuguese Writing", "credits": 3, "group": "วิชาเลือก" },
+      { "code": "2235410", "nameTh": "การอ่านงานเขียนภาษาโปรตุเกสที่ไม่ใช่วรรณคดี", "nameEn": "Reading of Portuguese Non-Literary Texts", "credits": 3, "group": "วิชาเลือก" }
     ]
   },
   "linguistics": {
@@ -5912,291 +5497,31 @@ export const MINOR_CURRICULUMS: Record<string, MinorCurriculumInfo> = {
     "nameEn": "Linguistics Minor",
     "totalCredits": "18",
     "revision": "หลักสูตรปรับปรุง พ.ศ. 2566",
-    "breakdown": {
-      "compulsory": 12,
-      "elective": 6
-    },
+    "breakdown": { "compulsory": 3, "requiredElective": 3, "elective": 12 },
     "courses": [
-      {
-        "code": "2209304",
-        "nameTh": "ระบบไวยากรณ์",
-        "nameEn": "Grammatical System",
-        "credits": 3,
-        "group": "วิชาบังคับเลือก"
-      },
-      {
-        "code": "2209305",
-        "nameTh": "ความหมายในภาษา",
-        "nameEn": "Meaning in Language",
-        "credits": 3,
-        "group": "วิชาบังคับเลือก"
-      },
-      {
-        "code": "2209308",
-        "nameTh": "ระบบเสียง",
-        "nameEn": "Sound System",
-        "credits": 3,
-        "group": "วิชาบังคับเลือก"
-      },
-      {
-        "code": "2209261",
-        "nameTh": "พื้นฐานการเขียนโปรแกรมเพื่อการประมวลผลภาษาธรรมชาติ",
-        "nameEn": "Basic Programming for Natural Language Processing",
-        "credits": 3,
-        "group": "วิชาเลือก"
-      },
-      {
-        "code": "2209304",
-        "nameTh": "ระบบไวยากรณ์",
-        "nameEn": "Grammatical System",
-        "credits": 3,
-        "group": "วิชาเลือก"
-      },
-      {
-        "code": "2209305",
-        "nameTh": "ความหมายในภาษา",
-        "nameEn": "Meaning in Language",
-        "credits": 3,
-        "group": "วิชาเลือก"
-      },
-      {
-        "code": "2209308",
-        "nameTh": "ระบบเสียง",
-        "nameEn": "Sound System",
-        "credits": 3,
-        "group": "วิชาเลือก"
-      },
-      {
-        "code": "2209309",
-        "nameTh": "การแปรและการเปลี่ยนแปลงในภาษา",
-        "nameEn": "Variation and Change in Language",
-        "credits": 3,
-        "group": "วิชาเลือก"
-      },
-      {
-        "code": "2209344",
-        "nameTh": "ภาษาศาสตร์กับการแปล",
-        "nameEn": "Linguistics and Translation",
-        "credits": 3,
-        "group": "วิชาเลือก"
-      },
-      {
-        "code": "2209368",
-        "nameTh": "การวิเคราะห์ภาษาไทยตามแนวภาษาศาสตร์",
-        "nameEn": "Linguistics Analysis of Thai",
-        "credits": 3,
-        "group": "วิชาเลือก"
-      },
-      {
-        "code": "2209369",
-        "nameTh": "ภาษาตระกูลขร้า-ไท",
-        "nameEn": "Kra-Dai Languages",
-        "credits": 3,
-        "group": "วิชาเลือก"
-      },
-      {
-        "code": "2209370",
-        "nameTh": "ภาษาและความคิด",
-        "nameEn": "Language and Mind",
-        "credits": 3,
-        "group": "วิชาเลือก"
-      },
-      {
-        "code": "2209371",
-        "nameTh": "ภาษาศาสตร์ภาษาโรมานซ์เบื้องต้น",
-        "nameEn": "Introduction to Romance Linguistics",
-        "credits": 3,
-        "group": "วิชาเลือก"
-      },
-      {
-        "code": "2209372",
-        "nameTh": "ภาษาศาสตร์คอมพิวเตอร์เบื้องต้น",
-        "nameEn": "Introduction to Computational Linguistics",
-        "credits": 3,
-        "group": "วิชาเลือก"
-      },
-      {
-        "code": "2209373",
-        "nameTh": "ภาษากับวัฒนธรรม",
-        "nameEn": "Language and Culture",
-        "credits": 3,
-        "group": "วิชาเลือก"
-      },
-      {
-        "code": "2209375",
-        "nameTh": "ภาษาในกลุ่มประเทศอาเซียน+3",
-        "nameEn": "Languages in ASEAN Plus+3",
-        "credits": 3,
-        "group": "วิชาเลือก"
-      },
-      {
-        "code": "2209376",
-        "nameTh": "คลังข้อมูลภาษา",
-        "nameEn": "Language Corpora",
-        "credits": 3,
-        "group": "วิชาเลือก"
-      },
-      {
-        "code": "2209377",
-        "nameTh": "ภาษาศาสตร์ภาคสนาม",
-        "nameEn": "Field Linguistics",
-        "credits": 3,
-        "group": "วิชาเลือก"
-      },
-      {
-        "code": "2209378",
-        "nameTh": "ภาษากับการสื่อสารทางการตลาด",
-        "nameEn": "Language and Marketing Communications",
-        "credits": 3,
-        "group": "วิชาเลือก"
-      },
-      {
-        "code": "2209379",
-        "nameTh": "ภาษากับเพศ",
-        "nameEn": "Language and Sex",
-        "credits": 3,
-        "group": "วิชาเลือก"
-      },
-      {
-        "code": "2209380",
-        "nameTh": "เรื่องคัดเฉพาะทางภาษาศาสตร์",
-        "nameEn": "Selected Topics in Linguistics",
-        "credits": 3,
-        "group": "วิชาเลือก"
-      },
-      {
-        "code": "2209381",
-        "nameTh": "เทคโนโลยีวัจนะ",
-        "nameEn": "Speech Technology",
-        "credits": 3,
-        "group": "วิชาเลือก"
-      },
-      {
-        "code": "2209382",
-        "nameTh": "การแปลภาษาด้วยคอมพิวเตอร์",
-        "nameEn": "Machine Translation",
-        "credits": 3,
-        "group": "วิชาเลือก"
-      },
-      {
-        "code": "2209384",
-        "nameTh": "การเข้าใจภาษาธรรมชาติ",
-        "nameEn": "Natural Language Understanding",
-        "credits": 3,
-        "group": "วิชาเลือก"
-      },
-      {
-        "code": "2209390",
-        "nameTh": "เรื่องคัดเฉพาะทางเทคโนโลยีภาษา",
-        "nameEn": "Selected Topics in Language Technology",
-        "credits": 3,
-        "group": "วิชาเลือก"
-      },
-      {
-        "code": "2209161",
-        "nameTh": "ภาษาทัศนา",
-        "nameEn": "Introduction to Language",
-        "credits": 3,
-        "group": "วิชาเลือก"
-      },
-      {
-        "code": "2209591",
-        "nameTh": "เอกัตศึกษา 1",
-        "nameEn": "Independent Study |",
-        "credits": 3,
-        "group": "วิชาเลือก"
-      },
-      {
-        "code": "2209592",
-        "nameTh": "'เเอกัตศึกษา 2",
-        "nameEn": "Independent Study |!",
-        "credits": 3,
-        "group": "วิชาเลือก"
-      },
-      {
-        "code": "2209593",
-        "nameTh": "เอกัตศึกษา 3",
-        "nameEn": "Independent Study Ill",
-        "credits": 3,
-        "group": "วิชาเลือก"
-      },
-      {
-        "code": "2209594",
-        "nameTh": "เอกัตศึกษา 4",
-        "nameEn": "Independent Study IV",
-        "credits": 3,
-        "group": "วิชาเลือก"
-      },
-      {
-        "code": "2209597",
-        "nameTh": "ปริญญานิพนธ์ 1                                      4 หน่วยกิต",
-        "nameEn": "Senior Project |",
-        "credits": 3,
-        "group": "วิชาเลือก"
-      },
-      {
-        "code": "2209598",
-        "nameTh": "ขปริญญานิพนธ์ 2                                          4 หน่วยกิต",
-        "nameEn": "Senior Project Il",
-        "credits": 3,
-        "group": "วิชาเลือก"
-      },
-      {
-        "code": "2209591",
-        "nameTh": "เอกัตศึกษา 1            3 หน่วยกิต",
-        "nameEn": "เอกัตศึกษา 1            3 หน่วยกิต",
-        "credits": 3,
-        "group": "วิชาเลือก"
-      },
-      {
-        "code": "2209592",
-        "nameTh": "เอกัตศึกษา 2             3 หน่วยกิต",
-        "nameEn": "เอกัตศึกษา 2             3 หน่วยกิต",
-        "credits": 3,
-        "group": "วิชาเลือก"
-      },
-      {
-        "code": "2209593",
-        "nameTh": "เอกัตศึกษา 3            3 หน่วยกิต",
-        "nameEn": "เอกัตศึกษา 3            3 หน่วยกิต",
-        "credits": 3,
-        "group": "วิชาเลือก"
-      },
-      {
-        "code": "2209594",
-        "nameTh": "เอกัตศึกษา 4            3 หน่วยกิต",
-        "nameEn": "เอกัตศึกษา 4            3 หน่วยกิต",
-        "credits": 3,
-        "group": "วิชาเลือก"
-      },
-      {
-        "code": "2209597",
-        "nameTh": "ปริญญานิพนธ์ 1         4 หน่วยกิต",
-        "nameEn": "ปริญญานิพนธ์ 1         4 หน่วยกิต",
-        "credits": 3,
-        "group": "วิชาเลือก"
-      },
-      {
-        "code": "2209598",
-        "nameTh": "ปริญญานิพนธ์ 2           4 หน่วยกิต",
-        "nameEn": "ปริญญานิพนธ์ 2           4 หน่วยกิต",
-        "credits": 3,
-        "group": "วิชาเลือก"
-      },
-      {
-        "code": "2209161",
-        "nameTh": "ภาษาทัศนา",
-        "nameEn": "ภาษาทัศนา",
-        "credits": 3,
-        "group": "วิชาเลือก"
-      },
-      {
-        "code": "2209261",
-        "nameTh": "พื้นฐานการเขียนโปรแกรมเพื่อการประมวลผลภาษาธรรมชาติ",
-        "nameEn": "พื้นฐานการเขียนโปรแกรมเพื่อการประมวลผลภาษาธรรมชาติ",
-        "credits": 3,
-        "group": "วิชาเลือก"
-      }
+      { "code": "2209161", "nameTh": "ภาษาทัศนา", "nameEn": "Introduction to Language", "credits": 3, "group": "วิชาบังคับ" },
+      { "code": "2209304", "nameTh": "ระบบไวยากรณ์", "nameEn": "Grammatical System", "credits": 3, "group": "วิชาบังคับเลือก" },
+      { "code": "2209305", "nameTh": "ความหมายในภาษา", "nameEn": "Meaning in Language", "credits": 3, "group": "วิชาบังคับเลือก" },
+      { "code": "2209308", "nameTh": "ระบบเสียง", "nameEn": "Sound System", "credits": 3, "group": "วิชาบังคับเลือก" },
+      { "code": "2209261", "nameTh": "พื้นฐานการเขียนโปรแกรมเพื่อการประมวลผลภาษาธรรมชาติ", "nameEn": "Basic Programming for NLP", "credits": 3, "group": "วิชาเลือก" },
+      { "code": "2209309", "nameTh": "การแปรและการเปลี่ยนแปลงในภาษา", "nameEn": "Variation and Change in Language", "credits": 3, "group": "วิชาเลือก" },
+      { "code": "2209344", "nameTh": "ภาษาศาสตร์กับการแปล", "nameEn": "Linguistics and Translation", "credits": 3, "group": "วิชาเลือก" },
+      { "code": "2209368", "nameTh": "การวิเคราะห์ภาษาไทยตามแนวภาษาศาสตร์", "nameEn": "Linguistic Analysis of Thai", "credits": 3, "group": "วิชาเลือก" },
+      { "code": "2209369", "nameTh": "ภาษาตระกูลขร้า-ไท", "nameEn": "Kra-Dai Languages", "credits": 3, "group": "วิชาเลือก" },
+      { "code": "2209370", "nameTh": "ภาษาและความคิด", "nameEn": "Language and Mind", "credits": 3, "group": "วิชาเลือก" },
+      { "code": "2209371", "nameTh": "ภาษาศาสตร์ภาษาโรมานซ์เบื้องต้น", "nameEn": "Introduction to Romance Linguistics", "credits": 3, "group": "วิชาเลือก" },
+      { "code": "2209372", "nameTh": "ภาษาศาสตร์คอมพิวเตอร์เบื้องต้น", "nameEn": "Introduction to Computational Linguistics", "credits": 3, "group": "วิชาเลือก" },
+      { "code": "2209373", "nameTh": "ภาษากับวัฒนธรรม", "nameEn": "Language and Culture", "credits": 3, "group": "วิชาเลือก" },
+      { "code": "2209375", "nameTh": "ภาษาในกลุ่มประเทศอาเซียน+3", "nameEn": "Languages in ASEAN Plus+3", "credits": 3, "group": "วิชาเลือก" },
+      { "code": "2209376", "nameTh": "คลังข้อมูลภาษา", "nameEn": "Language Corpora", "credits": 3, "group": "วิชาเลือก" },
+      { "code": "2209377", "nameTh": "ภาษาศาสตร์ภาคสนาม", "nameEn": "Field Linguistics", "credits": 3, "group": "วิชาเลือก" },
+      { "code": "2209378", "nameTh": "ภาษากับการสื่อสารทางการตลาด", "nameEn": "Language and Marketing Communications", "credits": 3, "group": "วิชาเลือก" },
+      { "code": "2209379", "nameTh": "ภาษากับเพศ", "nameEn": "Language and Sex", "credits": 3, "group": "วิชาเลือก" },
+      { "code": "2209380", "nameTh": "เรื่องคัดเฉพาะทางภาษาศาสตร์", "nameEn": "Selected Topics in Linguistics", "credits": 3, "group": "วิชาเลือก" },
+      { "code": "2209381", "nameTh": "เทคโนโลยีวัจนะ", "nameEn": "Speech Technology", "credits": 3, "group": "วิชาเลือก" },
+      { "code": "2209382", "nameTh": "การแปลภาษาด้วยคอมพิวเตอร์", "nameEn": "Machine Translation", "credits": 3, "group": "วิชาเลือก" },
+      { "code": "2209384", "nameTh": "การเข้าใจภาษาธรรมชาติ", "nameEn": "Natural Language Understanding", "credits": 3, "group": "วิชาเลือก" },
+      { "code": "2209390", "nameTh": "เรื่องคัดเฉพาะทางเทคโนโลยีภาษา", "nameEn": "Selected Topics in Language Technology", "credits": 3, "group": "วิชาเลือก" }
     ]
   },
   "comparative_literature": {
@@ -6205,291 +5530,35 @@ export const MINOR_CURRICULUMS: Record<string, MinorCurriculumInfo> = {
     "nameEn": "Comparative Literature Minor",
     "totalCredits": "18",
     "revision": "หลักสูตรปรับปรุง พ.ศ. 2566",
-    "breakdown": {
-      "compulsory": 12,
-      "elective": 6
-    },
+    "breakdown": { "compulsory": 0, "requiredElective": 0, "elective": 18 },
     "courses": [
-      {
-        "code": "2210214",
-        "nameTh": "วรรณคดีกับสิงแวดล้อม",
-        "nameEn": "Literature and Environment",
-        "credits": 3,
-        "group": "วิชาเลือก"
-      },
-      {
-        "code": "2210215",
-        "nameTh": "ว)วรรณคดีกับสตรี",
-        "nameEn": "Literature and Women",
-        "credits": 3,
-        "group": "วิชาเลือก"
-      },
-      {
-        "code": "2210216",
-        "nameTh": "กวรรณคดีสัจนิยมมหัศจรรย์",
-        "nameEn": "Magical Realist Literature",
-        "credits": 3,
-        "group": "วิชาเลือก"
-      },
-      {
-        "code": "2210217",
-        "nameTh": "บันเทิงคดีร่วมสมัย",
-        "nameEn": "Contemporary Fiction",
-        "credits": 3,
-        "group": "วิชาเลือก"
-      },
-      {
-        "code": "2210218",
-        "nameTh": "ศาสนาและจิตวิญญาณในวรรณคดี",
-        "nameEn": "Religion and Spirituality in Literature",
-        "credits": 3,
-        "group": "วิชาเลือก"
-      },
-      {
-        "code": "2210221",
-        "nameTh": "ซปริทัศน์อาชญนิยายและภาพยนตร์",
-        "nameEn": "Introduction to Crime Fiction and Film",
-        "credits": 3,
-        "group": "วิชาเลือก"
-      },
-      {
-        "code": "2210225",
-        "nameTh": "วิทยาศาสตร์และเทคโนโลยีในบันเทิงคดีร่วมสมัย",
-        "nameEn": "Science and Technology in Contemporary Fiction",
-        "credits": 3,
-        "group": "วิชาเลือก"
-      },
-      {
-        "code": "2210226",
-        "nameTh": "วรรณกรรมชายขอบ",
-        "nameEn": "Literature of Marginality",
-        "credits": 3,
-        "group": "วิชาเลือก"
-      },
-      {
-        "code": "2210227",
-        "nameTh": "“นอนฮิวแมน” ในบันเทิงคดีแนววิทยาศาสตร์",
-        "nameEn": "“นอนฮิวแมน” ในบันเทิงคดีแนววิทยาศาสตร์",
-        "credits": 3,
-        "group": "วิชาเลือก"
-      },
-      {
-        "code": "2210228",
-        "nameTh": "การแปล วรรณกรรม และวัฒนธรรม",
-        "nameEn": "Translation, Literature and Culture",
-        "credits": 3,
-        "group": "วิชาเลือก"
-      },
-      {
-        "code": "2210235",
-        "nameTh": "ว)วรรณคดีกับการดัดแปลงเป็นภาพยนตร์",
-        "nameEn": "Literature and Film Adaptations",
-        "credits": 3,
-        "group": "วิชาเลือก"
-      },
-      {
-        "code": "2210239",
-        "nameTh": "ว>วรรณคดีกับความพิการ",
-        "nameEn": "Literature and Disability",
-        "credits": 3,
-        "group": "วิชาเลือก"
-      },
-      {
-        "code": "2210301",
-        "nameTh": "แนวคิดพื้นฐานวรรณคดีศึกษา",
-        "nameEn": "Fundamentals of Literary Study",
-        "credits": 3,
-        "group": "วิชาเลือก"
-      },
-      {
-        "code": "2210313",
-        "nameTh": "อารมณ์ขันในวรรณคดี",
-        "nameEn": "Humour in Literature",
-        "credits": 3,
-        "group": "วิชาเลือก"
-      },
-      {
-        "code": "2210314",
-        "nameTh": "วรรณกรรมเยาวชน",
-        "nameEn": "Juvenile Literature",
-        "credits": 3,
-        "group": "วิชาเลือก"
-      },
-      {
-        "code": "2210315",
-        "nameTh": "วรรณคดีกับอัตลักษณ์ชาติพันธุ์",
-        "nameEn": "Literature and Ethnic Identity",
-        "credits": 3,
-        "group": "วิชาเลือก"
-      },
-      {
-        "code": "2210316",
-        "nameTh": "ว>วรรณคดีกับสํานึกทางสังคมและการเมือง",
-        "nameEn": "Literature and Socio-political Consciousness",
-        "credits": 3,
-        "group": "วิชาเลือก"
-      },
-      {
-        "code": "2210320",
-        "nameTh": "เวลาในวรรณกรรม",
-        "nameEn": "Time in Literature",
-        "credits": 3,
-        "group": "วิชาเลือก"
-      },
-      {
-        "code": "2210323",
-        "nameTh": "ว)วรรณคดีกับสิทธิมนุษยชน",
-        "nameEn": "Literature and Human Rights",
-        "credits": 3,
-        "group": "วิชาเลือก"
-      },
-      {
-        "code": "2210335",
-        "nameTh": "ปริทัศน์วัฒนธรรมศึกษา",
-        "nameEn": "Introduction to Cultural Studies",
-        "credits": 3,
-        "group": "วิชาเลือก"
-      },
-      {
-        "code": "2210410",
-        "nameTh": "วรรณคดีแนวหลังอาณานิคม",
-        "nameEn": "Postcolonial Literature",
-        "credits": 3,
-        "group": "วิชาเลือก"
-      },
-      {
-        "code": "2210420",
-        "nameTh": "นักเขียนเอกกับผลงาน",
-        "nameEn": "Major Writers and Their Works",
-        "credits": 3,
-        "group": "วิชาเลือก"
-      },
-      {
-        "code": "2210423",
-        "nameTh": "กว)วรรณคดีกับจิตวิทยา",
-        "nameEn": "Literature and Psychology",
-        "credits": 3,
-        "group": "วิชาเลือก"
-      },
-      {
-        "code": "2210426",
-        "nameTh": "วรรณคดีเอเชียตะวันออกเฉียงใต้",
-        "nameEn": "Southeast Asian Literature",
-        "credits": 3,
-        "group": "วิชาเลือก"
-      },
-      {
-        "code": "2210427",
-        "nameTh": "วรรณกรรมเอเชียตะวันออกเฉียงใต้ร่วมสมัย",
-        "nameEn": "Contemporary Southeast Asian Literature",
-        "credits": 3,
-        "group": "วิชาเลือก"
-      },
-      {
-        "code": "2210488",
-        "nameTh": "การศึกษาเฉพาะเรื่องด้านวรรณคดีศึกษา",
-        "nameEn": "Selected Topics in Literary Studies",
-        "credits": 3,
-        "group": "วิชาเลือก"
-      },
-      {
-        "code": "2210489",
-        "nameTh": "กการศึกษาอิสระ",
-        "nameEn": "Independent Study",
-        "credits": 3,
-        "group": "วิชาเลือก"
-      },
-      {
-        "code": "2210214",
-        "nameTh": "วรรณคดีกับสิ่งแวดล้อม",
-        "nameEn": "วรรณคดีกับสิ่งแวดล้อม",
-        "credits": 3,
-        "group": "วิชาเลือก"
-      },
-      {
-        "code": "2210215",
-        "nameTh": "กวรรณคดีกับสตรี",
-        "nameEn": "กวรรณคดีกับสตรี",
-        "credits": 3,
-        "group": "วิชาเลือก"
-      },
-      {
-        "code": "2210216",
-        "nameTh": "วรรณคดีสัจนิยมมหัศจรรย์",
-        "nameEn": "วรรณคดีสัจนิยมมหัศจรรย์",
-        "credits": 3,
-        "group": "วิชาเลือก"
-      },
-      {
-        "code": "2210217",
-        "nameTh": "บันเทิงคดีร่วมสมัย",
-        "nameEn": "บันเทิงคดีร่วมสมัย",
-        "credits": 3,
-        "group": "วิชาเลือก"
-      },
-      {
-        "code": "2210218",
-        "nameTh": "ศาสนาและจิตวิญญาณในวรรณคดี",
-        "nameEn": "ศาสนาและจิตวิญญาณในวรรณคดี",
-        "credits": 3,
-        "group": "วิชาเลือก"
-      },
-      {
-        "code": "2210221",
-        "nameTh": "ปริทัศน์อาชญนิยายและภาพยนตร์",
-        "nameEn": "ปริทัศน์อาชญนิยายและภาพยนตร์",
-        "credits": 3,
-        "group": "วิชาเลือก"
-      },
-      {
-        "code": "2210225",
-        "nameTh": "ก ววิทยาศาสตร์และเทคโนโลยีในบันเทิงคดีร่วมสมัย",
-        "nameEn": "ก ววิทยาศาสตร์และเทคโนโลยีในบันเทิงคดีร่วมสมัย",
-        "credits": 3,
-        "group": "วิชาเลือก"
-      },
-      {
-        "code": "2210226",
-        "nameTh": "วรรณกรรมชายขอบ",
-        "nameEn": "วรรณกรรมชายขอบ",
-        "credits": 3,
-        "group": "วิชาเลือก"
-      },
-      {
-        "code": "2210227",
-        "nameTh": "*“นอนฮิวแมน” ในบันเทิงคดีแนววิทยาศาสตร์",
-        "nameEn": "*“นอนฮิวแมน” ในบันเทิงคดีแนววิทยาศาสตร์",
-        "credits": 3,
-        "group": "วิชาเลือก"
-      },
-      {
-        "code": "2210228",
-        "nameTh": "การแปล วรรณกรรม และวัฒนธรรม",
-        "nameEn": "การแปล วรรณกรรม และวัฒนธรรม",
-        "credits": 3,
-        "group": "วิชาเลือก"
-      },
-      {
-        "code": "2210235",
-        "nameTh": "กวรรณคดีกับการดัดแปลงเป็นภาพยนตร์",
-        "nameEn": "กวรรณคดีกับการดัดแปลงเป็นภาพยนตร์",
-        "credits": 3,
-        "group": "วิชาเลือก"
-      },
-      {
-        "code": "2210239",
-        "nameTh": "วรรณคดีกับความพิการ",
-        "nameEn": "วรรณคดีกับความพิการ",
-        "credits": 3,
-        "group": "วิชาเลือก"
-      },
-      {
-        "code": "2210301",
-        "nameTh": "แนวคิดพื้นฐานวรรณคดีศึกษา",
-        "nameEn": "แนวคิดพื้นฐานวรรณคดีศึกษา",
-        "credits": 3,
-        "group": "วิชาเลือก"
-      }
+      { "code": "2210214", "nameTh": "วรรณคดีกับสิ่งแวดล้อม", "nameEn": "Literature and Environment", "credits": 3, "group": "วิชาเลือก" },
+      { "code": "2210215", "nameTh": "วรรณคดีกับสตรี", "nameEn": "Literature and Women", "credits": 3, "group": "วิชาเลือก" },
+      { "code": "2210216", "nameTh": "วรรณคดีสัจนิยมมหัศจรรย์", "nameEn": "Magical Realist Literature", "credits": 3, "group": "วิชาเลือก" },
+      { "code": "2210217", "nameTh": "บันเทิงคดีร่วมสมัย", "nameEn": "Contemporary Fiction", "credits": 3, "group": "วิชาเลือก" },
+      { "code": "2210218", "nameTh": "ศาสนาและจิตวิญญาณในวรรณคดี", "nameEn": "Religion and Spirituality in Literature", "credits": 3, "group": "วิชาเลือก" },
+      { "code": "2210221", "nameTh": "ปริทัศน์อาชญนิยายและภาพยนตร์", "nameEn": "Introduction to Crime Fiction and Film", "credits": 3, "group": "วิชาเลือก" },
+      { "code": "2210225", "nameTh": "วิทยาศาสตร์และเทคโนโลยีในบันเทิงคดีร่วมสมัย", "nameEn": "Science and Technology in Contemporary Fiction", "credits": 3, "group": "วิชาเลือก" },
+      { "code": "2210226", "nameTh": "วรรณกรรมชายขอบ", "nameEn": "Literature of Marginality", "credits": 3, "group": "วิชาเลือก" },
+      { "code": "2210227", "nameTh": "นอนฮิวแมนในบันเทิงคดีแนววิทยาศาสตร์", "nameEn": "Nonhuman in Science Fiction", "credits": 3, "group": "วิชาเลือก" },
+      { "code": "2210228", "nameTh": "การแปล วรรณกรรม และวัฒนธรรม", "nameEn": "Translation, Literature and Culture", "credits": 3, "group": "วิชาเลือก" },
+      { "code": "2210235", "nameTh": "วรรณคดีกับการดัดแปลงเป็นภาพยนตร์", "nameEn": "Literature and Film Adaptations", "credits": 3, "group": "วิชาเลือก" },
+      { "code": "2210239", "nameTh": "วรรณคดีกับความพิการ", "nameEn": "Literature and Disability", "credits": 3, "group": "วิชาเลือก" },
+      { "code": "2210301", "nameTh": "แนวคิดพื้นฐานวรรณคดีศึกษา", "nameEn": "Fundamentals of Literary Study", "credits": 3, "group": "วิชาเลือก" },
+      { "code": "2210313", "nameTh": "อารมณ์ขันในวรรณคดี", "nameEn": "Humour in Literature", "credits": 3, "group": "วิชาเลือก" },
+      { "code": "2210314", "nameTh": "วรรณกรรมเยาวชน", "nameEn": "Juvenile Literature", "credits": 3, "group": "วิชาเลือก" },
+      { "code": "2210315", "nameTh": "วรรณคดีกับอัตลักษณ์ชาติพันธุ์", "nameEn": "Literature and Ethnic Identity", "credits": 3, "group": "วิชาเลือก" },
+      { "code": "2210316", "nameTh": "วรรณคดีกับสำนึกทางสังคมและการเมือง", "nameEn": "Literature and Socio-political Consciousness", "credits": 3, "group": "วิชาเลือก" },
+      { "code": "2210320", "nameTh": "เวลาในวรรณกรรม", "nameEn": "Time in Literature", "credits": 3, "group": "วิชาเลือก" },
+      { "code": "2210323", "nameTh": "วรรณคดีกับสิทธิมนุษยชน", "nameEn": "Literature and Human Rights", "credits": 3, "group": "วิชาเลือก" },
+      { "code": "2210335", "nameTh": "ปริทัศน์วัฒนธรรมศึกษา", "nameEn": "Introduction to Cultural Studies", "credits": 3, "group": "วิชาเลือก" },
+      { "code": "2210410", "nameTh": "วรรณคดีแนวหลังอาณานิคม", "nameEn": "Postcolonial Literature", "credits": 3, "group": "วิชาเลือก" },
+      { "code": "2210420", "nameTh": "นักเขียนเอกกับผลงาน", "nameEn": "Major Writers and Their Works", "credits": 3, "group": "วิชาเลือก" },
+      { "code": "2210423", "nameTh": "วรรณคดีกับจิตวิทยา", "nameEn": "Literature and Psychology", "credits": 3, "group": "วิชาเลือก" },
+      { "code": "2210426", "nameTh": "วรรณคดีเอเชียตะวันออกเฉียงใต้", "nameEn": "Southeast Asian Literature", "credits": 3, "group": "วิชาเลือก" },
+      { "code": "2210427", "nameTh": "วรรณกรรมเอเชียตะวันออกเฉียงใต้ร่วมสมัย", "nameEn": "Contemporary Southeast Asian Literature", "credits": 3, "group": "วิชาเลือก" },
+      { "code": "2210488", "nameTh": "การศึกษาเฉพาะเรื่องด้านวรรณคดีศึกษา", "nameEn": "Selected Topics in Literary Studies", "credits": 3, "group": "วิชาเลือก" },
+      { "code": "2210489", "nameTh": "การศึกษาอิสระ", "nameEn": "Independent Study", "credits": 3, "group": "วิชาเลือก" }
     ]
   },
   "khmer": {
@@ -6498,165 +5567,19 @@ export const MINOR_CURRICULUMS: Record<string, MinorCurriculumInfo> = {
     "nameEn": "Khmer Minor",
     "totalCredits": "18",
     "revision": "หลักสูตรปรับปรุง พ.ศ. 2566",
-    "breakdown": {
-      "compulsory": 12,
-      "elective": 6
-    },
+    "breakdown": { "compulsory": 9, "requiredElective": 0, "elective": 9 },
     "courses": [
-      {
-        "code": "2244101",
-        "nameTh": "ภาษาเขมร 1",
-        "nameEn": "Cambodian |",
-        "credits": 3,
-        "group": "วิชาเลือก"
-      },
-      {
-        "code": "2244102",
-        "nameTh": "ภาษาเขมร 2",
-        "nameEn": "Cambodian |!",
-        "credits": 3,
-        "group": "วิชาเลือก"
-      },
-      {
-        "code": "2244221",
-        "nameTh": "การอ่านภาษาเขมร",
-        "nameEn": "Cambodian Reading",
-        "credits": 3,
-        "group": "วิชาเลือก"
-      },
-      {
-        "code": "2201326",
-        "nameTh": "ภาษาเขมรที่สัมพันธ์กับภาษาไทย",
-        "nameEn": "Cambodian in Relation to Thai",
-        "credits": 3,
-        "group": "วิชาเลือก"
-      },
-      {
-        "code": "2244151",
-        "nameTh": "ซปริทัศน์วัฒนธรรมเขมร",
-        "nameEn": "Introduction to Cambodian Culture",
-        "credits": 3,
-        "group": "วิชาเลือก"
-      },
-      {
-        "code": "2244211",
-        "nameTh": "สนทนาภาษาเขมร",
-        "nameEn": "Cambodian Conversation",
-        "credits": 3,
-        "group": "วิชาเลือก"
-      },
-      {
-        "code": "2244291",
-        "nameTh": "จารึกภาษาเขมร",
-        "nameEn": "Khmer Epigraphy",
-        "credits": 3,
-        "group": "วิชาเลือก"
-      },
-      {
-        "code": "2244341",
-        "nameTh": "การแปลเขมร-ไทย",
-        "nameEn": "Translation: Cambodian-Thai",
-        "credits": 3,
-        "group": "วิชาเลือก"
-      },
-      {
-        "code": "2244361",
-        "nameTh": "ประวัติวรรณคดีเขมร",
-        "nameEn": "History of Cambodian Literature",
-        "credits": 3,
-        "group": "วิชาเลือก"
-      },
-      {
-        "code": "2244411",
-        "nameTh": "ไวยากรณ์เขมร",
-        "nameEn": "Cambodian Grammar",
-        "credits": 3,
-        "group": "วิชาเลือก"
-      },
-      {
-        "code": "2244461",
-        "nameTh": "นวนิยายเขมรสมัยใหม่",
-        "nameEn": "Modern Cambodian Novel",
-        "credits": 3,
-        "group": "วิชาเลือก"
-      },
-      {
-        "code": "2201326",
-        "nameTh": "ภาษาเขมรที่สัมพันธ์กับภาษาไทย",
-        "nameEn": "ภาษาเขมรที่สัมพันธ์กับภาษาไทย",
-        "credits": 3,
-        "group": "วิชาเลือก"
-      },
-      {
-        "code": "2244101",
-        "nameTh": "ภาษาเขมร 1",
-        "nameEn": "ภาษาเขมร 1",
-        "credits": 3,
-        "group": "วิชาเลือก"
-      },
-      {
-        "code": "2244102",
-        "nameTh": "ภาษาเขมร 2",
-        "nameEn": "ภาษาเขมร 2",
-        "credits": 3,
-        "group": "วิชาเลือก"
-      },
-      {
-        "code": "2244151",
-        "nameTh": "ปริทัศน์วัฒนธรรมเขมร",
-        "nameEn": "ปริทัศน์วัฒนธรรมเขมร",
-        "credits": 3,
-        "group": "วิชาเลือก"
-      },
-      {
-        "code": "2244211",
-        "nameTh": "สนทนาภาษาเขมร",
-        "nameEn": "สนทนาภาษาเขมร",
-        "credits": 3,
-        "group": "วิชาเลือก"
-      },
-      {
-        "code": "2244221",
-        "nameTh": "การอ่านภาษาเขมร",
-        "nameEn": "การอ่านภาษาเขมร",
-        "credits": 3,
-        "group": "วิชาเลือก"
-      },
-      {
-        "code": "2244291",
-        "nameTh": "จารึกภาษาเขมร",
-        "nameEn": "จารึกภาษาเขมร",
-        "credits": 3,
-        "group": "วิชาเลือก"
-      },
-      {
-        "code": "2244341",
-        "nameTh": "การแปลเขมร-ไทย",
-        "nameEn": "การแปลเขมร-ไทย",
-        "credits": 3,
-        "group": "วิชาเลือก"
-      },
-      {
-        "code": "2244361",
-        "nameTh": "ไประวัติวรรณคดีเขมร",
-        "nameEn": "ไประวัติวรรณคดีเขมร",
-        "credits": 3,
-        "group": "วิชาเลือก"
-      },
-      {
-        "code": "2244411",
-        "nameTh": "ไวยากรณ์เขมร",
-        "nameEn": "ไวยากรณ์เขมร",
-        "credits": 3,
-        "group": "วิชาเลือก"
-      },
-      {
-        "code": "2244461",
-        "nameTh": "นวบนิยายเขมรสมัยใหม่",
-        "nameEn": "นวบนิยายเขมรสมัยใหม่",
-        "credits": 3,
-        "group": "วิชาเลือก"
-      }
+      { "code": "2244101", "nameTh": "ภาษาเขมร 1", "nameEn": "Cambodian I", "credits": 3, "group": "วิชาบังคับ" },
+      { "code": "2244102", "nameTh": "ภาษาเขมร 2", "nameEn": "Cambodian II", "credits": 3, "group": "วิชาบังคับ" },
+      { "code": "2244221", "nameTh": "การอ่านภาษาเขมร", "nameEn": "Cambodian Reading", "credits": 3, "group": "วิชาบังคับ" },
+      { "code": "2201326", "nameTh": "ภาษาเขมรที่สัมพันธ์กับภาษาไทย", "nameEn": "Cambodian in Relation to Thai", "credits": 3, "group": "วิชาเลือก" },
+      { "code": "2244151", "nameTh": "ปริทัศน์วัฒนธรรมเขมร", "nameEn": "Introduction to Cambodian Culture", "credits": 3, "group": "วิชาเลือก" },
+      { "code": "2244211", "nameTh": "สนทนาภาษาเขมร", "nameEn": "Cambodian Conversation", "credits": 3, "group": "วิชาเลือก" },
+      { "code": "2244291", "nameTh": "จารึกภาษาเขมร", "nameEn": "Khmer Epigraphy", "credits": 3, "group": "วิชาเลือก" },
+      { "code": "2244341", "nameTh": "การแปลเขมร-ไทย", "nameEn": "Translation: Cambodian-Thai", "credits": 3, "group": "วิชาเลือก" },
+      { "code": "2244361", "nameTh": "ประวัติวรรณคดีเขมร", "nameEn": "History of Cambodian Literature", "credits": 3, "group": "วิชาเลือก" },
+      { "code": "2244411", "nameTh": "ไวยากรณ์เขมร", "nameEn": "Cambodian Grammar", "credits": 3, "group": "วิชาเลือก" },
+      { "code": "2244461", "nameTh": "นวนิยายเขมรสมัยใหม่", "nameEn": "Modern Cambodian Novel", "credits": 3, "group": "วิชาเลือก" }
     ]
   },
   "editorial_studies": {
@@ -6665,291 +5588,44 @@ export const MINOR_CURRICULUMS: Record<string, MinorCurriculumInfo> = {
     "nameEn": "Editorial Studies Minor",
     "totalCredits": "18",
     "revision": "หลักสูตรปรับปรุง พ.ศ. 2566",
-    "breakdown": {
-      "compulsory": 12,
-      "elective": 6
-    },
+    "breakdown": { "compulsory": 6, "requiredElective": 3, "elective": 9 },
     "courses": [
-      {
-        "code": "2206352",
-        "nameTh": "วิชาชีพบรรณาธิการ",
-        "nameEn": "Editorial Profession",
-        "credits": 3,
-        "group": "วิชาเลือก"
-      },
-      {
-        "code": "2206353",
-        "nameTh": "เสวนาบรรณาธิการ",
-        "nameEn": "Editorial Discussion",
-        "credits": 3,
-        "group": "วิชาเลือก"
-      },
-      {
-        "code": "2206214",
-        "nameTh": "สังคมสารสนเทศ",
-        "nameEn": "Information Society",
-        "credits": 3,
-        "group": "วิชาบังคับเลือก"
-      },
-      {
-        "code": "2313226",
-        "nameTh": "เทคโนโลยีสือสิงพิมพ์",
-        "nameEn": "Print Media Technology",
-        "credits": 3,
-        "group": "วิชาบังคับเลือก"
-      },
-      {
-        "code": "2201214",
-        "nameTh": "ภาษาสือสารมวลชน",
-        "nameEn": "Language for the Mass Media",
-        "credits": 3,
-        "group": "วิชาเลือก"
-      },
-      {
-        "code": "2201215",
-        "nameTh": "กการเล่นทางภาษาในภาษาไทย",
-        "nameEn": "Speech Play in Thai",
-        "credits": 3,
-        "group": "วิชาเลือก"
-      },
-      {
-        "code": "2201304",
-        "nameTh": "ภาษาไทยในมุมมองแบบลักษณ์ภาษา",
-        "nameEn": "Typological Perspectives on Thai",
-        "credits": 3,
-        "group": "วิชาเลือก"
-      },
-      {
-        "code": "2201314",
-        "nameTh": "ลีลาในภาษาไทย",
-        "nameEn": "Styles in Thai",
-        "credits": 3,
-        "group": "วิชาเลือก"
-      },
-      {
-        "code": "2201324",
-        "nameTh": "การสร้างคําและการบัญญัติศัพท์",
-        "nameEn": "Word Formation and Word Coining",
-        "credits": 3,
-        "group": "วิชาเลือก"
-      },
-      {
-        "code": "2201337",
-        "nameTh": "ภาษาในบริบทสังคมและวัฒนธรรมไทย",
-        "nameEn": "Thai Language in Thai Socio-cultural Context",
-        "credits": 3,
-        "group": "วิชาเลือก"
-      },
-      {
-        "code": "2201353",
-        "nameTh": "วรรณกรรมวิจารณ์",
-        "nameEn": "Literary Criticism",
-        "credits": 3,
-        "group": "วิชาเลือก"
-      },
-      {
-        "code": "2201370",
-        "nameTh": "พระราชนิพนธ์ในพระบาทสมเด็จพระเจ้าอยู่หัวภูมิพลอดุลยเดช",
-        "nameEn": "King Rama IX",
-        "credits": 3,
-        "group": "วิชาเลือก"
-      },
-      {
-        "code": "2201372",
-        "nameTh": "พระราชนิพนธ์ในพระบาทสมเด็พระจุลจอมเกล้าเจ้าอยู่หัว",
-        "nameEn": "King Rama V",
-        "credits": 3,
-        "group": "วิชาเลือก"
-      },
-      {
-        "code": "2201373",
-        "nameTh": "งานเสจียรโกเศศและนาคะประทีป",
-        "nameEn": "Sathiankoset and Nakhaprathip",
-        "credits": 3,
-        "group": "วิชาเลือก"
-      },
-      {
-        "code": "2201374",
-        "nameTh": "พระนิพนธ์พระราชวรวงศ์เธอกรมหมื่นพิทยาลงกรณ",
-        "nameEn": "Prince Ratchani",
-        "credits": 3,
-        "group": "วิชาเลือก"
-      },
-      {
-        "code": "2201393",
-        "nameTh": "วรรณกรรมกับสังคม",
-        "nameEn": "Literary Works and Society",
-        "credits": 3,
-        "group": "วิชาเลือก"
-      },
-      {
-        "code": "2201414",
-        "nameTh": "ศิลปะการใช้ภาษาไทย",
-        "nameEn": "The Arts of Thai Usage",
-        "credits": 3,
-        "group": "วิชาเลือก"
-      },
-      {
-        "code": "2201425",
-        "nameTh": "ศัพทมูลวิทยาภาษาไทย",
-        "nameEn": "Thai Etymology",
-        "credits": 3,
-        "group": "วิชาเลือก"
-      },
-      {
-        "code": "2201431",
-        "nameTh": "ภาษาไทยถิน",
-        "nameEn": "Thai Dialects",
-        "credits": 3,
-        "group": "วิชาเลือก"
-      },
-      {
-        "code": "2201435",
-        "nameTh": "ภาษาไทยสมัยต่าง ๆ",
-        "nameEn": "Thai Language in Different Periods",
-        "credits": 3,
-        "group": "วิชาเลือก"
-      },
-      {
-        "code": "2201473",
-        "nameTh": "พระนิพนธ์สมเด็จพระมหาสมณเจ้ากรมพระปรมานุชิตชิโนรส",
-        "nameEn": "Prince Paramanuchit",
-        "credits": 3,
-        "group": "วิชาเลือก"
-      },
-      {
-        "code": "2201489",
-        "nameTh": "วรรณคดีไทยที่สัมพันธ์กับวรรณคดีบาลีและสันสกฤต",
-        "nameEn": "Thai Literature in Relation to Pali and Sanskrit Literature",
-        "credits": 3,
-        "group": "วิชาเลือก"
-      },
-      {
-        "code": "2202313",
-        "nameTh": "แปลอังกฤษ-ไทย",
-        "nameEn": "Translation: English - ไทลเ",
-        "credits": 3,
-        "group": "วิชาเลือก"
-      },
-      {
-        "code": "2202314",
-        "nameTh": "แปลไทย-อังกฤษ 1",
-        "nameEn": "Translation Thai: English |",
-        "credits": 3,
-        "group": "วิชาเลือก"
-      },
-      {
-        "code": "2202327",
-        "nameTh": "อรรถศาสตร์และวัจนปฏิบัติศาสตร์ภาษาอังกฤษเบื้องต้น",
-        "nameEn": "Introduction to English Semantics and Pragmatics",
-        "credits": 3,
-        "group": "วิชาเลือก"
-      },
-      {
-        "code": "2202328",
-        "nameTh": "ปริจเฉทภาษาอังกฤษ",
-        "nameEn": "English Discourse",
-        "credits": 3,
-        "group": "วิชาเลือก"
-      },
-      {
-        "code": "2204307",
-        "nameTh": "ความคิดและวิธีการทางประวัติศาสตร์",
-        "nameEn": "Historical Thoughts and Historical Method",
-        "credits": 3,
-        "group": "วิชาเลือก"
-      },
-      {
-        "code": "2206285",
-        "nameTh": "การแปลงทรัพยากรสารสนเทศเให้อยู่ในรูปดิจิทัล",
-        "nameEn": "Digitization of Information Resouces",
-        "credits": 3,
-        "group": "วิชาเลือก"
-      },
-      {
-        "code": "2206315",
-        "nameTh": "=. gananrsWawWadieluy",
-        "nameEn": "The Modern Publishing Trade",
-        "credits": 3,
-        "group": "วิชาเลือก"
-      },
-      {
-        "code": "2206376",
-        "nameTh": "การจัดการสารสนเทศมรดกทางวัฒนธรรม",
-        "nameEn": "Cultural Heritage Information Management",
-        "credits": 3,
-        "group": "วิชาเลือก"
-      },
-      {
-        "code": "2206415",
-        "nameTh": "การตลาดและการประชาสัมพันธ์สําหรับองค์กรสารสนเทศ",
-        "nameEn": "Marketing and Public Relations",
-        "credits": 3,
-        "group": "วิชาเลือก"
-      },
-      {
-        "code": "2206484",
-        "nameTh": "การประมวลสารสนเทศสําเร็จรูป",
-        "nameEn": "Information Repackaging",
-        "credits": 3,
-        "group": "วิชาเลือก"
-      },
-      {
-        "code": "2209305",
-        "nameTh": "ความหมายในภาษา",
-        "nameEn": "Meaning in Language",
-        "credits": 3,
-        "group": "วิชาเลือก"
-      },
-      {
-        "code": "2209344",
-        "nameTh": "ภาษาศาสตร์กับการแปล",
-        "nameEn": "Language and Translation",
-        "credits": 3,
-        "group": "วิชาเลือก"
-      },
-      {
-        "code": "2209373",
-        "nameTh": "ภาษากับวัฒนธรรม",
-        "nameEn": "Language and Culture",
-        "credits": 3,
-        "group": "วิชาเลือก"
-      },
-      {
-        "code": "2209376",
-        "nameTh": "คลังข้อมูลภาษา",
-        "nameEn": "Language Corpora",
-        "credits": 3,
-        "group": "วิชาเลือก"
-      },
-      {
-        "code": "2209378",
-        "nameTh": "ภาษากับการสื่อสารการตลาด",
-        "nameEn": "Language and Marketing Communications",
-        "credits": 3,
-        "group": "วิชาเลือก"
-      },
-      {
-        "code": "2313345",
-        "nameTh": "การออกแบบสิงพิมพ์",
-        "nameEn": "Print Media Design",
-        "credits": 2,
-        "group": "วิชาเลือก"
-      },
-      {
-        "code": "2801200",
-        "nameTh": "กราฟิกสารสนเทศและการจัดหน้า",
-        "nameEn": "Infographic and Layout",
-        "credits": 2,
-        "group": "วิชาเลือก"
-      },
-      {
-        "code": "2801203",
-        "nameTh": "การผลิตสือใหม่",
-        "nameEn": "New Media Production",
-        "credits": 3,
-        "group": "วิชาเลือก"
-      }
+      { "code": "2206352", "nameTh": "วิชาชีพบรรณาธิการ", "nameEn": "Editorial Profession", "credits": 3, "group": "วิชาบังคับ" },
+      { "code": "2206353", "nameTh": "เสวนาบรรณาธิการ", "nameEn": "Editorial Discussion", "credits": 3, "group": "วิชาบังคับ" },
+      { "code": "2206214", "nameTh": "สังคมสารสนเทศ", "nameEn": "Information Society", "credits": 3, "group": "วิชาบังคับเลือก" },
+      { "code": "2313226", "nameTh": "เทคโนโลยีสื่อสิ่งพิมพ์", "nameEn": "Print Media Technology", "credits": 3, "group": "วิชาบังคับเลือก" },
+      { "code": "2201214", "nameTh": "ภาษาสื่อสารมวลชน", "nameEn": "Language for the Mass Media", "credits": 3, "group": "วิชาเลือก" },
+      { "code": "2201215", "nameTh": "การเล่นทางภาษาในภาษาไทย", "nameEn": "Speech Play in Thai", "credits": 3, "group": "วิชาเลือก" },
+      { "code": "2201304", "nameTh": "ภาษาไทยในมุมมองแบบลักษณ์ภาษา", "nameEn": "Typological Perspectives on Thai", "credits": 3, "group": "วิชาเลือก" },
+      { "code": "2201314", "nameTh": "ลีลาในภาษาไทย", "nameEn": "Styles in Thai", "credits": 3, "group": "วิชาเลือก" },
+      { "code": "2201324", "nameTh": "การสร้างคำและการบัญญัติศัพท์", "nameEn": "Word Formation and Word Coining", "credits": 3, "group": "วิชาเลือก" },
+      { "code": "2201337", "nameTh": "ภาษาในบริบทสังคมและวัฒนธรรมไทย", "nameEn": "Thai Language in Thai Socio-cultural Context", "credits": 3, "group": "วิชาเลือก" },
+      { "code": "2201353", "nameTh": "วรรณกรรมวิจารณ์", "nameEn": "Literary Criticism", "credits": 3, "group": "วิชาเลือก" },
+      { "code": "2201393", "nameTh": "วรรณกรรมกับสังคม", "nameEn": "Literary Works and Society", "credits": 3, "group": "วิชาเลือก" },
+      { "code": "2201414", "nameTh": "ศิลปะการใช้ภาษาไทย", "nameEn": "The Arts of Thai Usage", "credits": 3, "group": "วิชาเลือก" },
+      { "code": "2201425", "nameTh": "ศัพทมูลวิทยาภาษาไทย", "nameEn": "Thai Etymology", "credits": 3, "group": "วิชาเลือก" },
+      { "code": "2201431", "nameTh": "ภาษาไทยถิ่น", "nameEn": "Thai Dialects", "credits": 3, "group": "วิชาเลือก" },
+      { "code": "2201435", "nameTh": "ภาษาไทยสมัยต่าง ๆ", "nameEn": "Thai Language in Different Periods", "credits": 3, "group": "วิชาเลือก" },
+      { "code": "2202313", "nameTh": "แปลอังกฤษ-ไทย", "nameEn": "Translation: English-Thai", "credits": 3, "group": "วิชาเลือก" },
+      { "code": "2202314", "nameTh": "แปลไทย-อังกฤษ 1", "nameEn": "Translation: Thai-English I", "credits": 3, "group": "วิชาเลือก" },
+      { "code": "2202327", "nameTh": "อรรถศาสตร์และวัจนปฏิบัติศาสตร์ภาษาอังกฤษเบื้องต้น", "nameEn": "Intro to English Semantics and Pragmatics", "credits": 3, "group": "วิชาเลือก" },
+      { "code": "2202328", "nameTh": "ปริจเฉทภาษาอังกฤษ", "nameEn": "English Discourse", "credits": 3, "group": "วิชาเลือก" },
+      { "code": "2204307", "nameTh": "ความคิดและวิธีการทางประวัติศาสตร์", "nameEn": "Historical Thoughts and Historical Method", "credits": 3, "group": "วิชาเลือก" },
+      { "code": "2206285", "nameTh": "การแปลงทรัพยากรสารสนเทศให้อยู่ในรูปดิจิทัล", "nameEn": "Digitization of Information Resources", "credits": 3, "group": "วิชาเลือก" },
+      { "code": "2206315", "nameTh": "ธุรกิจการพิมพ์สมัยใหม่", "nameEn": "The Modern Publishing Trade", "credits": 3, "group": "วิชาเลือก" },
+      { "code": "2206376", "nameTh": "การจัดการสารสนเทศมรดกทางวัฒนธรรม", "nameEn": "Cultural Heritage Information Management", "credits": 3, "group": "วิชาเลือก" },
+      { "code": "2206415", "nameTh": "การตลาดและการประชาสัมพันธ์สำหรับองค์กรสารสนเทศ", "nameEn": "Marketing and PR for Information Organizations", "credits": 3, "group": "วิชาเลือก" },
+      { "code": "2206484", "nameTh": "การประมวลสารสนเทศสำเร็จรูป", "nameEn": "Information Repackaging", "credits": 3, "group": "วิชาเลือก" },
+      { "code": "2209305", "nameTh": "ความหมายในภาษา", "nameEn": "Meaning in Language", "credits": 3, "group": "วิชาเลือก" },
+      { "code": "2209344", "nameTh": "ภาษาศาสตร์กับการแปล", "nameEn": "Linguistics and Translation", "credits": 3, "group": "วิชาเลือก" },
+      { "code": "2209373", "nameTh": "ภาษากับวัฒนธรรม", "nameEn": "Language and Culture", "credits": 3, "group": "วิชาเลือก" },
+      { "code": "2209376", "nameTh": "คลังข้อมูลภาษา", "nameEn": "Language Corpora", "credits": 3, "group": "วิชาเลือก" },
+      { "code": "2209378", "nameTh": "ภาษากับการสื่อสารการตลาด", "nameEn": "Language and Marketing Communications", "credits": 3, "group": "วิชาเลือก" },
+      { "code": "2313345", "nameTh": "การออกแบบสิ่งพิมพ์", "nameEn": "Print Media Design", "credits": 2, "group": "วิชาเลือก" },
+      { "code": "2801200", "nameTh": "กราฟิกสารสนเทศและการจัดหน้า", "nameEn": "Infographic and Layout", "credits": 2, "group": "วิชาเลือก" },
+      { "code": "2801203", "nameTh": "การผลิตสื่อใหม่", "nameEn": "New Media Production", "credits": 3, "group": "วิชาเลือก" },
+      { "code": "2801318", "nameTh": "การเขียนและการบรรณาธิกรนิตยสาร", "nameEn": "Magazine Writing and Editing", "credits": 3, "group": "วิชาเลือก" },
+      { "code": "2804344", "nameTh": "การวิเคราะห์พฤติกรรมภาษา", "nameEn": "Analysis of Language Behavior", "credits": 3, "group": "วิชาเลือก" }
     ]
   }
 };

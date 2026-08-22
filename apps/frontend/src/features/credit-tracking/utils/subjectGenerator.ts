@@ -27,15 +27,10 @@ function mapMajorGroup(rawGroup: string): string {
   return 'major-elective';
 }
 
-function mapMinorGroup(rawGroup: string, index: number): string {
-  if (rawGroup.includes('บังคับ') && !rawGroup.includes('บังคับเลือก')) {
-    return 'minor-compulsory';
-  }
-  if (rawGroup.includes('บังคับเลือก')) {
-    return 'minor-required-elective';
-  }
-  // Compulsory courses typically come first (first ~3-4 courses)
-  if (index < 3) return 'minor-compulsory';
+/** Maps the Thai group string from MINOR_CURRICULUMS to a canonical key. */
+function mapMinorGroup(rawGroup: string): string {
+  if (rawGroup === 'วิชาบังคับ') return 'minor-compulsory';
+  if (rawGroup === 'วิชาบังคับเลือก') return 'minor-required-elective';
   return 'minor-elective';
 }
 
@@ -138,7 +133,7 @@ export function generateSubjectsForProfile(majorKeyRaw: string, minorKeyRaw: str
   // 4. หมวดวิชาโท (18 หน่วยกิต) – ALL courses from MINOR_CURRICULUMS
   if (minorInfo && minorInfo.courses.length > 0) {
     minorInfo.courses.forEach((c, index) => {
-      const groupKey = mapMinorGroup(c.group || '', index);
+      const groupKey = mapMinorGroup(c.group || '');
       subjects.push({
         id: `minor-${index}-${c.code}`,
         code: c.code,
