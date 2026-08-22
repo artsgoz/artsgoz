@@ -32,45 +32,14 @@ export function BannerCarousel({
           onTransitionEnd={handleTransitionEnd}
         >
           {slides.map((banner, index) => {
-            const getBannerGradient = (id: string) => {
-              switch (id) {
-                case 'banner-01':
-                  return {
-                    gradient: 'from-[#f7f8f9] via-[#ececec] to-[#d0d0d1]',
-                    dotColor: 'bg-[#99999a]/20'
-                  };
-                case 'banner-02':
-                  return {
-                    gradient: 'from-[#f0f1f2] via-[#dfdfe0] to-[#c5c5c7]',
-                    dotColor: 'bg-[#8b8b8c]/20'
-                  };
-                case 'banner-03':
-                  return {
-                    gradient: 'from-[#e8e9ea] via-[#d0d0d1] to-[#b0b0b2]',
-                    dotColor: 'bg-[#99999a]/25'
-                  };
-                default:
-                  return {
-                    gradient: 'from-gray-100 to-gray-200',
-                    dotColor: 'bg-gray-300/20'
-                  };
-              }
-            };
-
-            const details = getBannerGradient(banner.id);
-
             return (
               <a
                 key={`${banner.id}-${index}`}
                 href={banner.linkUrl}
-                className="min-w-full h-full relative block shrink-0 overflow-hidden"
+                className="min-w-full h-full relative block shrink-0 overflow-hidden bg-white"
               >
                 {!banner.desktopImageUrl && !banner.mobileImageUrl ? (
-                  <div className={`w-full h-full relative flex items-center justify-start bg-gradient-to-br ${details.gradient} transition-all duration-500 px-6 sm:px-12 md:px-16 lg:px-24 overflow-hidden`}>
-                    {/* Glowing Ambient Blobs */}
-                    <div className={`absolute top-[-20%] right-[-10%] w-[50vw] h-[50vw] rounded-full blur-[120px] opacity-60 ${details.dotColor} animate-pulse`} />
-                    <div className={`absolute bottom-[-10%] left-[10%] w-[35vw] h-[35vw] rounded-full blur-[90px] opacity-40 ${details.dotColor}`} />
-                  </div>
+                  <div className="w-full h-full relative flex items-center justify-start bg-white transition-all duration-500 overflow-hidden" />
                 ) : (
                   <picture>
                     <source
