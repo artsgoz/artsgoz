@@ -46,6 +46,12 @@ export function CreditsSummaryCard({ progressList }: CreditsSummaryCardProps) {
     color: '#000000',
   };
 
+  const translateKey = (key: string): string => {
+    if (!key) return '';
+    const cleanKey = key.replace(/^credit_tracking\./, '');
+    return t(cleanKey);
+  };
+
   return (
     <div
       className="select-none max-w-full overflow-x-auto"
@@ -59,7 +65,7 @@ export function CreditsSummaryCard({ progressList }: CreditsSummaryCardProps) {
             <tr>
               {progressList.map((item) => (
                 <th key={item.category} style={{ ...cellHeaderStyle, borderRight: BORDER }}>
-                  {t(item.category)}
+                  {translateKey(item.category)}
                 </th>
               ))}
               {/* Total header */}

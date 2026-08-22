@@ -15,12 +15,12 @@ export function CurriculumView({ profile }: CurriculumViewProps) {
   const { t } = useTranslation('credit_tracking');
   const [openGroup, setOpenGroup] = useState<string | null>(null);
 
-  const majorNameKey = profile?.major ?? 'credit_tracking.majors.default';
-  const minorNameKey = profile?.minor ?? 'credit_tracking.minors.default';
+  const majorNameKey = profile?.major ? profile.major.replace(/^credit_tracking\./, '') : 'majors.default';
+  const minorNameKey = profile?.minor ? profile.minor.replace(/^credit_tracking\./, '') : 'minors.default';
 
-  // Resolve major key (e.g. "credit_tracking.majors.thai" -> "thai")
-  const majorKey = profile?.major ? profile.major.replace('credit_tracking.majors.', '') : 'thai';
-  const minorKey = profile?.minor ? profile.minor.replace('credit_tracking.minors.', '') : '';
+  // Resolve major key (e.g. "majors.thai" -> "thai")
+  const majorKey = profile?.major ? profile.major.replace(/^credit_tracking\./, '').replace(/^majors\./, '') : 'thai';
+  const minorKey = profile?.minor ? profile.minor.replace(/^credit_tracking\./, '').replace(/^minors\./, '') : '';
 
   const majorInfo = MAJOR_CURRICULUMS[majorKey];
   const minorInfo = MINOR_CURRICULUMS[minorKey];
@@ -62,7 +62,7 @@ export function CurriculumView({ profile }: CurriculumViewProps) {
       credits: minorInfo ? parseInt(minorInfo.totalCredits) || 18 : 18,
       detail: minorInfo
         ? `${minorInfo.nameTh} (${minorInfo.totalCredits} หน่วยกิต)`
-        : minorNameKey !== 'credit_tracking.minors.default' && minorNameKey !== 'credit_tracking.minors.none'
+        : minorNameKey !== 'minors.default' && minorNameKey !== 'minors.none' && minorNameKey !== 'credit_tracking.minors.default' && minorNameKey !== 'credit_tracking.minors.none'
         ? t('curriculum.minor_name', { name: t(minorNameKey) })
         : t('curriculum.minor_desc_empty'),
     },

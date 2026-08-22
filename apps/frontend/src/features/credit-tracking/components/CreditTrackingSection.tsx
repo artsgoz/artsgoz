@@ -230,7 +230,7 @@ export function CreditTrackingSection() {
             label={t('profile.major_label')}
             value={profile.major}
             options={MAJOR_OPTIONS}
-            placeholder="credit_tracking.profile.select_major"
+            placeholder="profile.select_major"
             onChange={handleUpdateMajor}
           />
           <DropdownMenuContainer
@@ -238,7 +238,7 @@ export function CreditTrackingSection() {
             label={t('profile.minor_label')}
             value={profile.minor}
             options={MINOR_OPTIONS}
-            placeholder="credit_tracking.profile.select_minor"
+            placeholder="profile.select_minor"
             onChange={handleUpdateMinor}
           />
           <DropdownMenuContainer
@@ -246,7 +246,7 @@ export function CreditTrackingSection() {
             label={t('profile.curriculum_label')}
             value={profile.curriculum}
             options={CURRICULUM_OPTIONS}
-            placeholder="credit_tracking.profile.select_curriculum"
+            placeholder="profile.select_curriculum"
             onChange={handleUpdateCurriculum}
           />
         </div>

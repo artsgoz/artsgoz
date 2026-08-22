@@ -40,9 +40,16 @@ export function PlannerView({
   // Active custom subject deletion confirmation ID state
   const [deletingId, setDeletingId] = useState<string | null>(null);
 
+  // Translation key helper to strip any legacy credit_tracking. prefix
+  const translateKey = (key: string): string => {
+    if (!key) return '';
+    const cleanKey = key.replace(/^credit_tracking\./, '');
+    return t(cleanKey);
+  };
+
   // Add custom subject modal states
   const [showAddModal, setShowAddModal] = useState(false);
-  const [targetCategory, setTargetCategory] = useState<SubjectCategory>('credit_tracking.categories.general');
+  const [targetCategory, setTargetCategory] = useState<SubjectCategory>('categories.general');
   const [targetGroup, setTargetGroup] = useState('');
   const [courseCode, setCourseCode] = useState('');
   const [courseNameTh, setCourseNameTh] = useState('');
@@ -55,53 +62,54 @@ export function PlannerView({
 
   // Group helper
   const getSubjectGroup = (subject: Subject): string => {
-    if (subject.group) return subject.group;
+    if (subject.group) return subject.group.replace(/^credit_tracking\./, '');
 
-    if (subject.category === 'credit_tracking.categories.basic') {
+    if (subject.category === 'categories.basic' || subject.category === 'credit_tracking.categories.basic') {
       if (subject.code === '2201111' || subject.code === '2201121') {
-        return 'credit_tracking.planner.groups.basic.g1';
+        return 'planner.groups.basic.g1';
       }
       if (subject.code === '2201112' || subject.code === '2201122') {
-        return 'credit_tracking.planner.groups.basic.g2';
+        return 'planner.groups.basic.g2';
       }
       if (subject.code === '2201211') {
-        return 'credit_tracking.planner.groups.basic.g3';
+        return 'planner.groups.basic.g3';
       }
       if (subject.code === '2201221') {
-        return 'credit_tracking.planner.groups.basic.g4';
+        return 'planner.groups.basic.g4';
       }
-      return 'credit_tracking.planner.groups.basic.g5';
+      return 'planner.groups.basic.g5';
     }
-    if (subject.category === 'credit_tracking.categories.general') {
-      return 'credit_tracking.planner.groups.general.g1';
+    if (subject.category === 'categories.general' || subject.category === 'credit_tracking.categories.general') {
+      return 'planner.groups.general.g1';
     }
-    if (subject.category === 'credit_tracking.categories.free') {
-      return 'credit_tracking.planner.groups.free.g1';
+    if (subject.category === 'categories.free' || subject.category === 'credit_tracking.categories.free') {
+      return 'planner.groups.free.g1';
     }
-    if (subject.category === 'credit_tracking.categories.major') {
+    if (subject.category === 'categories.major' || subject.category === 'credit_tracking.categories.major') {
       if (subject.code === '2202231' || subject.code === '2202232') {
-        return 'credit_tracking.planner.groups.major.g1';
+        return 'planner.groups.major.g1';
       }
       if (subject.code === '2202311' || subject.code === '2202312') {
-        return 'credit_tracking.planner.groups.major.g2';
+        return 'planner.groups.major.g2';
       }
-      return 'credit_tracking.planner.groups.major.g3';
+      return 'planner.groups.major.g3';
     }
-    if (subject.category === 'credit_tracking.categories.minor') {
+    if (subject.category === 'categories.minor' || subject.category === 'credit_tracking.categories.minor') {
       if (subject.code === '2209111' || subject.code === '2209211') {
-        return 'credit_tracking.planner.groups.minor.g1';
+        return 'planner.groups.minor.g1';
       }
-      return 'credit_tracking.planner.groups.minor.g2';
+      return 'planner.groups.minor.g2';
     }
     return '';
   };
 
   const getGroupSubhead = (groupName: string): string => {
-    if (groupName === 'credit_tracking.planner.groups.general.g1') {
-      return 'credit_tracking.planner.subheads.general';
+    const cleanGroup = groupName.replace(/^credit_tracking\./, '');
+    if (cleanGroup === 'planner.groups.general.g1') {
+      return 'planner.subheads.general';
     }
-    if (groupName === 'credit_tracking.planner.groups.free.g1') {
-      return 'credit_tracking.planner.subheads.free';
+    if (cleanGroup === 'planner.groups.free.g1') {
+      return 'planner.subheads.free';
     }
     return '';
   };
@@ -170,55 +178,56 @@ export function PlannerView({
   };
 
   const getCategoryCredits = (cat: SubjectCategory): string => {
-    if (cat === 'credit_tracking.categories.basic') return t('curriculum.credits_val', { count: 27 });
-    if (cat === 'credit_tracking.categories.general') return t('curriculum.credits_val', { count: 30 });
-    if (cat === 'credit_tracking.categories.free') return t('curriculum.credits_val', { count: 6 });
-    if (cat === 'credit_tracking.categories.major') return t('curriculum.credits_val', { count: 48 });
-    if (cat === 'credit_tracking.categories.minor') return t('curriculum.credits_val', { count: 18 });
+    const cleanCat = cat.replace(/^credit_tracking\./, '');
+    if (cleanCat === 'categories.basic') return t('curriculum.credits_val', { count: 27 });
+    if (cleanCat === 'categories.general') return t('curriculum.credits_val', { count: 30 });
+    if (cleanCat === 'categories.free') return t('curriculum.credits_val', { count: 6 });
+    if (cleanCat === 'categories.major') return t('curriculum.credits_val', { count: 48 });
+    if (cleanCat === 'categories.minor') return t('curriculum.credits_val', { count: 18 });
     return '';
   };
 
   const leftSections: { category: SubjectCategory; instructionsKeys?: string[]; groups: string[] }[] = [
     {
-      category: 'credit_tracking.categories.basic',
+      category: 'categories.basic',
       instructionsKeys: [
-        'credit_tracking.planner.instructions.basic1',
-        'credit_tracking.planner.instructions.basic2',
+        'planner.instructions.basic1',
+        'planner.instructions.basic2',
       ],
       groups: [
-        'credit_tracking.planner.groups.basic.g1',
-        'credit_tracking.planner.groups.basic.g2',
-        'credit_tracking.planner.groups.basic.g3',
-        'credit_tracking.planner.groups.basic.g4',
-        'credit_tracking.planner.groups.basic.g5',
+        'planner.groups.basic.g1',
+        'planner.groups.basic.g2',
+        'planner.groups.basic.g3',
+        'planner.groups.basic.g4',
+        'planner.groups.basic.g5',
       ],
     },
     {
-      category: 'credit_tracking.categories.general',
+      category: 'categories.general',
       groups: [
-        'credit_tracking.planner.groups.general.g1',
+        'planner.groups.general.g1',
       ],
     },
     {
-      category: 'credit_tracking.categories.free',
-      groups: ['credit_tracking.planner.groups.free.g1'],
+      category: 'categories.free',
+      groups: ['planner.groups.free.g1'],
     },
   ];
 
   const rightSections: { category: SubjectCategory; groups: string[] }[] = [
     {
-      category: 'credit_tracking.categories.major',
+      category: 'categories.major',
       groups: [
-        'credit_tracking.planner.groups.major.g1',
-        'credit_tracking.planner.groups.major.g2',
-        'credit_tracking.planner.groups.major.g3',
+        'planner.groups.major.g1',
+        'planner.groups.major.g2',
+        'planner.groups.major.g3',
       ],
     },
     {
-      category: 'credit_tracking.categories.minor',
+      category: 'categories.minor',
       groups: [
-        'credit_tracking.planner.groups.minor.g1',
-        'credit_tracking.planner.groups.minor.g2',
+        'planner.groups.minor.g1',
+        'planner.groups.minor.g2',
       ],
     },
   ];
@@ -313,7 +322,7 @@ export function PlannerView({
 
         <div className="flex flex-col min-w-0">
           <span className="text-black text-[16px] font-normal leading-snug break-words">
-            {t(sub.nameKey)}
+            {translateKey(sub.nameKey)}
           </span>
           <span className="text-[#EA6D24] text-[15px] italic mt-0.5 truncate">
             {getSubjectRemark(sub)}
@@ -375,7 +384,7 @@ export function PlannerView({
           <div className="w-full h-[60px] bg-[#E992B4] rounded-[8px] px-5 flex items-end justify-between pb-3">
             <span className="text-[#000000] text-[18px] font-bold truncate pr-2">{t('curriculum.title')}</span>
             <span className="text-[#000000] text-[16px] font-bold shrink-0">
-              {t('planner.total_credits', { credits: getColTotalCredits(['credit_tracking.categories.basic', 'credit_tracking.categories.general', 'credit_tracking.categories.free']) })}
+              {t('planner.total_credits', { credits: getColTotalCredits(['categories.basic', 'categories.general', 'categories.free', 'credit_tracking.categories.basic', 'credit_tracking.categories.general', 'credit_tracking.categories.free']) })}
             </span>
           </div>
 
@@ -384,7 +393,7 @@ export function PlannerView({
             <div key={sec.category} className="w-full flex flex-col gap-6 min-w-0">
               {/* Soft Pink Header */}
               <div className="w-full h-[60px] bg-[#F5CDDC] rounded-[8px] px-5 flex items-end justify-between pb-3">
-                <span className="text-black text-[18px] font-bold truncate pr-2">{t(sec.category)}</span>
+                <span className="text-black text-[18px] font-bold truncate pr-2">{translateKey(sec.category)}</span>
                 <span className="text-black text-[18px] font-bold shrink-0">
                   {getCategoryCredits(sec.category)}
                 </span>
@@ -395,7 +404,7 @@ export function PlannerView({
                 {sec.instructionsKeys && (
                   <div className="flex flex-col gap-2 text-black text-[16px] leading-relaxed">
                     {sec.instructionsKeys.map((instKey) => (
-                      <p key={instKey} className="break-words">{t(instKey)}</p>
+                      <p key={instKey} className="break-words">{translateKey(instKey)}</p>
                     ))}
                   </div>
                 )}
@@ -414,7 +423,7 @@ export function PlannerView({
                         className="flex items-center justify-between cursor-pointer py-3 hover:opacity-80 transition-opacity"
                       >
                         <span className="text-[16px] font-bold text-black flex-1 pr-4 break-words">
-                          {t(group)}
+                          {translateKey(group)}
                         </span>
                         <ChevronDown
                           size={20}
@@ -435,7 +444,7 @@ export function PlannerView({
                             <div className="w-full mt-2 flex flex-col pb-3 min-w-0">
                               {getGroupSubhead(group) && (
                                 <p className="text-[#000000] text-[16px] leading-relaxed mb-4 pr-2 break-words">
-                                  {t(getGroupSubhead(group))}
+                                  {translateKey(getGroupSubhead(group))}
                                 </p>
                               )}
 
@@ -489,10 +498,10 @@ export function PlannerView({
         <div className="w-full xl:w-[518px] flex flex-col gap-8 shrink-0 min-w-0">
           <div className="w-full h-[60px] bg-[#E992B4] rounded-[8px] px-5 flex items-end justify-between pb-3">
             <span className="text-[#000000] text-[18px] font-bold truncate pr-2">
-              {t('profile.major_label')}: {profile.major && profile.major !== 'credit_tracking.profile.select_major' ? t(profile.major) : t('majors.default')}
+              {t('profile.major_label')}: {profile.major && profile.major !== 'profile.select_major' && profile.major !== 'credit_tracking.profile.select_major' ? translateKey(profile.major) : t('majors.default')}
             </span>
             <span className="text-[#000000] text-[16px] font-bold shrink-0">
-              {t('planner.total_credits', { credits: getColTotalCredits(['credit_tracking.categories.major', 'credit_tracking.categories.minor']) })}
+              {t('planner.total_credits', { credits: getColTotalCredits(['categories.major', 'categories.minor', 'credit_tracking.categories.major', 'credit_tracking.categories.minor']) })}
             </span>
           </div>
 
@@ -500,7 +509,7 @@ export function PlannerView({
           {rightSections.map((sec) => (
             <div key={sec.category} className="w-full flex flex-col gap-6 min-w-0">
               <div className="w-full h-[60px] bg-[#F5CDDC] rounded-[8px] px-5 flex items-end justify-between pb-3">
-                <span className="text-black text-[18px] font-bold truncate pr-2">{t(sec.category)}</span>
+                <span className="text-black text-[18px] font-bold truncate pr-2">{translateKey(sec.category)}</span>
                 <span className="text-black text-[18px] font-bold shrink-0">
                   {getCategoryCredits(sec.category)}
                 </span>
@@ -521,7 +530,7 @@ export function PlannerView({
                         className="flex items-center justify-between cursor-pointer py-3 hover:opacity-80 transition-opacity"
                       >
                         <span className="text-[16px] font-bold text-black flex-1 pr-4 break-words">
-                          {t(group)}
+                          {translateKey(group)}
                         </span>
                         <ChevronDown
                           size={20}

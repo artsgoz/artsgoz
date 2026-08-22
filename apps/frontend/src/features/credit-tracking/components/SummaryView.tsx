@@ -14,13 +14,19 @@ export function SummaryView({ subjects, profile, lastSavedTime }: SummaryViewPro
   const { t } = useTranslation('credit_tracking');
   const [successBanner, setSuccessBanner] = useState<string | null>(null);
 
+  const translateKey = (key: string): string => {
+    if (!key) return '';
+    const cleanKey = key.replace(/^credit_tracking\./, '');
+    return t(cleanKey);
+  };
+
   // Requirements configuration using i18n keys
   const categories: { category: SubjectCategory; required: number }[] = [
-    { category: 'credit_tracking.categories.basic', required: 27 },
-    { category: 'credit_tracking.categories.general', required: 30 },
-    { category: 'credit_tracking.categories.free', required: 6 },
-    { category: 'credit_tracking.categories.major', required: 48 },
-    { category: 'credit_tracking.categories.minor', required: 18 },
+    { category: 'categories.basic', required: 27 },
+    { category: 'categories.general', required: 30 },
+    { category: 'categories.free', required: 6 },
+    { category: 'categories.major', required: 48 },
+    { category: 'categories.minor', required: 18 },
   ];
 
   const handleSaveImage = () => {
@@ -70,7 +76,7 @@ export function SummaryView({ subjects, profile, lastSavedTime }: SummaryViewPro
         <div className="w-full h-[60px] bg-[#E992B4] rounded-[8px] px-5 flex items-end justify-between pb-3 min-w-0 gap-4">
           <span className="text-black text-[18px] font-bold truncate">{t('curriculum.title')}</span>
           <span className="text-black text-[16px] font-bold truncate">
-            {t('profile.major_label')}: {profile.major && profile.major !== 'credit_tracking.profile.select_major' ? t(profile.major) : t('majors.default')}
+            {t('profile.major_label')}: {profile.major && profile.major !== 'profile.select_major' && profile.major !== 'credit_tracking.profile.select_major' ? translateKey(profile.major) : t('majors.default')}
           </span>
         </div>
 
@@ -78,7 +84,7 @@ export function SummaryView({ subjects, profile, lastSavedTime }: SummaryViewPro
         <div className="flex flex-col gap-12 pl-0 min-w-0">
           {categories.map((catConfig) => {
             const catSubjects = subjects.filter(
-              (s) => s.category === catConfig.category && s.completed
+              (s) => (s.category === catConfig.category || s.category === `credit_tracking.${catConfig.category}`) && s.completed
             );
             const completedCredits = catSubjects.reduce((sum, s) => sum + s.credits, 0);
             const isCompleted = completedCredits >= catConfig.required;
@@ -88,7 +94,7 @@ export function SummaryView({ subjects, profile, lastSavedTime }: SummaryViewPro
               <div key={catConfig.category} className="w-full flex flex-col gap-6 min-w-0">
                 {/* Soft Pink Header */}
                 <div className="w-full h-[60px] bg-[#F5CDDC] rounded-[8px] px-5 flex items-end justify-between pb-3 min-w-0 gap-4">
-                  <span className="text-black text-[18px] font-bold truncate">{t(catConfig.category)}</span>
+                  <span className="text-black text-[18px] font-bold truncate">{translateKey(catConfig.category)}</span>
                   <span className="text-black text-[18px] font-bold shrink-0">
                     {t('curriculum.credits_val', { count: catConfig.required })}
                   </span>
@@ -136,7 +142,7 @@ export function SummaryView({ subjects, profile, lastSavedTime }: SummaryViewPro
                             </span>
                             <div className="flex flex-col min-w-0">
                               <span className="text-black text-[16px] font-normal leading-snug break-words">
-                                {t(sub.nameKey)}
+                                {translateKey(sub.nameKey)}
                               </span>
                             </div>
                             <span className="text-right font-mono text-black text-[16px] pt-0.5 pr-2 shrink-0">

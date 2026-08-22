@@ -27,8 +27,8 @@ export function generateSubjectsForProfile(majorKeyRaw: string, minorKeyRaw: str
       code: b.code,
       nameKey: b.nameKey,
       credits: b.credits,
-      category: 'credit_tracking.categories.basic',
-      group: 'credit_tracking.planner.groups.basic.g1',
+      category: 'categories.basic',
+      group: 'planner.groups.basic.g1',
       completed: true,
       semester: b.semester,
     });
@@ -48,8 +48,8 @@ export function generateSubjectsForProfile(majorKeyRaw: string, minorKeyRaw: str
       code: g.code,
       nameKey: g.nameKey,
       credits: g.credits,
-      category: 'credit_tracking.categories.general',
-      group: 'credit_tracking.planner.groups.general.g1',
+      category: 'categories.general',
+      group: 'planner.groups.general.g1',
       completed: true,
       semester: g.semester,
     });
@@ -62,9 +62,9 @@ export function generateSubjectsForProfile(majorKeyRaw: string, minorKeyRaw: str
     const specializedCourses = majorInfo.courses.filter(c => c.group.includes('3.') || c.group.includes('เชี่ยวชาญ'));
 
     const activeMajorCourses = [
-      ...compulsoryCourses.slice(0, 6).map((c, i) => ({ ...c, groupType: 'credit_tracking.planner.groups.major.g1', completed: i < 4 })),
-      ...specifiedCourses.slice(0, 4).map((c, i) => ({ ...c, groupType: 'credit_tracking.planner.groups.major.g2', completed: i < 2 })),
-      ...specializedCourses.slice(0, 6).map((c, i) => ({ ...c, groupType: 'credit_tracking.planner.groups.major.g3', completed: i < 2 })),
+      ...compulsoryCourses.slice(0, 6).map((c, i) => ({ ...c, groupType: 'planner.groups.major.g1', completed: i < 4 })),
+      ...specifiedCourses.slice(0, 4).map((c, i) => ({ ...c, groupType: 'planner.groups.major.g2', completed: i < 2 })),
+      ...specializedCourses.slice(0, 6).map((c, i) => ({ ...c, groupType: 'planner.groups.major.g3', completed: i < 2 })),
     ];
 
     activeMajorCourses.forEach((c, index) => {
@@ -73,7 +73,7 @@ export function generateSubjectsForProfile(majorKeyRaw: string, minorKeyRaw: str
         code: c.code,
         nameKey: c.nameTh,
         credits: c.credits || 3,
-        category: 'credit_tracking.categories.major',
+        category: 'categories.major',
         group: c.groupType,
         completed: c.completed,
         semester: 3 + (index % 5),
@@ -90,8 +90,8 @@ export function generateSubjectsForProfile(majorKeyRaw: string, minorKeyRaw: str
         code: c.code,
         nameKey: c.nameTh,
         credits: c.credits || 3,
-        category: 'credit_tracking.categories.minor',
-        group: isCompulsory ? 'credit_tracking.planner.groups.minor.g1' : 'credit_tracking.planner.groups.minor.g2',
+        category: 'categories.minor',
+        group: isCompulsory ? 'planner.groups.minor.g1' : 'planner.groups.minor.g2',
         completed: index < 3,
         semester: 4 + (index % 4),
       });
@@ -110,8 +110,8 @@ export function generateSubjectsForProfile(majorKeyRaw: string, minorKeyRaw: str
       code: f.code,
       nameKey: f.nameKey,
       credits: f.credits,
-      category: 'credit_tracking.categories.free',
-      group: 'credit_tracking.planner.groups.free.g1',
+      category: 'categories.free',
+      group: 'planner.groups.free.g1',
       completed: f.completed,
       semester: f.semester,
     });

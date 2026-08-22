@@ -11,23 +11,23 @@ interface ProfileSetupFormProps {
 
 export function ProfileSetupForm({ onSetupComplete }: ProfileSetupFormProps) {
   const { t } = useTranslation('credit_tracking');
-  const [major, setMajor] = useState('credit_tracking.profile.select_major');
-  const [minor, setMinor] = useState('credit_tracking.profile.select_minor');
-  const [curriculum, setCurriculum] = useState('credit_tracking.profile.select_curriculum');
+  const [major, setMajor] = useState('profile.select_major');
+  const [minor, setMinor] = useState('profile.select_minor');
+  const [curriculum, setCurriculum] = useState('profile.select_curriculum');
   const [error, setError] = useState('');
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
 
-    if (!major || major === 'credit_tracking.profile.select_major') {
+    if (!major || major === 'profile.select_major' || major === 'credit_tracking.profile.select_major') {
       setError(t('profile.error_major'));
       return;
     }
-    if (!minor || minor === 'credit_tracking.profile.select_minor') {
+    if (!minor || minor === 'profile.select_minor' || minor === 'credit_tracking.profile.select_minor') {
       setError(t('profile.error_minor'));
       return;
     }
-    if (!curriculum || curriculum === 'credit_tracking.profile.select_curriculum') {
+    if (!curriculum || curriculum === 'profile.select_curriculum' || curriculum === 'credit_tracking.profile.select_curriculum') {
       setError(t('profile.error_curriculum'));
       return;
     }
@@ -55,7 +55,7 @@ export function ProfileSetupForm({ onSetupComplete }: ProfileSetupFormProps) {
             label={t('profile.major_label')}
             value={major}
             options={MAJOR_OPTIONS}
-            placeholder="credit_tracking.profile.select_major"
+            placeholder="profile.select_major"
             onChange={setMajor}
           />
           <DropdownMenuContainer
@@ -63,7 +63,7 @@ export function ProfileSetupForm({ onSetupComplete }: ProfileSetupFormProps) {
             label={t('profile.minor_label')}
             value={minor}
             options={MINOR_OPTIONS}
-            placeholder="credit_tracking.profile.select_minor"
+            placeholder="profile.select_minor"
             onChange={setMinor}
           />
           <DropdownMenuContainer
@@ -71,7 +71,7 @@ export function ProfileSetupForm({ onSetupComplete }: ProfileSetupFormProps) {
             label={t('profile.curriculum_label')}
             value={curriculum}
             options={CURRICULUM_OPTIONS}
-            placeholder="credit_tracking.profile.select_curriculum"
+            placeholder="profile.select_curriculum"
             onChange={setCurriculum}
           />
         </div>
