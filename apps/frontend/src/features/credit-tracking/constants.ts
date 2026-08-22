@@ -35,12 +35,20 @@ export const MINOR_OPTIONS = [
   'minors.thai',
   'minors.english',
   'minors.history',
+  'minors.geography',
+  'minors.information_studies',
   'minors.philosophy',
+  'minors.dramatic_arts',
+  'minors.south_asian_languages',
   'minors.chinese',
   'minors.japanese',
   'minors.korean',
   'minors.french',
   'minors.german',
+  'minors.spanish',
+  'minors.italian',
+  'minors.russian',
+  'minors.world_literature',
 ];
 
 export const CURRICULUM_OPTIONS = [

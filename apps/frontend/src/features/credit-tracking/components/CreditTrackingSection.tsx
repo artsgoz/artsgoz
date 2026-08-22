@@ -141,8 +141,11 @@ export function CreditTrackingSection() {
 
   const handleUpdateMajor = (newMajor: string) => {
     if (!profile) return;
-    const nextProfile = { ...profile, major: newMajor };
-    const nextSubjects = generateSubjectsForProfile(newMajor, profile.minor);
+    const newMajorKey = newMajor.replace(/^credit_tracking\./, '').replace(/^majors\./, '');
+    const currentMinorKey = profile.minor ? profile.minor.replace(/^credit_tracking\./, '').replace(/^minors\./, '') : '';
+    const nextMinor = (newMajorKey && currentMinorKey === newMajorKey) ? 'minors.none' : profile.minor;
+    const nextProfile = { ...profile, major: newMajor, minor: nextMinor };
+    const nextSubjects = generateSubjectsForProfile(newMajor, nextMinor);
     setProfile(nextProfile);
     setSubjects(nextSubjects);
     saveState(step, nextProfile, nextSubjects);
@@ -237,7 +240,12 @@ export function CreditTrackingSection() {
             id="select-minor"
             label={t('profile.minor_label')}
             value={profile.minor}
-            options={MINOR_OPTIONS}
+            options={MINOR_OPTIONS.filter(opt => {
+              if (opt === 'profile.select_minor' || opt === 'minors.none') return true;
+              const currentMajorKey = profile.major ? profile.major.replace(/^credit_tracking\./, '').replace(/^majors\./, '') : '';
+              const minorKey = opt.replace(/^credit_tracking\./, '').replace(/^minors\./, '');
+              return minorKey !== currentMajorKey;
+            })}
             placeholder="profile.select_minor"
             onChange={handleUpdateMinor}
           />

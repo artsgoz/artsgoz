@@ -36,6 +36,22 @@ export function ProfileSetupForm({ onSetupComplete }: ProfileSetupFormProps) {
     onSetupComplete({ major, minor, curriculum });
   };
 
+  const currentMajorKey = major ? major.replace(/^credit_tracking\./, '').replace(/^majors\./, '') : '';
+  const filteredMinorOptions = MINOR_OPTIONS.filter(opt => {
+    if (opt === 'profile.select_minor' || opt === 'minors.none') return true;
+    const minorKey = opt.replace(/^credit_tracking\./, '').replace(/^minors\./, '');
+    return minorKey !== currentMajorKey;
+  });
+
+  const handleMajorChange = (newMajor: string) => {
+    setMajor(newMajor);
+    const newMajorKey = newMajor.replace(/^credit_tracking\./, '').replace(/^majors\./, '');
+    const currentMinorKey = minor.replace(/^credit_tracking\./, '').replace(/^minors\./, '');
+    if (newMajorKey && currentMinorKey === newMajorKey) {
+      setMinor('minors.none');
+    }
+  };
+
   return (
     <div className="w-full max-w-[620px] mx-auto bg-white border border-[#D0D0D1]/30 rounded-[16px] shadow-lg p-6 md:p-8 font-[ChulaCharasNew] my-8 select-none">
       <div className="text-center mb-8">
@@ -56,13 +72,13 @@ export function ProfileSetupForm({ onSetupComplete }: ProfileSetupFormProps) {
             value={major}
             options={MAJOR_OPTIONS}
             placeholder="profile.select_major"
-            onChange={setMajor}
+            onChange={handleMajorChange}
           />
           <DropdownMenuContainer
             id="select-minor"
             label={t('profile.minor_label')}
             value={minor}
-            options={MINOR_OPTIONS}
+            options={filteredMinorOptions}
             placeholder="profile.select_minor"
             onChange={setMinor}
           />
