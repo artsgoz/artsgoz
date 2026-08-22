@@ -18,7 +18,7 @@ export function PDPAForm({ onConfirm }: PDPAFormProps) {
   };
 
   return (
-    <div className="w-full max-w-[680px] mx-auto bg-white border border-[#D0D0D1]/30 rounded-[16px] shadow-lg p-6 md:p-10 font-[ChulaCharasNew] my-8 select-none">
+    <div className="w-full max-w-[680px] mx-auto bg-white border border-[#D0D0D1]/30 rounded-[16px] shadow-lg p-6 md:p-10 font-[ChulaCharasNew] my-8">
       <h2 className="text-[#DE5D8F] text-[24px] md:text-[32px] font-bold text-center mb-6 leading-tight break-words">
         {t('pdpa.title')}
       </h2>

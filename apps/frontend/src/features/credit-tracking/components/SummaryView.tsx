@@ -39,7 +39,7 @@ export function SummaryView({ subjects, profile, lastSavedTime }: SummaryViewPro
   };
 
   return (
-    <div className="w-full font-[ChulaCharasNew] select-none pb-20 text-black animate-fade-in min-w-0">
+    <div className="w-full font-[ChulaCharasNew] pb-20 text-black animate-fade-in min-w-0">
       {/* Success Notification */}
       {successBanner && (
         <div className="fixed top-24 left-1/2 transform -translate-x-1/2 z-50 shadow-lg animate-fade-in min-w-[320px] md:min-w-[480px]">

@@ -308,7 +308,7 @@ export function PlannerView({
   };
 
   return (
-    <div className="w-full font-[ChulaCharasNew] select-none pb-20 text-black min-w-0">
+    <div className="w-full font-[ChulaCharasNew] pb-20 text-black min-w-0">
       {/* Success Banner Notification */}
       {successBanner && (
         <div className="fixed top-24 left-1/2 transform -translate-x-1/2 z-50 shadow-lg animate-fade-in min-w-[320px] md:min-w-[480px]">
@@ -554,7 +554,7 @@ export function PlannerView({
       {/* Add Custom Subject Overlay Modal */}
       {showAddModal && (
         <div className="fixed inset-0 bg-black/60 z-50 flex items-center justify-center p-4 backdrop-blur-xs font-[ChulaCharasNew]">
-          <div className="bg-white border border-[#D0D0D1]/30 rounded-[16px] shadow-2xl p-6 md:p-8 max-w-[500px] w-full select-none text-black">
+          <div className="bg-white border border-[#D0D0D1]/30 rounded-[16px] shadow-2xl p-6 md:p-8 max-w-[500px] w-full text-black">
             <div className="flex items-center justify-between border-b border-[#D0D0D1]/20 pb-4 mb-6">
               <h3 className="text-[22px] font-bold flex items-center gap-2 text-[#DE5D8F] truncate">
                 <Sparkles size={20} />
@@ -663,7 +663,7 @@ export function PlannerView({
       {/* Confirmation modal */}
       {showConfirmModal && (
         <div className="fixed inset-0 bg-black/60 z-50 flex items-center justify-center p-4 backdrop-blur-xs font-[ChulaCharasNew]">
-          <div className="bg-white border border-[#D0D0D1]/30 rounded-[16px] shadow-2xl p-6 md:p-8 max-w-[480px] w-full select-none text-black">
+          <div className="bg-white border border-[#D0D0D1]/30 rounded-[16px] shadow-2xl p-6 md:p-8 max-w-[480px] w-full text-black">
             <h3 className="text-black text-[22px] font-bold mb-4">{t('planner.confirm_modal_title')}</h3>
             <p className="text-[#6D6D6D] text-[16px] leading-relaxed mb-6">
               {t('planner.confirm_modal_desc')}

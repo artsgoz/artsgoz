@@ -86,7 +86,7 @@ export function CurriculumView({ profile }: CurriculumViewProps) {
 
   return (
     <div
-      className="w-full space-y-10 select-none min-w-0"
+      className="w-full space-y-10 min-w-0"
       style={{ fontFamily: 'ChulaCharasNew, sans-serif' }}
     >
       {/* ───── Top Section: Title + Curriculum Overview ───── */}

@@ -54,7 +54,7 @@ export function CreditsSummaryCard({ progressList }: CreditsSummaryCardProps) {
 
   return (
     <div
-      className="select-none max-w-full overflow-x-auto"
+      className="max-w-full overflow-x-auto"
       style={{ fontFamily: 'ChulaCharasNew, sans-serif' }}
     >
       {/* Rounded wrapper clips the table corners */}

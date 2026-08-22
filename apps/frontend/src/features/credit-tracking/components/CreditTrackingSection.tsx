@@ -218,7 +218,7 @@ export function CreditTrackingSection() {
   }
 
   return (
-    <div className="w-full max-w-[1280px] mx-auto px-4 md:px-8 py-10 md:py-16 font-[ChulaCharasNew] select-none min-w-0">
+    <div className="w-full max-w-[1280px] mx-auto px-4 md:px-8 py-10 md:py-16 font-[ChulaCharasNew] min-w-0">
       {/* Top Header Section with profile display */}
       <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-6 mb-24 min-w-0">
         <div className="min-w-0">

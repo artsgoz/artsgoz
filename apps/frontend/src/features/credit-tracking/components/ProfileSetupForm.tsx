@@ -53,7 +53,7 @@ export function ProfileSetupForm({ onSetupComplete }: ProfileSetupFormProps) {
   };
 
   return (
-    <div className="w-full max-w-[620px] mx-auto bg-white border border-[#D0D0D1]/30 rounded-[16px] shadow-lg p-6 md:p-8 font-[ChulaCharasNew] my-8 select-none">
+    <div className="w-full max-w-[620px] mx-auto bg-white border border-[#D0D0D1]/30 rounded-[16px] shadow-lg p-6 md:p-8 font-[ChulaCharasNew] my-8">
       <div className="text-center mb-8">
         <h2 className="text-black text-[28px] font-bold mb-1">Academic Tracker</h2>
         <p className="text-[#6D6D6D] text-[18px] break-words">{t('subtitle')}</p>

@@ -12,9 +12,9 @@ export function AcademicTrackerNavBar({ activeTab, onTabChange, showSummary }: A
   const { t } = useTranslation('credit_tracking');
 
   const tabs: { key: ActiveTab; labelKey: string }[] = [
-    { key: 'curriculum', labelKey: 'credit_tracking.navbar.curriculum' },
-    { key: 'planner', labelKey: 'credit_tracking.navbar.planner' },
-    ...(showSummary ? [{ key: 'summary' as ActiveTab, labelKey: 'credit_tracking.navbar.summary' }] : []),
+    { key: 'curriculum', labelKey: 'navbar.curriculum' },
+    { key: 'planner', labelKey: 'navbar.planner' },
+    ...(showSummary ? [{ key: 'summary' as ActiveTab, labelKey: 'navbar.summary' }] : []),
   ];
 
   return (
