@@ -106,10 +106,6 @@ export function DesktopMenu() {
                 >
                   {t(item.label)}
                 </Link>
-                {/* Active indicator underline */}
-                {isMenuOpen && (
-                  <span className="absolute -bottom-[28px] left-0 right-0 h-[3px] bg-[#D23976] rounded-full" />
-                )}
               </div>
             );
           }

@@ -19,8 +19,8 @@ export interface DropdownItem {
 // ─── Shared column templates (matching Figma) ────────────────────────────────
 
 /** Academic services column — EL-146ec999 template */
-const ACADEMIC_COLUMN = (accent = false): MegaMenuCategory['items'] => [
-  { label: 'ติดตามหน่วยกิต',       path: PATHS.CREDIT_TRACKING, accent },
+const ACADEMIC_COLUMN = (): MegaMenuCategory['items'] => [
+  { label: 'ติดตามหน่วยกิต',       path: PATHS.CREDIT_TRACKING },
   { label: 'ใบเหลืองใบฟ้าออนไลน์', path: PATHS.YELLOW_CARD },
   { label: 'ค้นหาชื่ออาจารย์',       path: PATHS.PROFESSORS },
   { label: 'หลักสูตรจากภาคต่าง ๆ',  path: PATHS.CURRICULUM },
@@ -37,7 +37,7 @@ const CLUBS_COLUMN = (): MegaMenuCategory['items'] => [
 
 /** Mega-menu used for "บริการนิสิต" — five category columns per Figma */
 const STUDENT_SERVICES_MEGA_MENU: MegaMenuCategory[] = [
-  { label: 'บริการวิชาการ',       items: ACADEMIC_COLUMN(true) },
+  { label: 'บริการวิชาการ',       items: ACADEMIC_COLUMN() },
   { label: 'บริการทั่วไป',        items: CLUBS_COLUMN() },
   { label: 'บริการเรียนรู้',       items: ACADEMIC_COLUMN() },
   { label: 'บริการจากกอศ.',       items: CLUBS_COLUMN() },

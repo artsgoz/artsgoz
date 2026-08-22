@@ -10,8 +10,6 @@ export interface MegaMenuCategory {
 export interface MegaMenuItem {
   label: string;
   path: string;
-  /** If true, renders item in pink accent colour (#D23976) — used for the primary/featured item */
-  accent?: boolean;
 }
 
 interface MegaMenuProps {
@@ -28,35 +26,22 @@ export function MegaMenu({ categories, onClose }: MegaMenuProps) {
       style={{ top: '81px' }}
     >
       {/* Inner container — max-width matches the rest of the site */}
-      <div className="max-w-[1282px] mx-auto px-[50px] py-8">
+      <div className="max-w-[1282px] mx-auto px-[50px] pt-8 pb-14">
         {/* Category tabs row */}
-        <div className="flex items-end gap-[73px] mb-8 border-b border-gray-200 pb-6">
+        <div className="flex items-center gap-[73px] mb-8 border-b border-gray-200 pb-6">
           {categories.map((cat) => (
-            <div key={cat.label} className="flex items-end gap-1 shrink-0">
-              {/* Pink asterisk — exact from Figma style_fda135f3 */}
-              <span
-                style={{
-                  fontFamily: FONT_FAMILY,
-                  fontWeight: 700,
-                  fontSize: '32px',
-                  lineHeight: '24px',
-                  color: '#D23976',
-                }}
-              >
-                *
-              </span>
-              <span
-                style={{
-                  fontFamily: FONT_FAMILY,
-                  fontWeight: 700,
-                  fontSize: '24px',
-                  lineHeight: '28px',
-                  color: '#000000',
-                }}
-              >
-                {cat.label}
-              </span>
-            </div>
+            <span
+              key={cat.label}
+              style={{
+                fontFamily: FONT_FAMILY,
+                fontWeight: 700,
+                fontSize: '24px',
+                lineHeight: '28px',
+                color: '#000000',
+              }}
+            >
+              {cat.label}
+            </span>
           ))}
         </div>
 
@@ -74,10 +59,10 @@ export function MegaMenu({ categories, onClose }: MegaMenuProps) {
                     fontWeight: 400,
                     fontSize: '20px',
                     lineHeight: '28px',
-                    color: item.accent ? '#D23976' : '#000000',
+                    color: '#000000',
                     textDecoration: 'none',
                   }}
-                  className="hover:opacity-70 transition-opacity whitespace-nowrap"
+                  className="hover:!text-[#D23976] transition-colors whitespace-nowrap"
                 >
                   {item.label}
                 </Link>
