@@ -21,7 +21,7 @@ export function BannerCarousel({
 
   return (
     <div className="w-full h-full flex justify-center relative min-w-0">
-      <div className="relative overflow-hidden w-full h-full group bg-background-subtle">
+      <div className="relative overflow-hidden w-full h-full group bg-white">
         <div
           className="absolute inset-0 flex transition-transform"
           style={{
@@ -36,10 +36,10 @@ export function BannerCarousel({
               <a
                 key={`${banner.id}-${index}`}
                 href={banner.linkUrl}
-                className="min-w-full h-full relative block shrink-0 overflow-hidden bg-gray-200"
+                className="min-w-full h-full relative block shrink-0 overflow-hidden bg-white"
               >
                 {!banner.desktopImageUrl && !banner.mobileImageUrl ? (
-                  <div className="w-full h-full relative flex items-center justify-start bg-gray-200 transition-all duration-500 overflow-hidden" />
+                  <div className="w-full h-full relative flex items-center justify-start bg-white transition-all duration-500 overflow-hidden" />
                 ) : (
                   <picture>
                     <source

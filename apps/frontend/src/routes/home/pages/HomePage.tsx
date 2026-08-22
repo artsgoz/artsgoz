@@ -44,9 +44,9 @@ export function HomePage() {
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
 
   return (
-    <div className="mt-[-65px] lg:mt-[-81px] pt-[65px] lg:pt-[81px] w-full bg-background-default overflow-y-auto scroll-smooth [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none] flex flex-col">
+    <div className="mt-[-65px] lg:mt-[-81px] pt-[65px] lg:pt-[81px] w-full bg-white overflow-y-auto scroll-smooth [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none] flex flex-col">
       {/* Section 1: Hero Banner — 80% viewport height */}
-      <div className="w-full h-[80vh] bg-gray-200 shrink-0 relative overflow-hidden">
+      <div className="w-full h-[80vh] bg-white shrink-0 relative overflow-hidden">
         <HomeBanner />
         <NoiseOverlay />
       </div>
@@ -111,7 +111,7 @@ export function HomePage() {
       </div>
 
       {/* Section 3: ปฏิทินกิจกรรมและกำหนดการ */}
-      <div className="w-full bg-[var(--blog-banner-background-color-default,#F7F8F9)] py-16 md:py-24 lg:py-32 relative overflow-hidden">
+      <div className="w-full bg-white py-16 md:py-24 lg:py-32 relative overflow-hidden">
         <div className="max-w-[1282px] mx-auto px-4 lg:px-6 w-full relative z-10">
           <AgendaWidgets />
         </div>
@@ -126,8 +126,8 @@ export function HomePage() {
         <NoiseOverlay />
       </div>
 
-      {/* Section 5: Clubs (Light Gray Band) */}
-      <div className="w-full bg-[var(--blog-banner-background-color-default,#F7F8F9)] py-16 md:py-24 lg:py-32 relative overflow-hidden">
+      {/* Section 5: Clubs */}
+      <div className="w-full bg-white py-16 md:py-24 lg:py-32 relative overflow-hidden">
         <div className="max-w-[1282px] mx-auto px-4 lg:px-6 w-full relative z-10">
           <ClubsSection />
         </div>
