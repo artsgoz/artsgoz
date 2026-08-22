@@ -142,7 +142,7 @@ export function SummaryView({ subjects, profile, lastSavedTime }: SummaryViewPro
                             </span>
                             <div className="flex flex-col min-w-0">
                               <span className="text-black text-[16px] font-normal leading-snug break-words">
-                                {translateKey(sub.nameKey)}
+                                {sub.nameKey}
                               </span>
                             </div>
                             <span className="text-right font-mono text-black text-[16px] pt-0.5 pr-2 shrink-0">

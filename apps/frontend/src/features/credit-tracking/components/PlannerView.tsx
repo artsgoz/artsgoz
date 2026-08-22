@@ -1,9 +1,10 @@
-import { useState } from 'react';
+import { useState, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { ChevronDown, Plus, Trash2, Check, X, Sparkles } from 'lucide-react';
 import type { Subject, SubjectCategory, AcademicProfile } from '../types.js';
 import { SystemBanner } from '../../../components/SystemBanner/index.js';
 import { motion, AnimatePresence } from 'framer-motion';
+import { getMajorGroups, getMinorGroups, getGroupLabel } from '../utils/subjectGenerator.js';
 
 interface PlannerViewProps {
   subjects: Subject[];
@@ -60,24 +61,11 @@ export function PlannerView({
   const [showConfirmModal, setShowConfirmModal] = useState(false);
   const [successBanner, setSuccessBanner] = useState<string | null>(null);
 
-  // Group helper
+  // Group helper – subjects now store the canonical group key directly
   const getSubjectGroup = (subject: Subject): string => {
     if (subject.group) return subject.group.replace(/^credit_tracking\./, '');
-
     if (subject.category === 'categories.basic' || subject.category === 'credit_tracking.categories.basic') {
-      if (subject.code === '2201111' || subject.code === '2201121') {
-        return 'planner.groups.basic.g1';
-      }
-      if (subject.code === '2201112' || subject.code === '2201122') {
-        return 'planner.groups.basic.g2';
-      }
-      if (subject.code === '2201211') {
-        return 'planner.groups.basic.g3';
-      }
-      if (subject.code === '2201221') {
-        return 'planner.groups.basic.g4';
-      }
-      return 'planner.groups.basic.g5';
+      return 'planner.groups.basic.g1';
     }
     if (subject.category === 'categories.general' || subject.category === 'credit_tracking.categories.general') {
       return 'planner.groups.general.g1';
@@ -86,33 +74,17 @@ export function PlannerView({
       return 'planner.groups.free.g1';
     }
     if (subject.category === 'categories.major' || subject.category === 'credit_tracking.categories.major') {
-      if (subject.code === '2202231' || subject.code === '2202232') {
-        return 'planner.groups.major.g1';
-      }
-      if (subject.code === '2202311' || subject.code === '2202312') {
-        return 'planner.groups.major.g2';
-      }
-      return 'planner.groups.major.g3';
+      return 'major-compulsory';
     }
     if (subject.category === 'categories.minor' || subject.category === 'credit_tracking.categories.minor') {
-      if (subject.code === '2209111' || subject.code === '2209211') {
-        return 'planner.groups.minor.g1';
-      }
-      return 'planner.groups.minor.g2';
+      return 'minor-compulsory';
     }
     return '';
   };
 
-  const getGroupSubhead = (groupName: string): string => {
-    const cleanGroup = groupName.replace(/^credit_tracking\./, '');
-    if (cleanGroup === 'planner.groups.general.g1') {
-      return 'planner.subheads.general';
-    }
-    if (cleanGroup === 'planner.groups.free.g1') {
-      return 'planner.subheads.free';
-    }
-    return '';
-  };
+  // Dynamically derive major/minor groups from loaded subjects
+  const dynamicMajorGroups = useMemo(() => getMajorGroups(subjects), [subjects]);
+  const dynamicMinorGroups = useMemo(() => getMinorGroups(subjects), [subjects]);
 
   const toggleGroup = (groupName: string) => {
     setExpandedGroups((prev) => {
@@ -194,19 +166,11 @@ export function PlannerView({
         'planner.instructions.basic1',
         'planner.instructions.basic2',
       ],
-      groups: [
-        'planner.groups.basic.g1',
-        'planner.groups.basic.g2',
-        'planner.groups.basic.g3',
-        'planner.groups.basic.g4',
-        'planner.groups.basic.g5',
-      ],
+      groups: ['planner.groups.basic.g1'],
     },
     {
       category: 'categories.general',
-      groups: [
-        'planner.groups.general.g1',
-      ],
+      groups: ['planner.groups.general.g1'],
     },
     {
       category: 'categories.free',
@@ -217,26 +181,21 @@ export function PlannerView({
   const rightSections: { category: SubjectCategory; groups: string[] }[] = [
     {
       category: 'categories.major',
-      groups: [
-        'planner.groups.major.g1',
-        'planner.groups.major.g2',
-        'planner.groups.major.g3',
-      ],
+      groups: dynamicMajorGroups.length > 0 ? dynamicMajorGroups : ['major-compulsory', 'major-specified', 'major-specialized'],
     },
     {
       category: 'categories.minor',
-      groups: [
-        'planner.groups.minor.g1',
-        'planner.groups.minor.g2',
-      ],
+      groups: dynamicMinorGroups.length > 0 ? dynamicMinorGroups : ['minor-compulsory', 'minor-elective'],
     },
   ];
 
   const canAddCustom = (category: SubjectCategory, group: string): boolean => {
-    if (category === 'credit_tracking.categories.general') return true;
-    if (category === 'credit_tracking.categories.free') return true;
-    if (category === 'credit_tracking.categories.major' && (group.includes('g2') || group.includes('g3'))) return true;
-    if (category === 'credit_tracking.categories.minor' && group.includes('g2')) return true;
+    if (category === 'categories.general' || category === 'credit_tracking.categories.general') return true;
+    if (category === 'categories.free' || category === 'credit_tracking.categories.free') return true;
+    if ((category === 'categories.major' || category === 'credit_tracking.categories.major') &&
+        (group === 'major-specified' || group === 'major-specialized' || group === 'major-elective' || group === 'major-required-elective')) return true;
+    if ((category === 'categories.minor' || category === 'credit_tracking.categories.minor') &&
+        (group === 'minor-elective' || group === 'minor-required-elective')) return true;
     return false;
   };
 
@@ -267,7 +226,7 @@ export function PlannerView({
           <div className="flex flex-col md:flex-row justify-between items-start gap-4 min-w-0 flex-1">
             <div className="flex flex-col min-w-0">
               <span className="text-[#D52048] text-[16px] font-bold leading-snug break-words">
-                {t(sub.nameKey)}
+                {sub.nameKey}
               </span>
               <span className="text-[#EA6D24] text-[14px] italic mt-0.5 font-bold truncate">
                 {getSubjectRemark(sub)}
@@ -322,7 +281,7 @@ export function PlannerView({
 
         <div className="flex flex-col min-w-0">
           <span className="text-black text-[16px] font-normal leading-snug break-words">
-            {translateKey(sub.nameKey)}
+            {sub.nameKey}
           </span>
           <span className="text-[#EA6D24] text-[15px] italic mt-0.5 truncate">
             {getSubjectRemark(sub)}
@@ -423,7 +382,7 @@ export function PlannerView({
                         className="flex items-center justify-between cursor-pointer py-3 hover:opacity-80 transition-opacity"
                       >
                         <span className="text-[16px] font-bold text-black flex-1 pr-4 break-words">
-                          {translateKey(group)}
+                          {getGroupLabel(group)}
                         </span>
                         <ChevronDown
                           size={20}
@@ -442,11 +401,6 @@ export function PlannerView({
                             className="w-full overflow-hidden"
                           >
                             <div className="w-full mt-2 flex flex-col pb-3 min-w-0">
-                              {getGroupSubhead(group) && (
-                                <p className="text-[#000000] text-[16px] leading-relaxed mb-4 pr-2 break-words">
-                                  {translateKey(getGroupSubhead(group))}
-                                </p>
-                              )}
 
                               {groupSubjects.length > 0 && (
                                 <div className="w-full flex flex-col min-w-0 overflow-auto">
@@ -530,7 +484,7 @@ export function PlannerView({
                         className="flex items-center justify-between cursor-pointer py-3 hover:opacity-80 transition-opacity"
                       >
                         <span className="text-[16px] font-bold text-black flex-1 pr-4 break-words">
-                          {translateKey(group)}
+                          {getGroupLabel(group)}
                         </span>
                         <ChevronDown
                           size={20}
@@ -549,11 +503,6 @@ export function PlannerView({
                             className="w-full overflow-hidden"
                           >
                             <div className="w-full mt-2 flex flex-col pb-3 min-w-0">
-                              {getGroupSubhead(group) && (
-                                <p className="text-[#000000] text-[16px] leading-relaxed mb-4 pr-2 break-words">
-                                  {t(getGroupSubhead(group))}
-                                </p>
-                              )}
 
                               {groupSubjects.length > 0 && (
                                 <div className="w-full flex flex-col min-w-0 overflow-auto">
@@ -624,7 +573,7 @@ export function PlannerView({
               <div className="flex flex-col gap-1.5 min-w-0">
                 <label className="text-[14px] font-bold text-[#6D6D6D]">{t('planner.selected_group_label')}</label>
                 <div className="bg-[#F7F8F9] px-3 py-2.5 rounded-[8px] text-[15px] font-bold text-black border border-[#D0D0D1]/30 truncate">
-                  {t(targetGroup)}
+                  {getGroupLabel(targetGroup)}
                 </div>
               </div>
 
