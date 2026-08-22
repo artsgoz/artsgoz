@@ -121,9 +121,18 @@ function getModalContentConfig(serviceName: string): ModalContentDetails | null 
 
 // ── Bento Card Component ───────────────────────────────────────────────────────
 function BentoCard({ service }: { service: ServiceItem }) {
-  const { t } = useTranslation('student_services');
+  const { t } = useTranslation(['student_services', 'home']);
   const [, setSearchParams] = useSearchParams();
   const navigate = useNavigate();
+
+  const translateKey = (key: string): string => {
+    if (!key) return '';
+    if (key.startsWith('quick_access.')) {
+      return t(key, { ns: 'home' });
+    }
+    const cleanKey = key.replace(/^student_services\./, '');
+    return t(cleanKey);
+  };
 
   const handleCardClick = () => {
     if (service.isExternal) {
@@ -136,8 +145,8 @@ function BentoCard({ service }: { service: ServiceItem }) {
     }
   };
 
-  const serviceTitle = t(service.titleKey);
-  const serviceDescription = t(service.descriptionKey);
+  const serviceTitle = translateKey(service.titleKey);
+  const serviceDescription = translateKey(service.descriptionKey);
 
   // Render specific layout based on service.id
   switch (service.id) {
@@ -587,10 +596,19 @@ function BentoCard({ service }: { service: ServiceItem }) {
 
 // ── Main Page ──────────────────────────────────────────────────────────────────
 export default function StudentServicesPage2() {
-  const { t } = useTranslation('student_services');
+  const { t } = useTranslation(['student_services', 'home']);
   const [searchParams, setSearchParams] = useSearchParams();
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedFilter, setSelectedFilter] = useState('all');
+
+  const translateKey = (key: string): string => {
+    if (!key) return '';
+    if (key.startsWith('quick_access.')) {
+      return t(key, { ns: 'home' });
+    }
+    const cleanKey = key.replace(/^student_services\./, '');
+    return t(cleanKey);
+  };
 
   const activeService = searchParams.get('service');
 
@@ -602,8 +620,8 @@ export default function StudentServicesPage2() {
 
   const filteredServices = SERVICES_DATA.filter((service) => {
     const matchesSearch =
-      t(service.titleKey).toLowerCase().includes(searchQuery.toLowerCase()) ||
-      t(service.descriptionKey).toLowerCase().includes(searchQuery.toLowerCase()) ||
+      translateKey(service.titleKey).toLowerCase().includes(searchQuery.toLowerCase()) ||
+      translateKey(service.descriptionKey).toLowerCase().includes(searchQuery.toLowerCase()) ||
       service.tags.some(tag => tag.toLowerCase().includes(searchQuery.toLowerCase()));
     return matchesSearch;
   });
@@ -621,14 +639,14 @@ export default function StudentServicesPage2() {
     <div className="w-full bg-[#FFF] flex flex-col min-h-screen relative">
       <div className="flex-1 w-full bg-white flex flex-col pt-12 pb-16">
         <div className="max-w-[1282px] w-full mx-auto px-4 lg:px-6 flex-1 flex flex-col">
-          <SectionHeading title={t('title') + " (Bento Grid)"} description={t('desc')} />
+          <SectionHeading title={translateKey('title') + " (Bento Grid)"} description={translateKey('desc')} />
 
           <div className="mt-8 pb-8 w-full">
             <div className="relative max-w-full">
               <Search size={18} className="absolute left-4 top-1/2 -translate-y-1/2 text-[#DE5D8F] pointer-events-none" />
               <input
                 type="text"
-                placeholder={t('search_placeholder')}
+                placeholder={translateKey('search_placeholder')}
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 className="w-full pl-12 pr-10 py-3 rounded-full border border-[#8B8B8C] bg-white text-[16px] font-[ChulaCharasNew] text-[#DE5D8F] placeholder:text-[#DE5D8F] focus:outline-none focus:ring-2 focus:ring-[#DE5D8F]/30 transition-all"
@@ -658,7 +676,7 @@ export default function StudentServicesPage2() {
                           : 'text-gray-500 hover:text-[#DE5D8F]/80'
                       }`}
                     >
-                      {t(item.labelKey)}
+                      {translateKey(item.labelKey)}
                     </button>
                   );
                 })}
@@ -679,7 +697,7 @@ export default function StudentServicesPage2() {
                           : 'text-gray-500 hover:text-[#DE5D8F]/80'
                       }`}
                     >
-                      {t(item.labelKey)}
+                      {translateKey(item.labelKey)}
                     </button>
                   );
                 })}
@@ -696,7 +714,7 @@ export default function StudentServicesPage2() {
                   <div className="flex flex-col items-center justify-center py-20 text-center">
                     <Search size={48} className="text-gray-300 mb-4" />
                     <p className="text-gray-500 text-[16px] font-[ChulaCharasNew] break-words">
-                      {t('no_results')}
+                      {translateKey('no_results')}
                     </p>
                   </div>
                 )}
@@ -723,7 +741,7 @@ export default function StudentServicesPage2() {
             <div className="bg-[#F5CDDC] px-6 py-4 flex items-center justify-between border-b border-[#D0D0D1]">
               <h3 className="text-[20px] font-bold text-[#404041] font-[ChulaCharasNew] flex items-center gap-3 truncate pr-4">
                 {ModalIcon && <ModalIcon className="text-[#DE5D8F] shrink-0" size={24} />}
-                <span className="truncate">{t(modalData.titleKey)}</span>
+                <span className="truncate">{translateKey(modalData.titleKey)}</span>
               </h3>
               <button onClick={closeModal} className="text-[#404041] hover:text-[#DE5D8F] transition-colors p-1.5 rounded-full hover:bg-white/50 cursor-pointer border-none bg-transparent">
                 <X size={20} />
@@ -731,29 +749,29 @@ export default function StudentServicesPage2() {
             </div>
             <div className="p-6">
               <div className="space-y-4 text-[#404041] leading-relaxed max-h-[60vh] overflow-y-auto pr-1">
-                <p className="break-words">{t(modalData.descKey)}</p>
+                <p className="break-words">{translateKey(modalData.descKey)}</p>
                 <div>
-                  <strong className="text-[#DE5D8F] block mb-1 break-words">{t(modalData.locationLabelKey)}</strong>
-                  <p className="break-words">{t(modalData.locationKey)}</p>
+                  <strong className="text-[#DE5D8F] block mb-1 break-words">{translateKey(modalData.locationLabelKey)}</strong>
+                  <p className="break-words">{translateKey(modalData.locationKey)}</p>
                 </div>
                 {modalData.timeLabelKey && modalData.timeKey && (
                   <div>
-                    <strong className="text-[#DE5D8F] block mb-1 break-words">{t(modalData.timeLabelKey)}</strong>
-                    <p className="break-words">{t(modalData.timeKey)}</p>
+                    <strong className="text-[#DE5D8F] block mb-1 break-words">{translateKey(modalData.timeLabelKey)}</strong>
+                    <p className="break-words">{translateKey(modalData.timeKey)}</p>
                   </div>
                 )}
                 {modalData.medsLabelKey && modalData.medsKey && (
                   <div>
-                    <strong className="text-[#DE5D8F] block mb-1 break-words">{t(modalData.medsLabelKey)}</strong>
-                    <p className="break-words">{t(modalData.medsKey)}</p>
+                    <strong className="text-[#DE5D8F] block mb-1 break-words">{translateKey(modalData.medsLabelKey)}</strong>
+                    <p className="break-words">{translateKey(modalData.medsKey)}</p>
                   </div>
                 )}
                 {modalData.rulesLabelKey && modalData.rulesKeys && (
                   <div>
-                    <strong className="text-[#DE5D8F] block mb-1 break-words">{t(modalData.rulesLabelKey)}</strong>
+                    <strong className="text-[#DE5D8F] block mb-1 break-words">{translateKey(modalData.rulesLabelKey)}</strong>
                     <ul className="list-disc pl-5 space-y-1">
                       {modalData.rulesKeys.map((rKey, i) => (
-                        <li key={i} className="break-words">{t(rKey)}</li>
+                        <li key={i} className="break-words">{translateKey(rKey)}</li>
                       ))}
                     </ul>
                   </div>
@@ -766,7 +784,7 @@ export default function StudentServicesPage2() {
                 variant="primary"
                 className="px-6 py-2.5 h-[40px] rounded-lg font-[ChulaCharasNew] text-[14px] font-bold"
               >
-                {t('modal_ok')}
+                {translateKey('modal_ok')}
               </Button>
             </div>
           </div>
