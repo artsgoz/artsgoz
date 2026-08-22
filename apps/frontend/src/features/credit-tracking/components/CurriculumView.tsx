@@ -1,6 +1,9 @@
+import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { MessageSquareWarning } from 'lucide-react';
+import { MessageSquareWarning, ChevronDown, ChevronRight, BookOpen } from 'lucide-react';
 import type { Subject, AcademicProfile } from '../types.js';
+import { MAJOR_CURRICULUMS, MINOR_CURRICULUMS } from '@org/yellow-card-shared';
+import type { CourseDetail } from '@org/yellow-card-shared';
 
 interface CurriculumViewProps {
   subjects?: Subject[];
@@ -10,41 +13,76 @@ interface CurriculumViewProps {
 
 export function CurriculumView({ profile }: CurriculumViewProps) {
   const { t } = useTranslation('credit_tracking');
-  const majorName = profile?.major ?? 'credit_tracking.majors.default';
-  const minorName = profile?.minor ?? 'credit_tracking.minors.default';
+  const [openGroup, setOpenGroup] = useState<string | null>(null);
+
+  const majorNameKey = profile?.major ?? 'credit_tracking.majors.default';
+  const minorNameKey = profile?.minor ?? 'credit_tracking.minors.default';
+
+  // Resolve major key (e.g. "credit_tracking.majors.thai" -> "thai")
+  const majorKey = profile?.major ? profile.major.replace('credit_tracking.majors.', '') : 'thai';
+  const minorKey = profile?.minor ? profile.minor.replace('credit_tracking.minors.', '') : '';
+
+  const majorInfo = MAJOR_CURRICULUMS[majorKey];
+  const minorInfo = MINOR_CURRICULUMS[minorKey];
+
+  const majorDisplayTitle = majorInfo
+    ? `${majorInfo.nameTh} (${majorInfo.revision})`
+    : t(majorNameKey);
+
+  const totalCreditsDisplay = majorInfo
+    ? `${majorInfo.totalCredits} หน่วยกิต`
+    : '129-153 หน่วยกิต';
 
   const curriculumRows = [
     {
       part: t('curriculum.major_title'),
-      credits: 48,
+      credits: majorInfo?.breakdown.major ?? 48,
       detail: t('curriculum.major_details'),
     },
     {
-      part: t('curriculum.specific_courses'),
-      credits: 18,
-      detail: '',
+      part: t('curriculum.basic_courses'),
+      credits: majorInfo?.breakdown.majorCompulsory ?? 18,
+      detail: 'กลุ่มวิชาพื้นฐาน (บังคับ)',
       isIndented: true,
     },
     {
-      part: t('curriculum.basic_courses'),
-      credits: 12,
-      detail: '',
+      part: t('curriculum.specific_courses'),
+      credits: majorInfo?.breakdown.majorSpecified ?? 12,
+      detail: 'กลุ่มวิชาข้อกำหนดเฉพาะ (วิชาเลือก)',
       isIndented: true,
     },
     {
       part: t('curriculum.specialized_courses'),
-      credits: 18,
-      detail: '',
+      credits: majorInfo?.breakdown.majorSpecialized ?? 18,
+      detail: 'กลุ่มวิชาเชี่ยวชาญ (วิชาเลือก)',
       isIndented: true,
     },
     {
       part: t('curriculum.minor_title'),
-      credits: 18,
-      detail: minorName !== 'credit_tracking.minors.default' && minorName !== 'credit_tracking.minors.none'
-        ? t('curriculum.minor_name', { name: t(minorName) })
+      credits: minorInfo ? parseInt(minorInfo.totalCredits) || 18 : 18,
+      detail: minorInfo
+        ? `${minorInfo.nameTh} (${minorInfo.totalCredits} หน่วยกิต)`
+        : minorNameKey !== 'credit_tracking.minors.default' && minorNameKey !== 'credit_tracking.minors.none'
+        ? t('curriculum.minor_name', { name: t(minorNameKey) })
         : t('curriculum.minor_desc_empty'),
     },
   ];
+
+  // Group major courses by course group
+  const groupedMajorCourses: Record<string, CourseDetail[]> = {};
+  if (majorInfo?.courses) {
+    majorInfo.courses.forEach((course: CourseDetail) => {
+      const g = course.group || 'รายวิชาในหลักสูตร';
+      if (!groupedMajorCourses[g]) {
+        groupedMajorCourses[g] = [];
+      }
+      groupedMajorCourses[g].push(course);
+    });
+  }
+
+  const toggleGroup = (groupName: string) => {
+    setOpenGroup(openGroup === groupName ? null : groupName);
+  };
 
   return (
     <div
@@ -58,7 +96,7 @@ export function CurriculumView({ profile }: CurriculumViewProps) {
             className="text-black truncate"
             style={{ fontSize: '28px', fontWeight: 700, lineHeight: '36px' }}
           >
-            {t('curriculum.title')}
+            {t('curriculum.title')} ({totalCreditsDisplay})
           </h1>
         </div>
 
@@ -120,7 +158,7 @@ export function CurriculumView({ profile }: CurriculumViewProps) {
                   className="border border-[#D0D0D1]/40 px-2 py-2 text-center align-top whitespace-normal"
                   colSpan={2}
                 >
-                  {t('curriculum.english_major_detail')}
+                  {majorInfo ? majorInfo.nameTh : t('curriculum.english_major_detail')}
                 </th>
                 <th className="border border-[#D0D0D1]/40 px-2 py-2 text-center align-top whitespace-normal">
                   {t('curriculum.other_majors_detail')}
@@ -137,10 +175,10 @@ export function CurriculumView({ profile }: CurriculumViewProps) {
                   {t('curriculum.basic_arts_detail')}
                 </td>
                 <td className="border border-[#D0D0D1]/40 px-2 py-2 align-top text-center whitespace-normal">
-                  {t('curriculum.major_range_detail')}
+                  {majorInfo ? `${majorInfo.breakdown.major} หน่วยกิต` : t('curriculum.major_range_detail')}
                 </td>
                 <td className="border border-[#D0D0D1]/40 px-2 py-2 align-top text-center whitespace-normal">
-                  {t('curriculum.minor_18_credits')}
+                  {minorInfo ? `${minorInfo.totalCredits} หน่วยกิต` : t('curriculum.minor_18_credits')}
                 </td>
                 <td className="border border-[#D0D0D1]/40 px-2 py-2 align-top text-center whitespace-normal">
                   {t('curriculum.other_major_credits')}
@@ -159,7 +197,7 @@ export function CurriculumView({ profile }: CurriculumViewProps) {
             className="text-black truncate"
             style={{ fontSize: '28px', fontWeight: 700, lineHeight: '36px' }}
           >
-            {t(majorName)}
+            {majorDisplayTitle}
           </h2>
           <p
             className="text-black break-words"
@@ -241,6 +279,108 @@ export function CurriculumView({ profile }: CurriculumViewProps) {
             </div>
           ))}
         </div>
+
+        {/* ───── Course Directory Section (Parsed from Text Files) ───── */}
+        {majorInfo && majorInfo.courses.length > 0 && (
+          <div className="flex flex-col gap-4 w-full max-w-[744px] mt-6">
+            <h3 className="text-black text-[22px] font-bold flex items-center gap-2">
+              <BookOpen size={22} className="text-[#DE5D8F]" />
+              บัญชีรายวิชาในหลักสูตร{majorInfo.nameTh}
+            </h3>
+
+            <div className="flex flex-col gap-3">
+              {Object.entries(groupedMajorCourses).map(([groupName, courses]) => {
+                const isOpen = openGroup === groupName || openGroup === null;
+
+                return (
+                  <div
+                    key={groupName}
+                    className="border border-[#D0D0D1]/40 rounded-[10px] overflow-hidden bg-white shadow-sm"
+                  >
+                    <button
+                      type="button"
+                      onClick={() => toggleGroup(groupName)}
+                      className="w-full px-5 py-3.5 bg-[#FCEFF4] hover:bg-[#F9DFE9] transition-colors flex items-center justify-between text-left"
+                    >
+                      <span className="font-bold text-[17px] text-[#303030]">
+                        {groupName} ({courses.length} รายวิชา)
+                      </span>
+                      {isOpen ? (
+                        <ChevronDown size={20} className="text-[#DE5D8F]" />
+                      ) : (
+                        <ChevronRight size={20} className="text-[#DE5D8F]" />
+                      )}
+                    </button>
+
+                    {isOpen && (
+                      <div className="divide-y divide-[#F0F0F0] px-5 py-2">
+                        {courses.map((c: CourseDetail, i: number) => (
+                          <div
+                            key={i}
+                            className="py-2.5 flex flex-col sm:flex-row sm:items-center justify-between gap-2"
+                          >
+                            <div className="flex items-center gap-3">
+                              <span className="font-mono text-[14px] bg-[#F0F0F0] text-[#303030] px-2 py-0.5 rounded shrink-0">
+                                {c.code}
+                              </span>
+                              <div className="flex flex-col">
+                                <span className="font-bold text-[15px] text-black">
+                                  {c.nameTh}
+                                </span>
+                                {c.nameEn && c.nameEn !== c.nameTh && (
+                                  <span className="text-[13px] text-[#707070] italic">
+                                    {c.nameEn}
+                                  </span>
+                                )}
+                              </div>
+                            </div>
+                            <span className="text-[14px] text-[#505050] font-semibold shrink-0">
+                              {c.credits} หน่วยกิต
+                            </span>
+                          </div>
+                        ))}
+                      </div>
+                    )}
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+        )}
+
+        {/* Minor Course Directory if Minor Selected */}
+        {minorInfo && minorInfo.courses.length > 0 && (
+          <div className="flex flex-col gap-4 w-full max-w-[744px] mt-4">
+            <h3 className="text-black text-[22px] font-bold flex items-center gap-2">
+              <BookOpen size={22} className="text-[#DE5D8F]" />
+              บัญชีรายวิชา{minorInfo.nameTh}
+            </h3>
+
+            <div className="border border-[#D0D0D1]/40 rounded-[10px] overflow-hidden bg-white shadow-sm divide-y divide-[#F0F0F0] px-5 py-3">
+              {minorInfo.courses.map((c: CourseDetail, i: number) => (
+                <div
+                  key={i}
+                  className="py-2.5 flex flex-col sm:flex-row sm:items-center justify-between gap-2"
+                >
+                  <div className="flex items-center gap-3">
+                    <span className="font-mono text-[14px] bg-[#F0F0F0] text-[#303030] px-2 py-0.5 rounded shrink-0">
+                      {c.code}
+                    </span>
+                    <div className="flex flex-col">
+                      <span className="font-bold text-[15px] text-black">{c.nameTh}</span>
+                      {c.nameEn && c.nameEn !== c.nameTh && (
+                        <span className="text-[13px] text-[#707070] italic">{c.nameEn}</span>
+                      )}
+                    </div>
+                  </div>
+                  <span className="text-[14px] text-[#505050] font-semibold shrink-0">
+                    {c.credits} หน่วยกิต
+                  </span>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
 
         {/* Orange Warning Banner */}
         <div

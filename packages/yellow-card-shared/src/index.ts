@@ -2,6 +2,7 @@
 export * from './types.js';
 export * from './constants.js';
 export * from './utils/yellowCardUtils.js';
+export * from './data/curriculumData.js';
 
 // Hooks
 export { useLocalStorage } from './hooks/useLocalStorage.js';

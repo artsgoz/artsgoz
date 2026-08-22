@@ -265,6 +265,9 @@ importers:
       '@org/design-system':
         specifier: workspace:*
         version: link:../../packages/design-system
+      '@org/yellow-card-shared':
+        specifier: workspace:*
+        version: link:../../packages/yellow-card-shared
 
   apps/kb: {}
 
