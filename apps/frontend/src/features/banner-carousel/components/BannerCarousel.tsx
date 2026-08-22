@@ -36,10 +36,10 @@ export function BannerCarousel({
               <a
                 key={`${banner.id}-${index}`}
                 href={banner.linkUrl}
-                className="min-w-full h-full relative block shrink-0 overflow-hidden bg-white"
+                className="min-w-full h-full relative block shrink-0 overflow-hidden bg-gray-200"
               >
                 {!banner.desktopImageUrl && !banner.mobileImageUrl ? (
-                  <div className="w-full h-full relative flex items-center justify-start bg-white transition-all duration-500 overflow-hidden" />
+                  <div className="w-full h-full relative flex items-center justify-start bg-gray-200 transition-all duration-500 overflow-hidden" />
                 ) : (
                   <picture>
                     <source

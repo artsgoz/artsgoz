@@ -46,7 +46,7 @@ export function HomePage() {
   return (
     <div className="mt-[-65px] lg:mt-[-81px] pt-[65px] lg:pt-[81px] w-full bg-background-default overflow-y-auto scroll-smooth [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none] flex flex-col">
       {/* Section 1: Hero Banner — 80% viewport height */}
-      <div className="w-full h-[80vh] bg-white shrink-0 relative overflow-hidden">
+      <div className="w-full h-[80vh] bg-gray-200 shrink-0 relative overflow-hidden">
         <HomeBanner />
         <NoiseOverlay />
       </div>
