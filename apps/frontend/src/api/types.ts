@@ -7,6 +7,21 @@ export interface ApiResponse<T = unknown> {
   detail?: string;
 }
 
+export class ApiError extends Error {
+  status?: number;
+  data?: unknown;
+  detail?: string;
+
+  constructor(message: string, status?: number, data?: unknown, detail?: string) {
+    super(message);
+    this.name = 'ApiError';
+    this.status = status;
+    this.data = data;
+    this.detail = detail;
+    Object.setPrototypeOf(this, ApiError.prototype);
+  }
+}
+
 // ==========================================
 // 1. User & Auth Module Types
 // ==========================================
