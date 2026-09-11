@@ -3,6 +3,7 @@
   "version": "0.0.1",
   "private": true,
   "dependencies": {
-    "@org/design-system": "workspace:*"
+    "@org/design-system": "workspace:*",
+    "firebase": "^12.18.0"
   }
 }
